@@ -17,8 +17,6 @@
 #import "CKPhone.h"
 #import "CKEmail.h"
 
-#import <Contacts/CNContact.h>
-
 @implementation CKContact
 
 #pragma mark - Lifecycle
@@ -291,125 +289,6 @@
         
         _URLs = URLs;
     }
-}
-
-
-- (instancetype)initWithContact:(CNContact *)contact fieldMask:(CKContactField)fieldMask
-{
-    self = [super init];
-    if (self)
-    {
-        _fieldMask = fieldMask;
-        
-        if (fieldMask & CKContactFieldFirstName)
-        {
-            _firstName = contact.givenName;
-        }
-        if (fieldMask & CKContactFieldMiddleName)
-        {
-            _middleName = contact.middleName;
-        }
-        if (fieldMask & CKContactFieldLastName)
-        {
-            _lastName = contact.familyName;
-        }
-        if (fieldMask & CKContactFieldCompositeName)
-        {
-#warning Composite name
-            _compositeName = contact.givenName;
-        }
-        if (fieldMask & CKContactFieldCompany)
-        {
-            _company = contact.organizationName;
-        }
-        if (fieldMask & CKContactFieldJobTitle)
-        {
-            _jobTitle = contact.jobTitle;
-        }
-        if (fieldMask & CKContactFieldPhones)
-        {
-            NSMutableArray *phones = [[NSMutableArray alloc] initWithCapacity:contact.phoneNumbers.count];
-            for (CNPhoneNumber *phoneNumber in contact.phoneNumbers)
-            {
-                [phones addObject:[[CKPhone alloc] initWithLabledValue:phoneNumber]];
-            }
-            _phones = phones;
-        }
-        if (fieldMask & CKContactFieldEmails)
-        {
-            NSMutableArray *emails = [[NSMutableArray alloc] initWithCapacity:contact.emailAddresses.count];
-            for (CNLabeledValue *email in contact.emailAddresses)
-            {
-#warning Emails
-                [emails addObject:[[CKEmail alloc] initWithLabledValue:email]];
-            }
-            _emails = emails;
-        }
-        if (fieldMask & CKContactFieldPhoto)
-        {
-            _photo = [UIImage imageWithData:contact.imageData scale:[UIScreen mainScreen].scale];
-        }
-        if (fieldMask & CKContactFieldThumbnail)
-        {
-            _thumbnail = [UIImage imageWithData:contact.thumbnailImageData scale:[UIScreen mainScreen].scale];
-        }
-        if (fieldMask & CKContactFieldAddresses)
-        {
-            NSMutableArray *addresses = [[NSMutableArray alloc] initWithCapacity:contact.postalAddresses.count];
-            for (CNPostalAddress *addr in contact.postalAddresses)
-            {
-                [addresses addObject:[[CKAddress alloc] initWithPostalAddress:addr]];
-            }
-            _addresses = addresses;
-        }
-        if (fieldMask & CKContactFieldRecordID)
-        {
-#warning Check the record id
-            _recordID = @(contact.identifier.integerValue);
-        }
-        if (fieldMask & CKContactFieldBirthday)
-        {
-#warning Check the birthday
-            _birthday = [[NSCalendar currentCalendar] dateFromComponents:contact.birthday];
-        }
-        if (fieldMask & CKContactFieldCreationDate)
-        {
-#warning Date
-        }
-        if (fieldMask & CKContactFieldModificationDate)
-        {
-#warning Date
-        }
-        if (fieldMask & CKContactFieldSocialProfiles)
-        {
-            NSMutableArray *profiles = [[NSMutableArray alloc] init];
-            for (CNSocialProfile *profile in contact.socialProfiles)
-            {
-                [profiles addObject:[[CKSocialProfile alloc] initWithSocialProfile:profile]];
-            }
-            _socialProfiles = profiles;
-        }
-        if (fieldMask & CKContactFieldNote)
-        {
-            _note = contact.note;
-        }
-        if (fieldMask & CKContactFieldURLs)
-        {
-            NSMutableArray *URLs = [[NSMutableArray alloc] initWithCapacity:contact.urlAddresses.count];
-            for (CNLabeledValue *url in contact.postalAddresses)
-            {
-#warning URLs
-                [URLs addObject:[[CKURL alloc] initWithLabledValue:url]];
-            }
-            _URLs = URLs;
-        }
-    }
-    return self;
-}
-
-- (void)mergeLinkedContact:(CNContact *)contact fieldMask:(CKContactField)fieldMask
-{
-#warning Merge it
 }
 
 #pragma mark - NSSecureCoding
