@@ -7,7 +7,6 @@
 //
 
 #import "CKAddressBook.h"
-#import <Contacts/Contacts.h>
 #import "CKContact_Private.h"
 
 @implementation CKAddressBook {
@@ -37,7 +36,7 @@
             NSLog(@"%@", (__bridge_transfer NSString *)CFErrorCopyFailureReason(errorRef));
             return nil;
         }
-        NSString *name = [NSString stringWithFormat:@"com.alterplay.addressbook.%ld", (long)self.hash];
+        NSString *name = [NSString stringWithFormat:@"com.ttitt.contactskit.%d", (int)self.hash];
         _addressBookQueue = dispatch_queue_create([name cStringUsingEncoding:NSUTF8StringEncoding], NULL);
         self.fieldsMask = CKContactFieldDefault;
     }
@@ -164,21 +163,6 @@
             }
         });
     });
-    
-    
-#warning Added contact request
-    CNContactStore *store = [[CNContactStore alloc] init];
-    NSArray *keys = @[CNContactIdentifierKey, CNContactGivenNameKey, CNContactMiddleNameKey, CNContactBirthdayKey, CNContactPhoneNumbersKey];
-    CNContactFetchRequest *request = [[CNContactFetchRequest alloc] initWithKeysToFetch:keys];
-    NSError *error = nil;
-    
-    NSMutableArray *array = [NSMutableArray array];
-    [store enumerateContactsWithFetchRequest:request error:&error usingBlock:^(CNContact * _Nonnull contact, BOOL * _Nonnull stop) {
-        CKContact *c2 = [[CKContact alloc] initWithContact:contact fieldMask:CKContactFieldPhones];
-        [array addObject:c2];
-    }];
-    
-    NSLog(@"%@",array);
 }
 
 - (void)startObserveChanges
