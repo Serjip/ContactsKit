@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CKTypes.h"
 
 @class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail;
 

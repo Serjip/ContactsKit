@@ -8,6 +8,7 @@
 
 #import "CKContact.h"
 #import <AddressBook/AddressBook.h>
+#import "CKAddressBook.h"
 
 @interface CKContact ()
 
