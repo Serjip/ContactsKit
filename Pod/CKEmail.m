@@ -8,7 +8,6 @@
 
 #import "CKEmail.h"
 #import "CKLabel_Private.h"
-#import <Contacts/Contacts.h>
 
 @implementation CKEmail
 
@@ -20,16 +19,6 @@
     if(self)
     {
         _address = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, index);
-    }
-    return self;
-}
-
-- (instancetype)initWithLabledValue:(CNLabeledValue *)labledValue
-{
-    self = [super initWithLabledValue:labledValue];
-    if(self)
-    {
-        _address = labledValue.value;
     }
     return self;
 }

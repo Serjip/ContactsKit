@@ -7,7 +7,6 @@
 //
 
 #import "CKLabel_Private.h"
-#import <Contacts/CNLabeledValue.h>
 
 @implementation CKLabel
 
@@ -25,17 +24,6 @@
             _localizedLabel = (__bridge_transfer NSString *)ABAddressBookCopyLocalizedLabel(label);
             CFRelease(label);
         }
-    }
-    return self;
-}
-
-- (instancetype)initWithLabledValue:(CNLabeledValue *)labledValue
-{
-    self = [super init];
-    if (self)
-    {
-        _originalLabel = labledValue.label;
-        _localizedLabel = [CNLabeledValue localizedStringForLabel:_originalLabel];
     }
     return self;
 }

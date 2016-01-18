@@ -9,8 +9,6 @@
 #import "CKURL.h"
 #import "CKLabel_Private.h"
 
-#import <Contacts/Contacts.h>
-
 @implementation CKURL
 
 #pragma mark - Lifecycle
@@ -21,16 +19,6 @@
     if(self)
     {
         _URLString = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, index);
-    }
-    return self;
-}
-
-- (instancetype)initWithLabledValue:(CNLabeledValue *)labledValue
-{
-    self = [super initWithLabledValue:labledValue];
-    if(self)
-    {
-        _URLString = labledValue.value;
     }
     return self;
 }
