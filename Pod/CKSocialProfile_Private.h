@@ -8,11 +8,8 @@
 
 #import "CKSocialProfile.h"
 
-@class CNSocialProfile;
-
 @interface CKSocialProfile ()
 
-- (instancetype)initWithSocialDictionary:(NSDictionary *)dictionary  NS_DEPRECATED(10_6, 10_9, 6_0, 9_0);
-- (instancetype)initWithSocialProfile:(CNSocialProfile *)socialProfile NS_AVAILABLE(10_10, 9_0);
+- (instancetype)initWithSocialDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -8,7 +8,6 @@
 
 #import "CKSocialProfile_Private.h"
 #import <AddressBook/AddressBook.h>
-#import <Contacts/CNSocialProfile.h>
 
 @implementation CKSocialProfile
 
@@ -29,20 +28,6 @@
         _userIdentifier = dictionary[userIdKey];
         _service = dictionary[serviceKey];
         _serviceType = [self socialNetworkTypeFromString:_service];
-    }
-    return self;
-}
-
-- (instancetype)initWithSocialProfile:(CNSocialProfile *)socialProfile
-{
-    self = [super init];
-    if (self)
-    {
-        _URL = [NSURL URLWithString:socialProfile.urlString];
-        _username = socialProfile.username;
-        _userIdentifier = socialProfile.userIdentifier;
-        _service = socialProfile.service;
-        _serviceType = [self socialNetworkTypeFromString:socialProfile.service];
     }
     return self;
 }

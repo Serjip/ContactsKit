@@ -38,8 +38,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldSocialProfiles   = 1 << 15,
     CKContactFieldNote             = 1 << 16,
     CKContactFieldURLs             = 1 << 17,
-    CKContactFieldDefault          = CKContactFieldFirstName | CKContactFieldLastName |
-                                     CKContactFieldPhones,
+    CKContactFieldDefault          = CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
     CKContactFieldAll              = NSUIntegerMax
 };
 
