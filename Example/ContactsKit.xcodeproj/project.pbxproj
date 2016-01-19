@@ -10,9 +10,10 @@
 		1B878CFB970151DBF6342337 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E51AAA13DC927F8EE49305D /* libPods.a */; };
 		29B101CF6424A3C1A2536401 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E51AAA13DC927F8EE49305D /* libPods.a */; };
 		520935AF1C4D578F00CF2A64 /* CKTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 520935AE1C4D578F00CF2A64 /* CKTableViewController.m */; };
+		529049CA1C4E38B8000598B4 /* CKTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 529049C91C4E38B8000598B4 /* CKTableViewCell.m */; };
+		529049CC1C4E38D9000598B4 /* CKTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529049CB1C4E38D9000598B4 /* CKTableViewCell.xib */; };
 		52AAF8B71C4CF1E20019ABFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AAF8B61C4CF1E20019ABFB /* main.m */; };
-		52AAF8BA1C4CF1E20019ABFB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AAF8B91C4CF1E20019ABFB /* AppDelegate.m */; };
-		52AAF8C31C4CF1E20019ABFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52AAF8C11C4CF1E20019ABFB /* Main.storyboard */; };
+		52AAF8BA1C4CF1E20019ABFB /* CKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AAF8B91C4CF1E20019ABFB /* CKAppDelegate.m */; };
 		52AAF8C51C4CF1E20019ABFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52AAF8C41C4CF1E20019ABFB /* Assets.xcassets */; };
 		52AAF8C81C4CF1E20019ABFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52AAF8C61C4CF1E20019ABFB /* LaunchScreen.storyboard */; };
 		52AAF8D31C4CF1E20019ABFB /* ContactsKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AAF8D21C4CF1E20019ABFB /* ContactsKitTests.m */; };
@@ -33,11 +34,13 @@
 		47C05248B0E74A30EF4AF618 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		520935AD1C4D578F00CF2A64 /* CKTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKTableViewController.h; sourceTree = "<group>"; };
 		520935AE1C4D578F00CF2A64 /* CKTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKTableViewController.m; sourceTree = "<group>"; };
+		529049C81C4E38B8000598B4 /* CKTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKTableViewCell.h; sourceTree = "<group>"; };
+		529049C91C4E38B8000598B4 /* CKTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKTableViewCell.m; sourceTree = "<group>"; };
+		529049CB1C4E38D9000598B4 /* CKTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKTableViewCell.xib; sourceTree = "<group>"; };
 		52AAF8B21C4CF1E20019ABFB /* ContactsKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52AAF8B61C4CF1E20019ABFB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		52AAF8B81C4CF1E20019ABFB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		52AAF8B91C4CF1E20019ABFB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		52AAF8C21C4CF1E20019ABFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		52AAF8B81C4CF1E20019ABFB /* CKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAppDelegate.h; sourceTree = "<group>"; };
+		52AAF8B91C4CF1E20019ABFB /* CKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKAppDelegate.m; sourceTree = "<group>"; };
 		52AAF8C41C4CF1E20019ABFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52AAF8C71C4CF1E20019ABFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52AAF8C91C4CF1E20019ABFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,11 +93,13 @@
 		52AAF8B41C4CF1E20019ABFB /* ContactsKit */ = {
 			isa = PBXGroup;
 			children = (
-				52AAF8B81C4CF1E20019ABFB /* AppDelegate.h */,
-				52AAF8B91C4CF1E20019ABFB /* AppDelegate.m */,
+				52AAF8B81C4CF1E20019ABFB /* CKAppDelegate.h */,
+				52AAF8B91C4CF1E20019ABFB /* CKAppDelegate.m */,
 				520935AD1C4D578F00CF2A64 /* CKTableViewController.h */,
 				520935AE1C4D578F00CF2A64 /* CKTableViewController.m */,
-				52AAF8C11C4CF1E20019ABFB /* Main.storyboard */,
+				529049C81C4E38B8000598B4 /* CKTableViewCell.h */,
+				529049C91C4E38B8000598B4 /* CKTableViewCell.m */,
+				529049CB1C4E38D9000598B4 /* CKTableViewCell.xib */,
 				52AAF8C41C4CF1E20019ABFB /* Assets.xcassets */,
 				52AAF8C61C4CF1E20019ABFB /* LaunchScreen.storyboard */,
 				52AAF8C91C4CF1E20019ABFB /* Info.plist */,
@@ -225,8 +230,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				52AAF8C81C4CF1E20019ABFB /* LaunchScreen.storyboard in Resources */,
+				529049CC1C4E38D9000598B4 /* CKTableViewCell.xib in Resources */,
 				52AAF8C51C4CF1E20019ABFB /* Assets.xcassets in Resources */,
-				52AAF8C31C4CF1E20019ABFB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +342,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52AAF8BA1C4CF1E20019ABFB /* AppDelegate.m in Sources */,
+				52AAF8BA1C4CF1E20019ABFB /* CKAppDelegate.m in Sources */,
+				529049CA1C4E38B8000598B4 /* CKTableViewCell.m in Sources */,
 				52AAF8B71C4CF1E20019ABFB /* main.m in Sources */,
 				520935AF1C4D578F00CF2A64 /* CKTableViewController.m in Sources */,
 			);
@@ -362,14 +368,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		52AAF8C11C4CF1E20019ABFB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				52AAF8C21C4CF1E20019ABFB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		52AAF8C61C4CF1E20019ABFB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

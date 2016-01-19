@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  CKAppDelegate.h
 //  ContactsKit
 //
 //  Created by Sergey Popov on 18.01.16.
@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface CKAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
 
 @end
 
