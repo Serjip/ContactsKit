@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <ContactsKit/ContactsKit.h>
+
+@class CKContact;
 
 @interface CKTableViewCell : UITableViewCell
 
