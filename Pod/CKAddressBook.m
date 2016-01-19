@@ -38,7 +38,8 @@
         }
         NSString *name = [NSString stringWithFormat:@"com.ttitt.contactskit.%d", (int)self.hash];
         _addressBookQueue = dispatch_queue_create([name cStringUsingEncoding:NSUTF8StringEncoding], NULL);
-        self.fieldsMask = CKContactFieldDefault;
+        _fieldsMask = CKContactFieldDefault;
+        _mergeFieldsMask = CKContactFieldDefault;
     }
     return self;
 }
