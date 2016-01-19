@@ -64,13 +64,13 @@
         {
             _emails = [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
         }
-        if (fieldMask & CKContactFieldPhoto)
+        if (fieldMask & CKContactFieldImageData)
         {
-            _photo = [self imagePropertyFullSize:YES fromRecord:recordRef];
+            _imageData = [self imageDataWithFullSize:YES fromRecord:recordRef];
         }
-        if (fieldMask & CKContactFieldThumbnail)
+        if (fieldMask & CKContactFieldThumbnailData)
         {
-            _thumbnail = [self imagePropertyFullSize:NO fromRecord:recordRef];
+            _thumbnailData = [self imageDataWithFullSize:NO fromRecord:recordRef];
         }
         if (fieldMask & CKContactFieldAddresses)
         {
@@ -204,19 +204,19 @@
         _emails = emails;
     }
 
-    if (fieldMask & CKContactFieldPhoto)
+    if (fieldMask & CKContactFieldImageData)
     {
-        if (! self.photo)
+        if (! self.imageData)
         {
-            _photo = [self imagePropertyFullSize:YES fromRecord:recordRef];
+            _imageData = [self imageDataWithFullSize:YES fromRecord:recordRef];
         }
     }
     
-    if (fieldMask & CKContactFieldThumbnail)
+    if (fieldMask & CKContactFieldThumbnailData)
     {
-        if (! self.thumbnail)
+        if (! self.thumbnailData)
         {
-            _thumbnail = [self imagePropertyFullSize:NO fromRecord:recordRef];
+            _thumbnailData = [self imageDataWithFullSize:YES fromRecord:recordRef];
         }
     }
     
@@ -316,11 +316,8 @@
         _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(note))];
         _URLs = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(URLs))];
         
-        NSData *thumbData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(thumbnail))];
-        _thumbnail = [[UIImage alloc] initWithData:thumbData];
-        
-        NSData *photoData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(photo))];
-        _photo = [[UIImage alloc] initWithData:photoData];
+        _imageData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(imageData))];
+        _thumbnailData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(thumbnailData))];
     }
     return self;
 }
@@ -344,8 +341,8 @@
     [aCoder encodeObject:_note forKey:NSStringFromSelector(@selector(note))];
     [aCoder encodeObject:_URLs forKey:NSStringFromSelector(@selector(URLs))];
 
-    [aCoder encodeObject:UIImagePNGRepresentation(_thumbnail) forKey:NSStringFromSelector(@selector(thumbnail))];
-    [aCoder encodeObject:UIImagePNGRepresentation(_photo) forKey:NSStringFromSelector(@selector(photo))];
+    [aCoder encodeObject:_imageData forKey:NSStringFromSelector(@selector(imageData))];
+    [aCoder encodeObject:_thumbnailData forKey:NSStringFromSelector(@selector(thumbnailData))];
 }
 
 + (BOOL)supportsSecureCoding
@@ -376,10 +373,9 @@
         copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
         copy->_note = [self.note copyWithZone:zone];
         copy->_URLs = [self.URLs copyWithZone:zone];
-        
-        // Dont copy the images
-        copy->_thumbnail = self.thumbnail;
-        copy->_photo = self.photo;
+    
+        copy->_imageData = [self.imageData copyWithZone:zone];
+        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
     }
     return copy;
 }
@@ -388,16 +384,13 @@
 
 - (NSString *)stringProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
 {
-    CFTypeRef valueRef = (ABRecordCopyValue(recordRef, property));
-    return (__bridge_transfer NSString *)valueRef;
+    return (__bridge_transfer NSString *)ABRecordCopyValue(recordRef, property);
 }
 
 - (NSArray *)arrayProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    [self enumerateMultiValueOfProperty:property fromRecord:recordRef
-                              withBlock:^(ABMultiValueRef multiValue, CFIndex index)
-    {
+    [self enumerateMultiValueOfProperty:property fromRecord:recordRef withBlock:^(ABMultiValueRef multiValue, CFIndex index) {
         id value = (__bridge_transfer id)ABMultiValueCopyValueAtIndex(multiValue, index);
         if (value)
         {
@@ -409,15 +402,13 @@
 
 - (NSDate *)dateProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
 {
-    CFDateRef dateRef = (ABRecordCopyValue(recordRef, property));
-    return (__bridge_transfer NSDate *)dateRef;
+    return (__bridge_transfer NSDate *)ABRecordCopyValue(recordRef, property);
 }
 
-- (UIImage *)imagePropertyFullSize:(BOOL)isFullSize fromRecord:(ABRecordRef)recordRef
+- (NSData *)imageDataWithFullSize:(BOOL)isFullSize fromRecord:(ABRecordRef)recordRef
 {
     ABPersonImageFormat format = isFullSize ? kABPersonImageFormatOriginalSize : kABPersonImageFormatThumbnail;
-    NSData *data = (__bridge_transfer NSData *)ABPersonCopyImageDataWithFormat(recordRef, format);
-    return [UIImage imageWithData:data scale:UIScreen.mainScreen.scale];
+    return (__bridge_transfer NSData *)ABPersonCopyImageDataWithFormat(recordRef, format);
 }
 
 - (void)enumerateMultiValueOfProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef

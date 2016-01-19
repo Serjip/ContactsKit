@@ -22,8 +22,8 @@
 @property (nonatomic, strong, readonly) NSArray<CKPhone *> *phones;
 @property (nonatomic, strong, readonly) NSArray<CKEmail *> *emails;
 @property (nonatomic, strong, readonly) NSArray<CKAddress *> *addresses;
-@property (nonatomic, strong, readonly) UIImage *photo;
-@property (nonatomic, strong, readonly) UIImage *thumbnail;
+@property (nonatomic, strong, readonly) NSData *imageData;
+@property (nonatomic, strong, readonly) NSData *thumbnailData;
 @property (nonatomic, strong, readonly) NSDate *birthday;
 @property (nonatomic, strong, readonly) NSDate *creationDate NS_DEPRECATED(10_6, 10_10, 6_0, 9_0);
 @property (nonatomic, strong, readonly) NSDate *modificationDate NS_DEPRECATED(10_6, 10_10, 6_0, 9_0);
