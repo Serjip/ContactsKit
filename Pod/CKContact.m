@@ -27,6 +27,11 @@
     if (self)
     {
         _fieldMask = fieldMask;
+        
+        if (fieldMask & CKContactFieldRecordID)
+        {
+            _recordID = [NSNumber numberWithInteger:ABRecordGetRecordID(recordRef)];
+        }
         if (fieldMask & CKContactFieldFirstName)
         {
             _firstName = [self stringProperty:kABPersonFirstNameProperty fromRecord:recordRef];
@@ -77,10 +82,6 @@
                 [addresses addObject:address];
             }
             _addresses = addresses;
-        }
-        if (fieldMask & CKContactFieldRecordID)
-        {
-            _recordID = [NSNumber numberWithInteger:ABRecordGetRecordID(recordRef)];
         }
         if (fieldMask & CKContactFieldBirthday)
         {
@@ -298,6 +299,7 @@
     self = [super init];
     if (self)
     {
+        _recordID = [aDecoder decodeObjectOfClass:[NSNumber class] forKey:NSStringFromSelector(@selector(recordID))];
         _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(firstName))];
         _middleName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(middleName))];
         _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(lastName))];
@@ -307,7 +309,6 @@
         _phones = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(phones))];
         _emails = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(emails))];
         _addresses = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(addresses))];
-        _recordID = [aDecoder decodeObjectOfClass:[NSNumber class] forKey:NSStringFromSelector(@selector(recordID))];
         _birthday = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(birthday))];
         _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(creationDate))];
         _modificationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(modificationDate))];
@@ -326,6 +327,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeObject:_recordID forKey:NSStringFromSelector(@selector(recordID))];
     [aCoder encodeObject:_firstName forKey:NSStringFromSelector(@selector(firstName))];
     [aCoder encodeObject:_middleName forKey:NSStringFromSelector(@selector(middleName))];
     [aCoder encodeObject:_lastName forKey:NSStringFromSelector(@selector(lastName))];
@@ -335,7 +337,6 @@
     [aCoder encodeObject:_phones forKey:NSStringFromSelector(@selector(phones))];
     [aCoder encodeObject:_emails forKey:NSStringFromSelector(@selector(emails))];
     [aCoder encodeObject:_addresses forKey:NSStringFromSelector(@selector(addresses))];
-    [aCoder encodeObject:_recordID forKey:NSStringFromSelector(@selector(recordID))];
     [aCoder encodeObject:_birthday forKey:NSStringFromSelector(@selector(birthday))];
     [aCoder encodeObject:_creationDate forKey:NSStringFromSelector(@selector(creationDate))];
     [aCoder encodeObject:_modificationDate forKey:NSStringFromSelector(@selector(modificationDate))];
@@ -359,6 +360,7 @@
     CKContact *copy = [[[self class] alloc] init];
     if (copy)
     {
+        copy->_recordID = [self.recordID copyWithZone:zone];
         copy->_firstName = [self.firstName copyWithZone:zone];
         copy->_middleName = [self.middleName copyWithZone:zone];
         copy->_lastName = [self.lastName copyWithZone:zone];
@@ -368,7 +370,6 @@
         copy->_phones = [self.phones copyWithZone:zone];
         copy->_emails = [self.emails copyWithZone:zone];
         copy->_addresses = [self.addresses copyWithZone:zone];
-        copy->_recordID = [self.recordID copyWithZone:zone];
         copy->_birthday = [self.birthday copyWithZone:zone];
         copy->_creationDate = [self.creationDate copyWithZone:zone];
         copy->_modificationDate = [self.modificationDate copyWithZone:zone];
