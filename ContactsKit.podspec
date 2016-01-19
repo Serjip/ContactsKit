@@ -9,8 +9,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.frameworks   = 'AddressBook'
   s.source_files = 'Pod/*.{h,m}'
-
-  s.social_media_url      = "https://ttitt.ru"
   s.ios.deployment_target = "6.0"
 
 end
