@@ -10,6 +10,6 @@
 
 @interface CKPhone : CKLabel
 
-@property (nonatomic, strong, readonly) NSString *phone;
+@property (nonatomic, strong, readonly) NSString *number;
 
 @end

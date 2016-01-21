@@ -32,7 +32,7 @@
     }
     
     self.mainLabel.text = [NSString stringWithFormat:@"%@ %@", contact.firstName, contact.lastName];
-    self.subLabel.text = [NSString stringWithFormat:@"%@ (%@)", contact.phones.firstObject.phone, contact.phones.firstObject.localizedLabel];;
+    self.subLabel.text = [NSString stringWithFormat:@"%@ (%@)", contact.phones.firstObject.number, contact.phones.firstObject.localizedLabel];;
 }
 
 + (UINib *)nib

@@ -18,7 +18,7 @@
     self = [super initWithMultiValue:multiValue index:index];
     if(self)
     {
-        _phone = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, index);
+        _number = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, index);
     }
     return self;
 }
@@ -30,7 +30,7 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        _phone = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(phone))];
+        _number = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(number))];
     }
     return self;
 }
@@ -38,7 +38,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:_phone forKey:NSStringFromSelector(@selector(phone))];
+    [aCoder encodeObject:_number forKey:NSStringFromSelector(@selector(number))];
 }
 
 #pragma mark - NSCopying
@@ -48,7 +48,7 @@
     CKPhone *copy = [super copyWithZone:zone];
     if (copy)
     {
-        copy->_phone = [self.phone copyWithZone:zone];
+        copy->_number = [self.number copyWithZone:zone];
     }
     return copy;
 }
@@ -57,7 +57,7 @@
 
 - (BOOL)isEqualToPhone:(CKPhone *)phone
 {
-    return ([phone.phone isEqualToString:self.phone] && [phone.originalLabel isEqual:self.originalLabel]);
+    return ([phone.number isEqualToString:self.number] && [phone.originalLabel isEqual:self.originalLabel]);
 }
 
 - (BOOL)isEqual:(id)object
@@ -79,7 +79,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ (%@)", self.phone, self.originalLabel];
+    return [NSString stringWithFormat:@"%@ (%@)", self.number, self.originalLabel];
 }
 
 @end
