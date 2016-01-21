@@ -1,6 +1,6 @@
 
-pod ‘ContactsKit’, :path => ‘../’
+pod 'ContactsKit', :path => '../'
 
-link_with 'ContactsKit', 'ContactsKitTests’
+link_with 'ContactsKit', 'ContactsKitTests'
 
 platform :ios, '7.0'
