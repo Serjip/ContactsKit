@@ -6,7 +6,7 @@
 //  Copyright (c) 2016 ttitt. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail;
 
