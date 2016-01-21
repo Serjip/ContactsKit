@@ -42,7 +42,6 @@
         
         // Set default field masks
         _fieldsMask = CKContactFieldDefault;
-        _mergeFieldsMask = CKContactFieldDefault;
     }
     return self;
 }
