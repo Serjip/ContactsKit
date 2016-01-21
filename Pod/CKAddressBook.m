@@ -36,8 +36,11 @@
             NSLog(@"%@", (__bridge_transfer NSString *)CFErrorCopyFailureReason(errorRef));
             return nil;
         }
-        NSString *name = [NSString stringWithFormat:@"com.ttitt.contactskit.%d", (int)self.hash];
-        _addressBookQueue = dispatch_queue_create([name cStringUsingEncoding:NSUTF8StringEncoding], NULL);
+        
+        // Set addressbook queue
+        _addressBookQueue = dispatch_queue_create("com.ttitt.contactskit.queue", DISPATCH_QUEUE_SERIAL);
+        
+        // Set default field masks
         _fieldsMask = CKContactFieldDefault;
         _mergeFieldsMask = CKContactFieldDefault;
     }
