@@ -46,7 +46,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @property (nonatomic, readonly) CKAddressBookAccess access;
 @property (nonatomic, assign) CKContactField fieldsMask;
-@property (nonatomic, assign) CKContactField mergeFieldsMask;
+@property (nonatomic, assign) CKContactField mergeMask;
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 

@@ -34,7 +34,7 @@
 #if TARGET_OS_IOS
         _addressBookRef = ABAddressBookCreateWithOptions(NULL, &errorRef);
 #elif TARGET_OS_MAC
-        _addressBookRef = ABGetSharedAddressBook();
+        _addressBookRef = (__bridge  ABAddressBookRef)[ABAddressBook addressBook];
 #endif
         if (errorRef)
         {
@@ -81,7 +81,7 @@
         default:
             return CKAddressBookAccessUnknown;
     }
-#else
+#elif TARGET_OS_MAC
     return 0;
 #warning Access status
 #endif
@@ -90,7 +90,7 @@
 - (void)loadContacts
 {
     CKContactField fieldMask = self.fieldsMask;
-    CKContactField mergeMask = self.mergeFieldsMask;
+    CKContactField mergeMask = self.mergeMask;
     NSArray *descriptors = [self.sortDescriptors copy];
     
 //#if TARGET_OS_IOS
@@ -141,8 +141,10 @@
     
 #if TARGET_OS_IOS
     ABAddressBookRegisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
-#else
-#warning Setup callback
+#elif TARGET_OS_MAC
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(notificaitonDataBaseChanged:) name:kABDatabaseChangedNotification object:nil];
+    [nc addObserver:self selector:@selector(notificaitonDatabaseChangedExternally:) name:kABDatabaseChangedExternallyNotification object:nil];
 #endif
 }
 
@@ -150,8 +152,10 @@
 {
 #if TARGET_OS_IOS
     ABAddressBookUnregisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
-#else
-#warning Remove callback
+#elif TARGET_OS_MAC
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:kABDatabaseChangedNotification object:nil];
+    [nc removeObserver:self name:kABDatabaseChangedExternallyNotification object:nil];
 #endif
 }
 
@@ -182,7 +186,6 @@
 #if TARGET_OS_IOS
         linkedID = @(ABRecordGetRecordID(recordRef));
 #elif TARGET_OS_MAC
-#warning Linked id can be checked only on mac 10.8
         linkedID = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
 #endif
         if ([linkedContactsIDs containsObject:linkedID])
@@ -201,9 +204,6 @@
         
 #if TARGET_OS_IOS
         CFArrayRef linkedPeopleArrayRef = ABPersonCopyArrayOfAllLinkedPeople(recordRef);
-#elif TARGET_OS_MAC
-        CFArrayRef linkedPeopleArrayRef = (__bridge CFArrayRef)[(__bridge ABPerson *)recordRef linkedPeople];
-#endif
         CFIndex linkedCount = CFArrayGetCount(linkedPeopleArrayRef);
         if (linkedCount > 1)
         {
@@ -221,19 +221,20 @@
                 if (mergeMask)
                 {
                     [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
-                    
-                    id linkedID;
-#if TARGET_OS_IOS
-                    linkedID = @(ABRecordGetRecordID(recordRef));
-#elif TARGET_OS_MAC
-                    linkedID = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
-#endif
-                    [linkedContactsIDs addObject:linkedID];
+                    [linkedContactsIDs addObject:@(ABRecordGetRecordID(recordRef))];
                 }
             }
         }
-        
         CFRelease(linkedPeopleArrayRef);
+#elif TARGET_OS_MAC
+        
+        NSMutableArray *array = [NSMutableArray array];
+        for (ABPerson *person in [(__bridge ABPerson *)recordRef linkedPeople])
+        {
+//            NSLog(@"%@", person);
+            [array addObject:person];
+        }
+#endif
     }
     CFRelease(peopleArrayRef);
     
@@ -244,9 +245,10 @@
     return [[NSArray alloc] initWithArray:contacts];
 }
 
-#pragma mark - external change callback
-
 #if TARGET_OS_IOS
+
+#pragma mark - Callbacks
+
 static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef, CFDictionaryRef __unused info, void *context)
 {
     ABAddressBookRevert(addressBookRef);
@@ -257,8 +259,25 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
         [addressBook.delegate addressBookDidChnage:addressBook];
     }
 }
-#else
-#warning Callback
+
+#elif TARGET_OS_MAC
+
+#pragma mark - Notifications
+
+- (void)notificaitonDataBaseChanged:(NSNotification *)aNotification
+{
+    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
+    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
+    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
+}
+
+- (void)notificaitonDatabaseChangedExternally:(NSNotification *)aNotification
+{
+    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
+    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
+    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
+}
+
 #endif
 
 @end
