@@ -1,6 +1,6 @@
 
 
-target "ContactsKit", :exclusive => true do
+target "ContactsKit_iOS", :exclusive => true do
   
   pod "ContactsKit", :path => "../"
   platform :ios, "7.0"
