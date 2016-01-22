@@ -77,7 +77,7 @@
     
     CFErrorRef errorRef = NULL;
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &errorRef);
-    ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(addressBookRef, contact.recordID.intValue);
+    ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(addressBookRef, contact.identifier.intValue);
     
     ABPersonViewController *vc = [[ABPersonViewController alloc] init];
     
