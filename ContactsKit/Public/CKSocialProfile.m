@@ -9,6 +9,15 @@
 #import "CKSocialProfile_Private.h"
 #import <AddressBook/AddressBook.h>
 
+#if TARGET_OS_IOS
+
+#define kABSocialProfileURLKey              (__bridge_transfer NSString *)kABPersonSocialProfileURLKey
+#define kABSocialProfileUsernameKey         (__bridge_transfer NSString *)kABPersonSocialProfileUsernameKey
+#define kABSocialProfileUserIdentifierKey   (__bridge_transfer NSString *)kABPersonSocialProfileUserIdentifierKey
+#define kABSocialProfileServiceKey          (__bridge_transfer NSString *)kABPersonSocialProfileServiceKey
+
+#endif
+
 @implementation CKSocialProfile
 
 #pragma mark - Lifecycle
@@ -17,16 +26,11 @@
 {
     self = [super init];
     if (self)
-    {
-        NSString *URLKey = (__bridge_transfer NSString *)kABPersonSocialProfileURLKey;
-        NSString *usernameKey = (__bridge_transfer NSString *)kABPersonSocialProfileUsernameKey;
-        NSString *userIdKey = (__bridge_transfer NSString *)kABPersonSocialProfileUserIdentifierKey;
-        NSString *serviceKey = (__bridge_transfer NSString *)kABPersonSocialProfileServiceKey;
-       
-        _URL = [NSURL URLWithString:dictionary[URLKey]];
-        _username = dictionary[usernameKey];
-        _userIdentifier = dictionary[userIdKey];
-        _service = dictionary[serviceKey];
+    {        
+        _URL = [NSURL URLWithString:[dictionary objectForKey:kABSocialProfileURLKey]];
+        _username = [dictionary objectForKey:kABSocialProfileUsernameKey];
+        _userIdentifier = [dictionary objectForKey:kABSocialProfileUserIdentifierKey];
+        _service = [dictionary objectForKey:kABSocialProfileServiceKey];
         _serviceType = [self socialNetworkTypeFromString:_service];
     }
     return self;
