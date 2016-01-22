@@ -9,6 +9,17 @@
 #import "CKAddress_Private.h"
 #import <AddressBook/AddressBook.h>
 
+#if TARGET_OS_IOS
+
+#define kABAddressStreetKey         (__bridge NSString *)kABPersonAddressStreetKey
+#define kABAddressCityKey           (__bridge NSString *)kABPersonAddressCityKey
+#define kABAddressStateKey          (__bridge NSString *)kABPersonAddressStateKey
+#define kABAddressZIPKey            (__bridge NSString *)kABPersonAddressZIPKey
+#define kABAddressCountryKey        (__bridge NSString *)kABPersonAddressCountryKey
+#define kABAddressCountryCodeKey    (__bridge NSString *)kABPersonAddressCountryCodeKey
+
+#endif
+
 @implementation CKAddress
 
 #pragma mark - Lifecycle
@@ -18,12 +29,12 @@
     self = [super init];
     if (self)
     {
-        _street = dictionary[(__bridge NSString *)kABPersonAddressStreetKey];
-        _city = dictionary[(__bridge NSString *)kABPersonAddressCityKey];
-        _state = dictionary[(__bridge NSString *)kABPersonAddressStateKey];
-        _zip = dictionary[(__bridge NSString *)kABPersonAddressZIPKey];
-        _country = dictionary[(__bridge NSString *)kABPersonAddressCountryKey];
-        _ISOCountryCode = dictionary[(__bridge NSString *)kABPersonAddressCountryCodeKey];
+        _street = [dictionary objectForKey:kABAddressStreetKey];
+        _city = [dictionary objectForKey:kABAddressCityKey];
+        _state = [dictionary objectForKey:kABAddressStateKey];
+        _zip = [dictionary objectForKey:kABAddressZIPKey];
+        _country = [dictionary objectForKey:kABAddressCountryKey];
+        _ISOCountryCode = [dictionary objectForKey:kABAddressCountryCodeKey];
     }
     return self;
 }
