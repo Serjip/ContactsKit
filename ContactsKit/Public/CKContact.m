@@ -15,6 +15,28 @@
 #import "CKPhone.h"
 #import "CKEmail.h"
 
+#import <AddressBook/AddressBook.h>
+
+#if !(TARGET_OS_IOS)
+
+#define ABPropertyID    CFStringRef
+#define kABPersonFirstNameProperty          (__bridge CFStringRef)kABFirstNameProperty
+#define kABPersonMiddleNameProperty         (__bridge CFStringRef)kABMiddleNameProperty
+#define kABPersonLastNameProperty           (__bridge CFStringRef)kABLastNameProperty
+#define kABPersonOrganizationProperty       (__bridge CFStringRef)kABOrganizationProperty
+#define kABPersonJobTitleProperty           (__bridge CFStringRef)kABJobTitleProperty
+#define kABPersonPhoneProperty              (__bridge CFStringRef)kABPhoneProperty
+#define kABPersonEmailProperty              (__bridge CFStringRef)kABEmailProperty
+#define kABPersonAddressProperty            (__bridge CFStringRef)kABAddressProperty
+#define kABPersonBirthdayProperty           (__bridge CFStringRef)kABBirthdayProperty
+#define kABPersonCreationDateProperty       (__bridge CFStringRef)kABCreationDateProperty
+#define kABPersonModificationDateProperty   (__bridge CFStringRef)kABModificationDateProperty
+#define kABPersonSocialProfileProperty      (__bridge CFStringRef)kABSocialProfileProperty
+#define kABPersonNoteProperty               (__bridge CFStringRef)kABNoteProperty
+#define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
+
+#endif
+
 @implementation CKContact
 
 #pragma mark - Lifecycle
@@ -28,7 +50,12 @@
         
         if (fieldMask & CKContactFieldIdentifier)
         {
-            _recordID = [NSNumber numberWithInteger:ABRecordGetRecordID(recordRef)];
+#if TARGET_OS_IOS
+#warning Chagne the ID typ
+            _identifier = [NSString stringWithFormat:@"%d",(int)ABRecordGetRecordID(recordRef)];
+#elif TARGET_OS_MAC
+            _identifier = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
+#endif
         }
         if (fieldMask & CKContactFieldFirstName)
         {
@@ -44,7 +71,12 @@
         }
         if (fieldMask & CKContactFieldCompositeName)
         {
+#if TARGET_OS_IOS
             _compositeName = (__bridge_transfer NSString *)ABRecordCopyCompositeName(recordRef);
+#elif TARGET_OS_MAC
+#warning Compositename
+            _compositeName = @"";
+#endif
         }
         if (fieldMask & CKContactFieldCompany)
         {
@@ -147,7 +179,12 @@
     {
         if (! self.compositeName)
         {
+#if TARGET_OS_IOS
             _compositeName = (__bridge_transfer NSString *)ABRecordCopyCompositeName(recordRef);
+#elif TARGET_OS_MAC
+#warning Compositename
+            _compositeName = @"";
+#endif
         }
     }
     
@@ -385,6 +422,40 @@
     return (__bridge_transfer NSString *)ABRecordCopyValue(recordRef, property);
 }
 
+- (NSDate *)dateProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
+{
+    return (__bridge_transfer NSDate *)ABRecordCopyValue(recordRef, property);
+}
+
+- (NSData *)imageDataWithFullSize:(BOOL)isFullSize fromRecord:(ABRecordRef)recordRef
+{
+#if TARGET_OS_IOS
+    ABPersonImageFormat format = isFullSize ? kABPersonImageFormatOriginalSize : kABPersonImageFormatThumbnail;
+    return (__bridge_transfer NSData *)ABPersonCopyImageDataWithFormat(recordRef, format);
+#elif TARGET_OS_MAC
+    return (__bridge_transfer NSData *)ABPersonCopyImageData(recordRef);
+#endif
+}
+
+- (void)enumerateMultiValueOfProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
+                            withBlock:(void (^)(ABMultiValueRef multiValue, CFIndex index))block
+{
+    ABMultiValueRef multiValue = ABRecordCopyValue(recordRef, property);
+    if (multiValue)
+    {
+#if TARGET_OS_IOS
+        CFIndex count = ABMultiValueGetCount(multiValue);
+#elif TARGET_OS_MAC
+        CFIndex count = ABMultiValueCount(multiValue);
+#endif
+        for (CFIndex i = 0; i < count; i++)
+        {
+            block(multiValue, i);
+        }
+        CFRelease(multiValue);
+    }
+}
+
 - (NSArray *)arrayProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -396,32 +467,6 @@
         }
     }];
     return [NSArray arrayWithArray:array];
-}
-
-- (NSDate *)dateProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
-{
-    return (__bridge_transfer NSDate *)ABRecordCopyValue(recordRef, property);
-}
-
-- (NSData *)imageDataWithFullSize:(BOOL)isFullSize fromRecord:(ABRecordRef)recordRef
-{
-    ABPersonImageFormat format = isFullSize ? kABPersonImageFormatOriginalSize : kABPersonImageFormatThumbnail;
-    return (__bridge_transfer NSData *)ABPersonCopyImageDataWithFormat(recordRef, format);
-}
-
-- (void)enumerateMultiValueOfProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
-                            withBlock:(void (^)(ABMultiValueRef multiValue, CFIndex index))block
-{
-    ABMultiValueRef multiValue = ABRecordCopyValue(recordRef, property);
-    if (multiValue)
-    {
-        CFIndex count = ABMultiValueGetCount(multiValue);
-        for (CFIndex i = 0; i < count; i++)
-        {
-            block(multiValue, i);
-        }
-        CFRelease(multiValue);
-    }
 }
 
 - (NSArray *)arrayObjectsOfClass:(Class)class ofProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
