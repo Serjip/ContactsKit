@@ -7,8 +7,17 @@ Pod::Spec.new do |s|
   s.author       = { "Sergey Popov" => "serj@ttitt.ru" }
   s.source       = { :git => "https://github.com/Serjip/ContactsKit.git", :tag => s.version.to_s }
   s.requires_arc = true
-  s.frameworks   = 'AddressBook'
-  s.source_files = 'Pod/*.{h,m}'
+
+#iOS
+  s.ios.frameworks   = "AddressBook"
   s.ios.deployment_target = "6.0"
+  
+
+#OSX
+  s.osx.frameworks   = "AddressBook"
+  s.osx.deployment_target = "10.7"
+
+  s.source_files = "ContactsKit/**/*.{h,m}"
+  s.public_header_files = "ContactsKit/Public/*.h"
 
 end
