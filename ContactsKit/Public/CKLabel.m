@@ -21,7 +21,11 @@
         if (label)
         {
             _originalLabel = (__bridge NSString *)label;
+#if TARGET_OS_IOS
             _localizedLabel = (__bridge_transfer NSString *)ABAddressBookCopyLocalizedLabel(label);
+#elif TARGET_OS_MAC
+            _localizedLabel = (__bridge_transfer NSString *)ABCopyLocalizedPropertyOrLabel(label);
+#endif
             CFRelease(label);
         }
     }
