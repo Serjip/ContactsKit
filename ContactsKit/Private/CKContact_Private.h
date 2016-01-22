@@ -15,6 +15,6 @@
 @property (nonatomic, assign, readonly) CKContactField fieldMask;
 
 - (instancetype)initWithRecordRef:(ABRecordRef)recordRef fieldMask:(CKContactField)fieldMask;
-- (void)mergeLinkedRecordRef:(ABRecordRef)recordRef fieldMask:(CKContactField)fieldMask;
+- (void)mergeLinkedRecordRef:(ABRecordRef)recordRef mergeMask:(CKContactField)mergeMask;
 
 @end

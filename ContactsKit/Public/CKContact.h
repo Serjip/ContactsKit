@@ -12,7 +12,7 @@
 
 @interface CKContact : NSObject <NSCopying, NSSecureCoding>
 
-@property (nonatomic, strong, readonly) NSNumber *recordID;
+@property (nonatomic, strong, readonly) NSString *identifier;
 @property (nonatomic, strong, readonly) NSString *firstName;
 @property (nonatomic, strong, readonly) NSString *middleName;
 @property (nonatomic, strong, readonly) NSString *lastName;
@@ -25,8 +25,8 @@
 @property (nonatomic, strong, readonly) NSData *imageData;
 @property (nonatomic, strong, readonly) NSData *thumbnailData;
 @property (nonatomic, strong, readonly) NSDate *birthday;
-@property (nonatomic, strong, readonly) NSDate *creationDate NS_DEPRECATED(10_6, 10_10, 6_0, 9_0);
-@property (nonatomic, strong, readonly) NSDate *modificationDate NS_DEPRECATED(10_6, 10_10, 6_0, 9_0);
+@property (nonatomic, strong, readonly) NSDate *creationDate;
+@property (nonatomic, strong, readonly) NSDate *modificationDate;
 @property (nonatomic, strong, readonly) NSArray<CKSocialProfile *> *socialProfiles;
 @property (nonatomic, strong, readonly) NSString *note;
 @property (nonatomic, strong, readonly) NSArray<CKURL *> *URLs;

@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookAccess)
 
 typedef NS_OPTIONS(NSUInteger , CKContactField)
 {
-    CKContactFieldRecordID         = 1 << 0,
+    CKContactFieldIdentifier       = 1 << 0,
     CKContactFieldFirstName        = 1 << 1,
     CKContactFieldLastName         = 1 << 2,
     CKContactFieldCompany          = 1 << 3,
@@ -35,7 +35,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldSocialProfiles   = 1 << 15,
     CKContactFieldNote             = 1 << 16,
     CKContactFieldURLs             = 1 << 17,
-    CKContactFieldDefault          = CKContactFieldRecordID | CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
+    CKContactFieldDefault          = CKContactFieldIdentifier | CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
     CKContactFieldAll              = NSUIntegerMax
 };
 

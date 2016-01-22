@@ -7,9 +7,7 @@
 //
 
 #import "CKContact_Private.h"
-
 #import "CKLabel_Private.h"
-
 #import "CKAddress_Private.h"
 #import "CKSocialProfile_Private.h"
 
@@ -28,7 +26,7 @@
     {
         _fieldMask = fieldMask;
         
-        if (fieldMask & CKContactFieldRecordID)
+        if (fieldMask & CKContactFieldIdentifier)
         {
             _recordID = [NSNumber numberWithInteger:ABRecordGetRecordID(recordRef)];
         }
@@ -62,7 +60,7 @@
         }
         if (fieldMask & CKContactFieldEmails)
         {
-            _emails = [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
+            _emails = [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonEmailProperty fromRecord:recordRef];
         }
         if (fieldMask & CKContactFieldImageData)
         {
@@ -119,9 +117,9 @@
     return self;
 }
 
-- (void)mergeLinkedRecordRef:(ABRecordRef)recordRef fieldMask:(CKContactField)fieldMask
+- (void)mergeLinkedRecordRef:(ABRecordRef)recordRef mergeMask:(CKContactField)mergeMask
 {
-    if (fieldMask & CKContactFieldFirstName)
+    if (mergeMask & CKContactFieldFirstName)
     {
         if (! self.firstName)
         {
@@ -129,7 +127,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldMiddleName)
+    if (mergeMask & CKContactFieldMiddleName)
     {
         if (! self.middleName)
         {
@@ -137,7 +135,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldLastName)
+    if (mergeMask & CKContactFieldLastName)
     {
         if (! self.lastName)
         {
@@ -145,7 +143,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldCompositeName)
+    if (mergeMask & CKContactFieldCompositeName)
     {
         if (! self.compositeName)
         {
@@ -153,7 +151,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldCompany)
+    if (mergeMask & CKContactFieldCompany)
     {
         if (! self.company ||! self.company.length)
         {
@@ -161,7 +159,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldJobTitle)
+    if (mergeMask & CKContactFieldJobTitle)
     {
         if (! self.jobTitle ||! self.jobTitle.length)
         {
@@ -169,7 +167,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldPhones)
+    if (mergeMask & CKContactFieldPhones)
     {
         NSMutableArray *phones = [NSMutableArray arrayWithArray:self.phones];
         NSArray *phonesToMerge = [self arrayObjectsOfClass:[CKPhone class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
@@ -186,7 +184,7 @@
         _phones = phones;
     }
     
-    if (fieldMask & CKContactFieldEmails)
+    if (mergeMask & CKContactFieldEmails)
     {
         NSMutableArray *emails = [NSMutableArray arrayWithArray:self.emails];
         NSArray *emailsToMerge =  [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonEmailProperty fromRecord:recordRef];
@@ -204,7 +202,7 @@
         _emails = emails;
     }
 
-    if (fieldMask & CKContactFieldImageData)
+    if (mergeMask & CKContactFieldImageData)
     {
         if (! self.imageData)
         {
@@ -212,7 +210,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldThumbnailData)
+    if (mergeMask & CKContactFieldThumbnailData)
     {
         if (! self.thumbnailData)
         {
@@ -220,7 +218,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldAddresses)
+    if (mergeMask & CKContactFieldAddresses)
     {
         NSMutableArray *addresses = [NSMutableArray arrayWithArray:self.addresses];
         NSArray *array = [self arrayProperty:kABPersonAddressProperty fromRecord:recordRef];
@@ -238,7 +236,7 @@
         _addresses = addresses;
     }
     
-    if (fieldMask & CKContactFieldBirthday)
+    if (mergeMask & CKContactFieldBirthday)
     {
         if (! self.birthday)
         {
@@ -246,7 +244,7 @@
         }
     }
 
-    if (fieldMask & CKContactFieldSocialProfiles)
+    if (mergeMask & CKContactFieldSocialProfiles)
     {
         NSMutableArray *profiles = [NSMutableArray arrayWithArray:self.socialProfiles];
         NSArray *array = [self arrayProperty:kABPersonSocialProfileProperty fromRecord:recordRef];
@@ -265,7 +263,7 @@
         _socialProfiles = profiles;
     }
 
-    if (fieldMask & CKContactFieldNote)
+    if (mergeMask & CKContactFieldNote)
     {
         if (! self.note || ! self.note.length)
         {
@@ -273,7 +271,7 @@
         }
     }
     
-    if (fieldMask & CKContactFieldURLs)
+    if (mergeMask & CKContactFieldURLs)
     {
         NSMutableArray *URLs = [NSMutableArray arrayWithArray:self.URLs];
         
@@ -299,7 +297,7 @@
     self = [super init];
     if (self)
     {
-        _recordID = [aDecoder decodeObjectOfClass:[NSNumber class] forKey:NSStringFromSelector(@selector(recordID))];
+        _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(identifier))];
         _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(firstName))];
         _middleName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(middleName))];
         _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(lastName))];
@@ -324,7 +322,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:_recordID forKey:NSStringFromSelector(@selector(recordID))];
+    [aCoder encodeObject:_identifier forKey:NSStringFromSelector(@selector(identifier))];
     [aCoder encodeObject:_firstName forKey:NSStringFromSelector(@selector(firstName))];
     [aCoder encodeObject:_middleName forKey:NSStringFromSelector(@selector(middleName))];
     [aCoder encodeObject:_lastName forKey:NSStringFromSelector(@selector(lastName))];
@@ -357,7 +355,7 @@
     CKContact *copy = [[[self class] alloc] init];
     if (copy)
     {
-        copy->_recordID = [self.recordID copyWithZone:zone];
+        copy->_identifier = [self.identifier copyWithZone:zone];
         copy->_firstName = [self.firstName copyWithZone:zone];
         copy->_middleName = [self.middleName copyWithZone:zone];
         copy->_lastName = [self.lastName copyWithZone:zone];
