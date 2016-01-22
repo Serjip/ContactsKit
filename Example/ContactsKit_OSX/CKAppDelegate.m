@@ -1,19 +1,19 @@
 //
-//  AppDelegate.m
+//  CKAppDelegate.m
 //  ContactsKit_OSX
 //
 //  Created by Sergey Popov on 22.01.16.
 //  Copyright © 2016 Sergey Popov. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "CKAppDelegate.h"
 #import <ContactsKit/ContactsKit.h>
 
-@interface AppDelegate () <CKAddressBookDelegate>
+@interface CKAppDelegate () <CKAddressBookDelegate>
 
 @end
 
-@implementation AppDelegate
+@implementation CKAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {

@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  CKAppDelegate.h
 //  ContactsKit_OSX
 //
 //  Created by Sergey Popov on 22.01.16.
@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface CKAppDelegate : NSObject <NSApplicationDelegate>
 
 
 @end

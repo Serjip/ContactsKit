@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A6318119385405BBB86AAC1 /* libPods-ContactsKit_OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DCE8F9F9C180DAC7F1BB56C /* libPods-ContactsKit_OSX.a */; };
-		523531AA1C522EFB00FB1E80 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531A91C522EFB00FB1E80 /* AppDelegate.m */; };
+		523531AA1C522EFB00FB1E80 /* CKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531A91C522EFB00FB1E80 /* CKAppDelegate.m */; };
 		523531AD1C522EFB00FB1E80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AC1C522EFB00FB1E80 /* main.m */; };
 		523531B01C522EFB00FB1E80 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AF1C522EFB00FB1E80 /* ViewController.m */; };
 		523531B21C522EFB00FB1E80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523531B11C522EFB00FB1E80 /* Assets.xcassets */; };
@@ -29,8 +29,8 @@
 		4724CC2686988794E829470F /* libPods-ContactsKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ContactsKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C05248B0E74A30EF4AF618 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		523531A61C522EFB00FB1E80 /* ContactsKit_OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsKit_OSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		523531A81C522EFB00FB1E80 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		523531A91C522EFB00FB1E80 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		523531A81C522EFB00FB1E80 /* CKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAppDelegate.h; sourceTree = "<group>"; };
+		523531A91C522EFB00FB1E80 /* CKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKAppDelegate.m; sourceTree = "<group>"; };
 		523531AC1C522EFB00FB1E80 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		523531AE1C522EFB00FB1E80 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		523531AF1C522EFB00FB1E80 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -80,8 +80,8 @@
 		523531A71C522EFB00FB1E80 /* ContactsKit_OSX */ = {
 			isa = PBXGroup;
 			children = (
-				523531A81C522EFB00FB1E80 /* AppDelegate.h */,
-				523531A91C522EFB00FB1E80 /* AppDelegate.m */,
+				523531A81C522EFB00FB1E80 /* CKAppDelegate.h */,
+				523531A91C522EFB00FB1E80 /* CKAppDelegate.m */,
 				523531AE1C522EFB00FB1E80 /* ViewController.h */,
 				523531AF1C522EFB00FB1E80 /* ViewController.m */,
 				523531B11C522EFB00FB1E80 /* Assets.xcassets */,
@@ -372,7 +372,7 @@
 			files = (
 				523531B01C522EFB00FB1E80 /* ViewController.m in Sources */,
 				523531AD1C522EFB00FB1E80 /* main.m in Sources */,
-				523531AA1C522EFB00FB1E80 /* AppDelegate.m in Sources */,
+				523531AA1C522EFB00FB1E80 /* CKAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
