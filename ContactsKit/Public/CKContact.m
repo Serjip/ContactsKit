@@ -415,6 +415,13 @@
     return copy;
 }
 
+#pragma mark - NSObject
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%p %@ %@", self, self.firstName, self.lastName];
+}
+
 #pragma mark - Private
 
 - (NSString *)stringProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
