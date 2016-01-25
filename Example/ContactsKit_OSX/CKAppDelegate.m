@@ -19,7 +19,7 @@
 {
     CKAddressBook *addressbook = [[CKAddressBook alloc] init];
     addressbook.fieldsMask = CKContactFieldAll;
-    addressbook.mergeFieldsMask = CKContactFieldAll;
+    addressbook.mergeMask = CKContactFieldAll;
     addressbook.delegate = self;
     
     [addressbook loadContacts];

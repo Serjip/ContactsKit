@@ -49,6 +49,7 @@
 		523531DB1C52325A00FB1E80 /* CKTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKTableViewCell.h; sourceTree = "<group>"; };
 		523531DC1C52325A00FB1E80 /* CKTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKTableViewCell.m; sourceTree = "<group>"; };
 		523531DD1C52325A00FB1E80 /* CKTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKTableViewCell.xib; sourceTree = "<group>"; };
+		529BDAE81C56566300BA46D8 /* ContactsKit_OSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ContactsKit_OSX.entitlements; sourceTree = "<group>"; };
 		7DCE8F9F9C180DAC7F1BB56C /* libPods-ContactsKit_OSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ContactsKit_OSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AB411C1EB15CFCBDD440B72 /* Pods-ContactsKit_OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_OSX/Pods-ContactsKit_OSX.debug.xcconfig"; sourceTree = "<group>"; };
 		D51CBB1D2DEBBDCEF67EE854 /* libPods-ContactsKit_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ContactsKit_iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +96,7 @@
 		523531AB1C522EFB00FB1E80 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				529BDAE81C56566300BA46D8 /* ContactsKit_OSX.entitlements */,
 				523531AC1C522EFB00FB1E80 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -225,6 +227,11 @@
 				TargetAttributes = {
 					523531A51C522EFB00FB1E80 = {
 						CreatedOnToolsVersion = 7.2;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					523531BD1C52315100FB1E80 = {
 						CreatedOnToolsVersion = 7.2;
@@ -414,6 +421,7 @@
 			baseConfigurationReference = 8AB411C1EB15CFCBDD440B72 /* Pods-ContactsKit_OSX.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ContactsKit_OSX/ContactsKit_OSX.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ContactsKit_OSX/Info.plist;
@@ -430,6 +438,7 @@
 			baseConfigurationReference = FA5377AFEF8187CC0D472FC5 /* Pods-ContactsKit_OSX.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ContactsKit_OSX/ContactsKit_OSX.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ContactsKit_OSX/Info.plist;

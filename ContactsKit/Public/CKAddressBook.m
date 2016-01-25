@@ -12,7 +12,11 @@
 
 @implementation CKAddressBook {
 @private
+#if TARGET_OS_IOS
     ABAddressBookRef _addressBookRef;
+#elif TARGET_OS_MAC
+    ABAddressBook *_addressBook;
+#endif
     dispatch_queue_t _addressBookQueue;
 }
 
@@ -34,7 +38,7 @@
 #if TARGET_OS_IOS
         _addressBookRef = ABAddressBookCreateWithOptions(NULL, &errorRef);
 #elif TARGET_OS_MAC
-        _addressBookRef = (__bridge  ABAddressBookRef)[ABAddressBook addressBook];
+        _addressBook = [ABAddressBook addressBook];
 #endif
         if (errorRef)
         {
@@ -54,10 +58,14 @@
 - (void)dealloc
 {
     [self stopObserveChanges];
+    
+#if TARGET_OS_IOS
     if (_addressBookRef)
     {
         CFRelease(_addressBookRef);
     }
+#endif
+    
 #if !OS_OBJECT_USE_OBJC
     dispatch_release(_addressBookQueue);
 #endif
@@ -166,29 +174,16 @@
     // Gettings the array of people
 #if TARGET_OS_IOS
     CFArrayRef peopleArrayRef = ABAddressBookCopyArrayOfAllPeople(_addressBookRef);
-#elif TARGET_OS_MAC
-    CFArrayRef peopleArrayRef = ABCopyArrayOfAllPeople(_addressBookRef);
-#endif
     CFIndex contactCount = CFArrayGetCount(peopleArrayRef);
     NSMutableArray *contacts = [[NSMutableArray alloc] initWithCapacity:(NSUInteger)contactCount];
     NSMutableSet *linkedContactsIDs = [NSMutableSet set];
-    
+
     for (CFIndex i = 0; i < contactCount; i++)
     {
-#if TARGET_OS_IOS
-        ABRecordRef recordRef = CFArrayGetValueAtIndex(peopleArrayRef, i);
-#elif TARGET_OS_MAC
-        ABPersonRef recordRef = (ABPersonRef)CFArrayGetValueAtIndex(peopleArrayRef, i);
-#endif
+        ABRecordRef recordRef = (ABRecordRef)CFArrayGetValueAtIndex(peopleArrayRef, i);
         
         // Checking already added contacts
-        id linkedID;
-#if TARGET_OS_IOS
-        linkedID = @(ABRecordGetRecordID(recordRef));
-#elif TARGET_OS_MAC
-        linkedID = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
-#endif
-        if ([linkedContactsIDs containsObject:linkedID])
+        if ([linkedContactsIDs containsObject:@(ABRecordGetRecordID(recordRef))])
         {
             continue;
         }
@@ -201,43 +196,69 @@
         {
             [contacts addObject:contact];
         }
-        
-#if TARGET_OS_IOS
+
         CFArrayRef linkedPeopleArrayRef = ABPersonCopyArrayOfAllLinkedPeople(recordRef);
         CFIndex linkedCount = CFArrayGetCount(linkedPeopleArrayRef);
-        if (linkedCount > 1)
+        // Merge linked contact info
+        for (CFIndex j = 0; linkedCount > 1 && j < linkedCount; j++)
         {
-            // Merge linked contact info
-            for (CFIndex j = 0; j < linkedCount; j++)
+            ABRecordRef linkedRecordRef = (ABRecordRef)CFArrayGetValueAtIndex(linkedPeopleArrayRef, j);
+            // Don't merge the same contact
+            if (linkedRecordRef == recordRef)
             {
-                ABRecordRef linkedRecordRef = (ABRecordRef)CFArrayGetValueAtIndex(linkedPeopleArrayRef, j);
-                
+                continue;
+            }
+            
+            if (mergeMask)
+            {
+                [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+                [linkedContactsIDs addObject:@(ABRecordGetRecordID(recordRef))];
+            }
+        }
+        CFRelease(linkedPeopleArrayRef);
+    }
+    CFRelease(peopleArrayRef);
+#elif TARGET_OS_MAC
+    NSMutableArray *contacts = [[NSMutableArray alloc] init];
+    NSMutableSet *linkedContactsIDs = [NSMutableSet set];
+    for (ABPerson *record in [_addressBook people])
+    {
+        // Checking already added contacts
+        if ([linkedContactsIDs containsObject:record.uniqueId])
+        {
+            continue;
+        }
+        
+        ABRecordRef recordRef = (__bridge ABRecordRef)(record);
+        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+        
+        // Filter the contact if needed
+        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldAddContact:)] || [self.delegate addressBook:self shouldAddContact:contact])
+        {
+            [contacts addObject:contact];
+        }
+        
+        NSArray *linkedPeople = [record linkedPeople];
+        if (linkedPeople.count > 0)
+        {
+            for (ABPerson *linkedRecord in linkedPeople)
+            {
                 // Don't merge the same contact
-                if (linkedRecordRef == recordRef)
+                if ([linkedRecord isEqual:record])
                 {
                     continue;
                 }
                 
                 if (mergeMask)
                 {
+                    ABRecordRef linkedRecordRef = (__bridge ABRecordRef)(linkedRecord);
                     [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
-                    [linkedContactsIDs addObject:@(ABRecordGetRecordID(recordRef))];
+                    [linkedContactsIDs addObject:linkedRecord.uniqueId];
                 }
             }
         }
-        CFRelease(linkedPeopleArrayRef);
-#elif TARGET_OS_MAC
-        
-        NSMutableArray *array = [NSMutableArray array];
-        for (ABPerson *person in [(__bridge ABPerson *)recordRef linkedPeople])
-        {
-//            NSLog(@"%@", person);
-            [array addObject:person];
-        }
-#endif
     }
-    CFRelease(peopleArrayRef);
-    
+#endif
     // Sort
     [contacts sortUsingDescriptors:descriptors];
     
