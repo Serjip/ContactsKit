@@ -17,24 +17,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    CKAddressBook *addressbook = [[CKAddressBook alloc] init];
-    addressbook.fieldsMask = CKContactFieldAll;
-    addressbook.mergeMask = CKContactFieldAll;
-    addressbook.delegate = self;
-    
-    [addressbook loadContacts];
+    // Insert code here
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
     // Insert code here to tear down your application
-}
-
-#pragma mark - CKAddressBookDelegate
-
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts
-{
-    NSLog(@"%@", contacts);
 }
 
 @end

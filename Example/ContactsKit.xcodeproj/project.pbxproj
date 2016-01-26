@@ -10,7 +10,7 @@
 		3A6318119385405BBB86AAC1 /* libPods-ContactsKit_OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DCE8F9F9C180DAC7F1BB56C /* libPods-ContactsKit_OSX.a */; };
 		523531AA1C522EFB00FB1E80 /* CKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531A91C522EFB00FB1E80 /* CKAppDelegate.m */; };
 		523531AD1C522EFB00FB1E80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AC1C522EFB00FB1E80 /* main.m */; };
-		523531B01C522EFB00FB1E80 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AF1C522EFB00FB1E80 /* ViewController.m */; };
+		523531B01C522EFB00FB1E80 /* CKContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AF1C522EFB00FB1E80 /* CKContactsViewController.m */; };
 		523531B21C522EFB00FB1E80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523531B11C522EFB00FB1E80 /* Assets.xcassets */; };
 		523531B51C522EFB00FB1E80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 523531B31C522EFB00FB1E80 /* Main.storyboard */; };
 		523531C21C52315100FB1E80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531C11C52315100FB1E80 /* main.m */; };
@@ -32,8 +32,8 @@
 		523531A81C522EFB00FB1E80 /* CKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAppDelegate.h; sourceTree = "<group>"; };
 		523531A91C522EFB00FB1E80 /* CKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKAppDelegate.m; sourceTree = "<group>"; };
 		523531AC1C522EFB00FB1E80 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		523531AE1C522EFB00FB1E80 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		523531AF1C522EFB00FB1E80 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		523531AE1C522EFB00FB1E80 /* CKContactsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKContactsViewController.h; sourceTree = "<group>"; };
+		523531AF1C522EFB00FB1E80 /* CKContactsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKContactsViewController.m; sourceTree = "<group>"; };
 		523531B11C522EFB00FB1E80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		523531B41C522EFB00FB1E80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		523531B61C522EFB00FB1E80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -83,8 +83,8 @@
 			children = (
 				523531A81C522EFB00FB1E80 /* CKAppDelegate.h */,
 				523531A91C522EFB00FB1E80 /* CKAppDelegate.m */,
-				523531AE1C522EFB00FB1E80 /* ViewController.h */,
-				523531AF1C522EFB00FB1E80 /* ViewController.m */,
+				523531AE1C522EFB00FB1E80 /* CKContactsViewController.h */,
+				523531AF1C522EFB00FB1E80 /* CKContactsViewController.m */,
 				523531B11C522EFB00FB1E80 /* Assets.xcassets */,
 				523531B31C522EFB00FB1E80 /* Main.storyboard */,
 				523531B61C522EFB00FB1E80 /* Info.plist */,
@@ -377,7 +377,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				523531B01C522EFB00FB1E80 /* ViewController.m in Sources */,
+				523531B01C522EFB00FB1E80 /* CKContactsViewController.m in Sources */,
 				523531AD1C522EFB00FB1E80 /* main.m in Sources */,
 				523531AA1C522EFB00FB1E80 /* CKAppDelegate.m in Sources */,
 			);
