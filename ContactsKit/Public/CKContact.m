@@ -470,12 +470,9 @@
 - (NSArray *)arrayObjectsOfClass:(Class)class ofProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
 {
     NSMutableArray *objects = [NSMutableArray array];
-    [self enumerateMultiValueOfProperty:kABPersonPhoneProperty fromRecord:recordRef withBlock:^(ABMultiValueRef multiValue, CFIndex index) {
+    [self enumerateMultiValueOfProperty:property fromRecord:recordRef withBlock:^(ABMultiValueRef multiValue, CFIndex index) {
         id obj = [[class alloc] initWithMultiValue:multiValue index:index];
-        if (obj)
-        {
-            [objects addObject:obj];
-        }
+        [objects addObject:obj];
     }];
     return [NSArray arrayWithArray:objects];
 }
