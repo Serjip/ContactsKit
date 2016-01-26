@@ -24,7 +24,32 @@
 
 - (CKAddressBookAccess)access
 {
-    return [CKAddressBook access];
+#if TARGET_OS_IOS
+    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
+    switch (status)
+    {
+        case kABAuthorizationStatusDenied:
+        case kABAuthorizationStatusRestricted:
+            return CKAddressBookAccessDenied;
+            
+        case kABAuthorizationStatusAuthorized:
+            return CKAddressBookAccessGranted;
+            
+        default:
+            return CKAddressBookAccessUnknown;
+    }
+#elif TARGET_OS_MAC
+
+    if (_addressBook)
+    {
+        return CKAddressBookAccessGranted;
+    }
+    else
+    {
+        return CKAddressBookAccessDenied;
+    }
+    
+#endif
 }
 
 #pragma mark - Lifecycle
@@ -72,28 +97,6 @@
 }
 
 #pragma mark - Public
-
-+ (CKAddressBookAccess)access
-{    
-#if TARGET_OS_IOS
-    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
-    switch (status)
-    {
-        case kABAuthorizationStatusDenied:
-        case kABAuthorizationStatusRestricted:
-            return CKAddressBookAccessDenied;
-            
-        case kABAuthorizationStatusAuthorized:
-            return CKAddressBookAccessGranted;
-            
-        default:
-            return CKAddressBookAccessUnknown;
-    }
-#elif TARGET_OS_MAC
-    return 0;
-#warning Access status
-#endif
-}
 
 - (void)loadContacts
 {
