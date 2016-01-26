@@ -50,14 +50,11 @@
     {
         _fieldMask = fieldMask;
         
-        if (fieldMask & CKContactFieldIdentifier)
-        {
 #if TARGET_OS_IOS
-            _identifier = [NSString stringWithFormat:@"%d",(int)ABRecordGetRecordID(recordRef)];
+        _identifier = [NSString stringWithFormat:@"%d",(int)ABRecordGetRecordID(recordRef)];
 #elif TARGET_OS_MAC
-            _identifier = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
+        _identifier = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
 #endif
-        }
         
         if (fieldMask & CKContactFieldFirstName)
         {
