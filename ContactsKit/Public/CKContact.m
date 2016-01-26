@@ -35,6 +35,8 @@
 #define kABPersonNoteProperty               (__bridge CFStringRef)kABNoteProperty
 #define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
 
+#define ABMultiValueGetCount    ABMultiValueCount
+
 #endif
 
 @implementation CKContact
@@ -51,7 +53,6 @@
         if (fieldMask & CKContactFieldIdentifier)
         {
 #if TARGET_OS_IOS
-#warning Chagne the ID typ
             _identifier = [NSString stringWithFormat:@"%d",(int)ABRecordGetRecordID(recordRef)];
 #elif TARGET_OS_MAC
             _identifier = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
@@ -139,7 +140,6 @@
                 CKSocialProfile *profile = [[CKSocialProfile alloc] initWithSocialDictionary:dictionary];
                 [profiles addObject:profile];
             }
-            
             _socialProfiles = profiles;
         }
         
@@ -441,11 +441,7 @@
     ABMultiValueRef multiValue = ABRecordCopyValue(recordRef, property);
     if (multiValue)
     {
-#if TARGET_OS_IOS
         CFIndex count = ABMultiValueGetCount(multiValue);
-#elif TARGET_OS_MAC
-        CFIndex count = ABMultiValueCount(multiValue);
-#endif
         for (CFIndex i = 0; i < count; i++)
         {
             block(multiValue, i);
