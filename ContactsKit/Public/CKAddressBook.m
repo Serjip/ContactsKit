@@ -39,7 +39,6 @@
             return CKAddressBookAccessUnknown;
     }
 #elif TARGET_OS_MAC
-
     if (_addressBook)
     {
         return CKAddressBookAccessGranted;
@@ -48,7 +47,6 @@
     {
         return CKAddressBookAccessDenied;
     }
-    
 #endif
 }
 
@@ -104,46 +102,48 @@
     CKContactField mergeMask = self.mergeMask;
     NSArray *descriptors = [self.sortDescriptors copy];
     
-//#if TARGET_OS_IOS
-//    ABAddressBookRequestAccessWithCompletion(_addressBookRef, ^(bool granted, CFErrorRef errorRef) {
-//        dispatch_async(_addressBookQueue, ^{
-//            NSArray *array = nil;
-//            NSError *error = nil;
-//            
-//            if (granted)
-//            {
-//                
-//            }
-//            else if (errorRef)
-//            {
-//                error = (__bridge NSError *)errorRef;
-//            }
-//            
-//            if (error)
-//            {
-//                if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoadContacts:)])
-//                {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        [self.delegate addressBook:self didFailLoadContacts:error];
-//                    });
-//                }
-//            }
-//            else
-//            {
-//                if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
-//                {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        [self.delegate addressBook:self didLoadContacts:array];
-//                    });
-//                }
-//            }
-//        });
-//    });
-//#endif
-    
-    
-    NSArray *array = [self ck_loadContactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors];
-    [self.delegate addressBook:self didLoadContacts:array];
+#if TARGET_OS_IOS
+    ABAddressBookRequestAccessWithCompletion(_addressBookRef, ^(bool granted, CFErrorRef errorRef) {
+        NSError *error = (__bridge NSError *)(errorRef);
+#elif TARGET_OS_MAC
+        BOOL granted = YES;
+        NSError *error = nil;
+        
+        if (! _addressBook)
+        {
+            granted = NO;
+        }
+#endif
+        dispatch_async(_addressBookQueue, ^{
+            NSArray *array = nil;
+            
+            if (granted)
+            {
+                array = [self ck_loadContactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors];
+            }
+            
+            if (error)
+            {
+                if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoadContacts:)])
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.delegate addressBook:self didFailLoadContacts:error];
+                    });
+                }
+            }
+            else
+            {
+                if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.delegate addressBook:self didLoadContacts:array];
+                    });
+                }
+            }
+        });
+#if TARGET_OS_IOS
+    });
+#endif
 }
 
 - (void)startObserveChanges
