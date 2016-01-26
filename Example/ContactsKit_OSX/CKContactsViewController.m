@@ -42,7 +42,6 @@
 {
     CKContact *contact = [_contacts objectAtIndex:row];
     
-    
     if ([tableColumn.identifier isEqualToString:@"firstname"])
     {
         return contact.firstName;
