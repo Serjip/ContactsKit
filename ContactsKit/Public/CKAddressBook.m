@@ -290,16 +290,23 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
 
 - (void)notificaitonDataBaseChanged:(NSNotification *)aNotification
 {
-    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
-    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
-    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
+//    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
+//    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
+//    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
+#warning Future using
 }
 
 - (void)notificaitonDatabaseChangedExternally:(NSNotification *)aNotification
 {
-    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
-    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
-    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
+//    Future using
+//    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
+//    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
+//    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
+    
+    if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
+    {
+        [self.delegate addressBookDidChnage:self];
+    }
 }
 
 #endif

@@ -16,7 +16,7 @@
 @end
 
 @implementation CKContactsViewController {
-    CKAddressBook *_addressBook;
+    CKAddressBook *_book;
     NSArray *_contacts;
 }
 
@@ -24,11 +24,13 @@
 {
     [super viewDidLoad];
     
-    _addressBook = [[CKAddressBook alloc] init];
-    _addressBook.fieldsMask = CKContactFieldAll;
-    _addressBook.mergeMask = CKContactFieldAll;
-    _addressBook.delegate = self;
-    [_addressBook loadContacts];
+    _book = [[CKAddressBook alloc] init];
+    _book.fieldsMask = CKContactFieldAll;
+    _book.mergeMask = CKContactFieldAll;
+    _book.delegate = self;
+    [_book startObserveChanges];
+    
+    [_book loadContacts];
 }
 
 #pragma mark - NSTableViewDataSource
@@ -66,6 +68,11 @@
 
 #pragma mark - NSTableViewDelegate
 
+- (void)addressBookDidChnage:(CKAddressBook *)addressBook
+{
+    [_book loadContacts];
+}
+
 #pragma mark - CKAddressBookDelegate
 
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts
@@ -78,7 +85,7 @@
 
 - (IBAction)actionRefresh:(NSButton *)sender
 {
-    [_addressBook loadContacts];
+    [_book loadContacts];
 }
 
 @end
