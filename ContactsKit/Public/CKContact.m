@@ -57,51 +57,52 @@
             _identifier = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
 #endif
         }
+        
         if (fieldMask & CKContactFieldFirstName)
         {
             _firstName = [self stringProperty:kABPersonFirstNameProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldMiddleName)
         {
             _middleName = [self stringProperty:kABPersonMiddleNameProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldLastName)
         {
             _lastName = [self stringProperty:kABPersonLastNameProperty fromRecord:recordRef];
         }
-        if (fieldMask & CKContactFieldCompositeName)
-        {
-#if TARGET_OS_IOS
-            _compositeName = (__bridge_transfer NSString *)ABRecordCopyCompositeName(recordRef);
-#elif TARGET_OS_MAC
-#warning Compositename
-            _compositeName = @"";
-#endif
-        }
+        
         if (fieldMask & CKContactFieldCompany)
         {
             _company = [self stringProperty:kABPersonOrganizationProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldJobTitle)
         {
             _jobTitle = [self stringProperty:kABPersonJobTitleProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldPhones)
         {
             _phones = [self arrayObjectsOfClass:[CKPhone class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldEmails)
         {
             _emails = [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonEmailProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldImageData)
         {
             _imageData = [self imageDataWithFullSize:YES fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldThumbnailData)
         {
             _thumbnailData = [self imageDataWithFullSize:NO fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldAddresses)
         {
             NSMutableArray *addresses = [[NSMutableArray alloc] init];
@@ -113,18 +114,22 @@
             }
             _addresses = addresses;
         }
+        
         if (fieldMask & CKContactFieldBirthday)
         {
             _birthday = [self dateProperty:kABPersonBirthdayProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldCreationDate)
         {
             _creationDate = [self dateProperty:kABPersonCreationDateProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldModificationDate)
         {
             _modificationDate = [self dateProperty:kABPersonModificationDateProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldSocialProfiles)
         {
             NSMutableArray *profiles = [[NSMutableArray alloc] init];
@@ -137,10 +142,12 @@
             
             _socialProfiles = profiles;
         }
+        
         if (fieldMask & CKContactFieldNote)
         {
             _note = [self stringProperty:kABPersonNoteProperty fromRecord:recordRef];
         }
+        
         if (fieldMask & CKContactFieldURLs)
         {
             _URLs = [self arrayObjectsOfClass:[CKURL class] ofProperty:kABPersonURLProperty fromRecord:recordRef];
@@ -172,19 +179,6 @@
         if (! self.lastName)
         {
             _lastName = [self stringProperty:kABPersonLastNameProperty fromRecord:recordRef];
-        }
-    }
-    
-    if (mergeMask & CKContactFieldCompositeName)
-    {
-        if (! self.compositeName)
-        {
-#if TARGET_OS_IOS
-            _compositeName = (__bridge_transfer NSString *)ABRecordCopyCompositeName(recordRef);
-#elif TARGET_OS_MAC
-#warning Compositename
-            _compositeName = @"";
-#endif
         }
     }
     
@@ -338,7 +332,6 @@
         _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(firstName))];
         _middleName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(middleName))];
         _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(lastName))];
-        _compositeName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(compositeName))];
         _company = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(company))];
         _jobTitle = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(jobTitle))];
         _phones = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(phones))];
@@ -363,7 +356,6 @@
     [aCoder encodeObject:_firstName forKey:NSStringFromSelector(@selector(firstName))];
     [aCoder encodeObject:_middleName forKey:NSStringFromSelector(@selector(middleName))];
     [aCoder encodeObject:_lastName forKey:NSStringFromSelector(@selector(lastName))];
-    [aCoder encodeObject:_compositeName forKey:NSStringFromSelector(@selector(compositeName))];
     [aCoder encodeObject:_company forKey:NSStringFromSelector(@selector(company))];
     [aCoder encodeObject:_jobTitle forKey:NSStringFromSelector(@selector(jobTitle))];
     [aCoder encodeObject:_phones forKey:NSStringFromSelector(@selector(phones))];
@@ -396,7 +388,6 @@
         copy->_firstName = [self.firstName copyWithZone:zone];
         copy->_middleName = [self.middleName copyWithZone:zone];
         copy->_lastName = [self.lastName copyWithZone:zone];
-        copy->_compositeName = [self.compositeName copyWithZone:zone];
         copy->_company = [self.company copyWithZone:zone];
         copy->_jobTitle = [self.jobTitle copyWithZone:zone];
         copy->_phones = [self.phones copyWithZone:zone];

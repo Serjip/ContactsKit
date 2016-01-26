@@ -16,7 +16,6 @@
 @property (nonatomic, strong, readonly) NSString *firstName;
 @property (nonatomic, strong, readonly) NSString *middleName;
 @property (nonatomic, strong, readonly) NSString *lastName;
-@property (nonatomic, strong, readonly) NSString *compositeName;
 @property (nonatomic, strong, readonly) NSString *company;
 @property (nonatomic, strong, readonly) NSString *jobTitle;
 @property (nonatomic, strong, readonly) NSArray<CKPhone *> *phones;
