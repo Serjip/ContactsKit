@@ -290,10 +290,10 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
 
 - (void)notificaitonDataBaseChanged:(NSNotification *)aNotification
 {
+//    Future using
 //    NSArray *insertedRecords = [aNotification.userInfo objectForKey:kABInsertedRecords];
 //    NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
 //    NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
-#warning Future using
 }
 
 - (void)notificaitonDatabaseChangedExternally:(NSNotification *)aNotification
