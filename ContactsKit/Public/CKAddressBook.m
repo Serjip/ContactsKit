@@ -106,12 +106,14 @@
         callback(granted, error);
     });
 #endif
+    
+#warning Support osx
 }
 
 - (void)loadContacts
 {
     CKContactField fieldMask = self.fieldsMask;
-    CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
+    CKContactField mergeMask = self.unifyLinkedContacts ? fieldMask : 0;
     NSArray *descriptors = [self.sortDescriptors copy];
     
     NSError *error = nil;
@@ -129,10 +131,16 @@
     });
 }
 
+- (void)loadContactsWithCompletion:(void (^)(NSArray<CKContact *> *))callback
+{
+    NSParameterAssert(callback);
+#warning Empty method
+}
+
 - (void)loadContactWithIdentifier:(NSString *)identifier
 {
     CKContactField fieldMask = self.fieldsMask;
-    CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
+    CKContactField mergeMask = self.unifyLinkedContacts ? fieldMask : 0;
     
     dispatch_async(_addressBookQueue, ^{
         
@@ -147,6 +155,13 @@
             });
         }
     });
+}
+
+- (void)loadContactWithIdentifier:(NSString *)identifier completion:(void (^)(CKContact *))callback
+{
+    NSParameterAssert(identifier);
+    NSParameterAssert(callback);
+#warning Empty method
 }
 
 - (void)startObserveChanges

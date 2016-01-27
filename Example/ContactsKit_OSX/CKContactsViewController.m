@@ -26,7 +26,7 @@
     
     _book = [[CKAddressBook alloc] init];
     _book.fieldsMask = CKContactFieldAll;
-    _book.unifyResults = YES;
+    _book.unifyLinkedContacts = YES;
     _book.delegate = self;
     [_book startObserveChanges];
     

@@ -44,13 +44,18 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @property (nonatomic, readonly) CKAddressBookAccess access;
 @property (nonatomic, assign) CKContactField fieldsMask;
-@property (nonatomic, assign) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
+@property (nonatomic, assign) BOOL unifyLinkedContacts NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 
 - (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback;
+
 - (void)loadContacts;
+- (void)loadContactsWithCompletion:(void (^) (NSArray<CKContact *> *contacts))callback;
+
 - (void)loadContactWithIdentifier:(NSString *)identifier;
+- (void)loadContactWithIdentifier:(NSString *)identifier completion:(void (^) (CKContact *contact))callback;
+
 - (void)startObserveChanges;
 - (void)stopObserveChanges;
 
