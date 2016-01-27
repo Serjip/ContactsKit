@@ -48,6 +48,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 
+- (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback;
 - (void)loadContacts;
 - (void)loadContactWithIdentifier:(NSString *)identifier;
 - (void)startObserveChanges;

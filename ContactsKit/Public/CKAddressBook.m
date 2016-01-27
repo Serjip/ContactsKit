@@ -96,43 +96,37 @@
 
 #pragma mark - Public
 
+- (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback
+{
+    NSParameterAssert(callback);
+
+#if TARGET_OS_IOS
+    ABAddressBookRequestAccessWithCompletion(_addressBookRef, ^(bool granted, CFErrorRef errorRef) {
+        NSError *error = (__bridge_transfer NSError *)(errorRef);
+        callback(granted, error);
+    });
+#endif
+}
+
 - (void)loadContacts
 {
     CKContactField fieldMask = self.fieldsMask;
     CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
     NSArray *descriptors = [self.sortDescriptors copy];
     
-#if TARGET_OS_IOS
-    ABAddressBookRequestAccessWithCompletion(_addressBookRef, ^(bool granted, CFErrorRef errorRef) {
-        NSError *error = (__bridge NSError *)(errorRef);
-#elif TARGET_OS_MAC
-        BOOL granted = YES;
-        NSError *error = nil;
+    NSError *error = nil;
+    
+    dispatch_async(_addressBookQueue, ^{
         
-        if (! _addressBook)
+        NSArray *contacts = [self ck_contactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors];
+        
+        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:orError:)])
         {
-            granted = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate addressBook:self didLoadContacts:contacts orError:error];
+            });
         }
-#endif
-        dispatch_async(_addressBookQueue, ^{
-            NSArray *array = nil;
-            
-            if (granted)
-            {
-                array = [self ck_contactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors];
-            }
-            
-            if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:orError:)])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate addressBook:self didLoadContacts:array orError:error];
-                });
-            }
-            
-        });
-#if TARGET_OS_IOS
     });
-#endif
 }
 
 - (void)loadContactWithIdentifier:(NSString *)identifier
