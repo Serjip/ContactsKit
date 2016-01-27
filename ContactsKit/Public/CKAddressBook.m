@@ -245,7 +245,7 @@
         CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
         
         // Filter the contact if needed
-        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldAddContact:)] || [self.delegate addressBook:self shouldAddContact:contact])
+        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldLoadContact:)] || [self.delegate addressBook:self shouldLoadContact:contact])
         {
             [contacts addObject:contact];
         }
