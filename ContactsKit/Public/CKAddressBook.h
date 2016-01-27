@@ -59,9 +59,8 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @optional
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook;
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
-- (void)addressBook:(CKAddressBook *)addressBook didFailLoadContacts:(NSError *)error;
-- (BOOL)addressBook:(CKAddressBook *)addressBook shouldAddContact:(CKContact *)contact;
+- (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact;
+- (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact orError:(NSError *)error;
+- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts orError:(NSError *)error;
 
 @end

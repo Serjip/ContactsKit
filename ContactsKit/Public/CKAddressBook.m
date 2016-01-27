@@ -122,24 +122,13 @@
                 array = [self ck_contactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors];
             }
             
-            if (error)
+            if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:orError:)])
             {
-                if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoadContacts:)])
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate addressBook:self didFailLoadContacts:error];
-                    });
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate addressBook:self didLoadContacts:array orError:error];
+                });
             }
-            else
-            {
-                if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate addressBook:self didLoadContacts:array];
-                    });
-                }
-            }
+            
         });
 #if TARGET_OS_IOS
     });
@@ -153,12 +142,14 @@
     
     dispatch_async(_addressBookQueue, ^{
         
+        NSError *error = nil;
+#warning Error maker
         CKContact *contact = [self ck_contactWithIdentifier:identifier fieldMask:fieldMask mergeMask:mergeMask];
         
-        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:)])
+        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:orError:)])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate addressBook:self didLoadContact:contact];
+                [self.delegate addressBook:self didLoadContact:contact orError:error];
             });
         }
     });
@@ -213,7 +204,7 @@
         CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
         
         // Filter the contact if needed
-        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldAddContact:)] || [self.delegate addressBook:self shouldAddContact:contact])
+        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldLoadContact:)] || [self.delegate addressBook:self shouldLoadContact:contact])
         {
             [contacts addObject:contact];
         }
