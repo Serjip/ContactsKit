@@ -17,22 +17,22 @@ typedef NS_ENUM(NSUInteger, CKAddressBookAccess)
 
 typedef NS_OPTIONS(NSUInteger , CKContactField)
 {
-    CKContactFieldFirstName        = 1 << 0,
-    CKContactFieldLastName         = 1 << 1,
-    CKContactFieldCompany          = 1 << 2,
-    CKContactFieldJobTitle         = 1 << 3,
-    CKContactFieldPhones           = 1 << 4,
-    CKContactFieldEmails           = 1 << 5,
-    CKContactFieldImageData        = 1 << 6,
-    CKContactFieldThumbnailData    = 1 << 7,
-    CKContactFieldAddresses        = 1 << 8,
-    CKContactFieldBirthday         = 1 << 9,
-    CKContactFieldCreationDate     = 1 << 10,
-    CKContactFieldModificationDate = 1 << 11,
-    CKContactFieldMiddleName       = 1 << 12,
-    CKContactFieldSocialProfiles   = 1 << 13,
-    CKContactFieldNote             = 1 << 14,
-    CKContactFieldURLs             = 1 << 15,
+    CKContactFieldFirstName        = 1 << 1,
+    CKContactFieldLastName         = 1 << 2,
+    CKContactFieldCompany          = 1 << 3,
+    CKContactFieldJobTitle         = 1 << 4,
+    CKContactFieldPhones           = 1 << 5,
+    CKContactFieldEmails           = 1 << 6,
+    CKContactFieldImageData        = 1 << 7,
+    CKContactFieldThumbnailData    = 1 << 8,
+    CKContactFieldAddresses        = 1 << 9,
+    CKContactFieldBirthday         = 1 << 10,
+    CKContactFieldCreationDate     = 1 << 11,
+    CKContactFieldModificationDate = 1 << 12,
+    CKContactFieldMiddleName       = 1 << 13,
+    CKContactFieldSocialProfiles   = 1 << 14,
+    CKContactFieldNote             = 1 << 15,
+    CKContactFieldURLs             = 1 << 16,
     CKContactFieldDefault          = CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
     CKContactFieldAll              = NSUIntegerMax
 };
@@ -44,7 +44,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @property (nonatomic, readonly) CKAddressBookAccess access;
 @property (nonatomic, assign) CKContactField fieldsMask;
-@property (nonatomic, assign) CKContactField mergeMask;
+@property (nonatomic, assign) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 

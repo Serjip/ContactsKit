@@ -99,7 +99,7 @@
 - (void)loadContacts
 {
     CKContactField fieldMask = self.fieldsMask;
-    CKContactField mergeMask = self.mergeMask;
+    CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
     NSArray *descriptors = [self.sortDescriptors copy];
     
 #if TARGET_OS_IOS
