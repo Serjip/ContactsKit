@@ -403,6 +403,30 @@
     return copy;
 }
 
+#pragma mark - Equality
+
+- (BOOL)isEqualToContact:(CKContact *)contact
+{
+    if (! [self.identifier isEqualToString:contact.identifier])
+    {
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (self == object)
+    {
+        return YES;
+    }
+    if (! [object isKindOfClass:[CKContact class]])
+    {
+        return NO;
+    }
+    return [self isEqualToContact:object];
+}
+
 #pragma mark - NSObject
 
 - (NSString *)description
