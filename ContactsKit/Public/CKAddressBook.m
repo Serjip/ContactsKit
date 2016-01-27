@@ -241,8 +241,14 @@
             [contacts addObject:contact];
         }
         
-        NSArray *linkedPeople = [record linkedPeople];
-        if (linkedPeople.count > 0)
+        // Check the method by selector response, because it's only for OSX 10.8
+        NSArray *linkedPeople;
+        if ([record respondsToSelector:@selector(linkedPeople)])
+        {
+           linkedPeople = [record linkedPeople];
+        }
+        
+        if (linkedPeople.count > 1)
         {
             for (ABPerson *linkedRecord in linkedPeople)
             {
