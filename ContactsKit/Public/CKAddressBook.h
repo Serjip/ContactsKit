@@ -49,6 +49,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 
 - (void)loadContacts;
+- (void)loadContactWithIdentifier:(NSString *)identifier;
 - (void)startObserveChanges;
 - (void)stopObserveChanges;
 
@@ -58,6 +59,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @optional
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook;
+- (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
 - (void)addressBook:(CKAddressBook *)addressBook didFailLoadContacts:(NSError *)error;
 - (BOOL)addressBook:(CKAddressBook *)addressBook shouldAddContact:(CKContact *)contact;
