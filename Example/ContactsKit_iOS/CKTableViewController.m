@@ -95,7 +95,7 @@
     [self.tableView reloadData];
 }
 
-- (BOOL)addressBook:(CKAddressBook *)addressBook shouldAddContact:(CKContact *)contact
+- (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact
 {
     return contact.phones.count > 0;
 }
