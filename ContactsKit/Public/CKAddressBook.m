@@ -10,6 +10,8 @@
 #import "CKContact_Private.h"
 #import <AddressBook/AddressBook.h>
 
+NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNotification";
+
 @implementation CKAddressBook {
 @private
 #if TARGET_OS_IOS
@@ -393,6 +395,8 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
     {
         [addressBook.delegate addressBookDidChnage:addressBook];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:addressBook userInfo:nil];
 }
 
 #elif TARGET_OS_MAC
@@ -418,6 +422,8 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
     {
         [self.delegate addressBookDidChnage:self];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:nil];
 }
 
 #endif

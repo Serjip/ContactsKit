@@ -73,3 +73,5 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
 
 @end
+
+extern NSString *const CKAddressBookDidChangeNotification;
