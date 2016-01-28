@@ -41,7 +41,23 @@
     [super viewDidLoad];
     [self.tableView registerNib:[CKTableViewCell nib] forCellReuseIdentifier:[CKTableViewCell cellReuseIdentifier]];
 
-    [_book loadContacts];
+    [_book requestAccessWithCompletion:^(BOOL granted, NSError *error) {
+        
+        if (granted)
+        {
+            [_book loadContacts];
+        }
+        else
+        {
+            UIAlertView *alert = [[UIAlertView alloc] init];
+            alert.title = @"Access denied";
+            alert.message = @"Settings > Security and Privacy > Application Permissions > Allow contacts";
+            [alert addButtonWithTitle:@"OK"];
+            [alert show];
+        }
+        
+    }];
+    
     
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(actionRefreshContacts:)];
     self.navigationItem.leftBarButtonItem = item;
