@@ -59,18 +59,11 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     self = [super init];
     if (self)
     {
-        CFErrorRef errorRef = NULL;
 #if TARGET_OS_IOS
-        _addressBookRef = ABAddressBookCreateWithOptions(NULL, &errorRef);
+        _addressBookRef = ABAddressBookCreate();
 #elif TARGET_OS_MAC
         _addressBook = [ABAddressBook addressBook];
-#endif
-        if (errorRef)
-        {
-#warning Cannot create address book error;
-            NSLog(@"%@", (__bridge_transfer NSString *)CFErrorCopyFailureReason(errorRef));
-        }
-        
+#endif   
         // Set addressbook queue
         NSString *queueName = [NSString stringWithFormat:@"com.ttitt.contactskit.queue.%d", arc4random()];
         _addressBookQueue = dispatch_queue_create(queueName.UTF8String, DISPATCH_QUEUE_SERIAL);
