@@ -325,56 +325,62 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 {
     NSParameterAssert(identifier);
     
+    CKContact *contact = nil;
+    
 #if TARGET_OS_IOS
     ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)identifier.integerValue);
-#warning Check record existing
-    CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
-    
-    CFArrayRef linkedPeopleArrayRef = ABPersonCopyArrayOfAllLinkedPeople(recordRef);
-    CFIndex linkedCount = CFArrayGetCount(linkedPeopleArrayRef);
-    // Merge linked contact info
-    for (CFIndex j = 0; linkedCount > 1 && j < linkedCount; j++)
+    if (recordRef != NULL)
     {
-        ABRecordRef linkedRecordRef = (ABRecordRef)CFArrayGetValueAtIndex(linkedPeopleArrayRef, j);
-        // Don't merge the same contact
-        if (linkedRecordRef == recordRef)
-        {
-            continue;
-        }
+        contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
         
-        if (mergeMask)
+        CFArrayRef linkedPeopleArrayRef = ABPersonCopyArrayOfAllLinkedPeople(recordRef);
+        CFIndex linkedCount = CFArrayGetCount(linkedPeopleArrayRef);
+        // Merge linked contact info
+        for (CFIndex j = 0; linkedCount > 1 && j < linkedCount; j++)
         {
-            [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
-        }
-    }
-    CFRelease(linkedPeopleArrayRef);
-#elif TARGET_OS_MAC
-    ABRecord *record = [_addressBook recordForUniqueId:identifier];
-#warning Check the existing
-    ABRecordRef recordRef = (__bridge ABRecordRef)(record);
-    CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
-    
-    // Check the method by selector response, because it's only for OSX 10.8
-    NSArray *linkedPeople;
-    if ([record respondsToSelector:@selector(linkedPeople)])
-    {
-        linkedPeople = [(ABPerson *)record linkedPeople];
-    }
-    
-    if (linkedPeople.count > 1)
-    {
-        for (ABPerson *linkedRecord in linkedPeople)
-        {
+            ABRecordRef linkedRecordRef = (ABRecordRef)CFArrayGetValueAtIndex(linkedPeopleArrayRef, j);
             // Don't merge the same contact
-            if ([linkedRecord isEqual:record])
+            if (linkedRecordRef == recordRef)
             {
                 continue;
             }
             
             if (mergeMask)
             {
-                ABRecordRef linkedRecordRef = (__bridge ABRecordRef)(linkedRecord);
                 [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+            }
+        }
+        CFRelease(linkedPeopleArrayRef);
+    }
+#elif TARGET_OS_MAC
+    ABRecord *record = [_addressBook recordForUniqueId:identifier];
+    if (record)
+    {
+        ABRecordRef recordRef = (__bridge ABRecordRef)(record);
+        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+        
+        // Check the method by selector response, because it's only for OSX 10.8
+        NSArray *linkedPeople;
+        if ([record respondsToSelector:@selector(linkedPeople)])
+        {
+            linkedPeople = [(ABPerson *)record linkedPeople];
+        }
+        
+        if (linkedPeople.count > 1)
+        {
+            for (ABPerson *linkedRecord in linkedPeople)
+            {
+                // Don't merge the same contact
+                if ([linkedRecord isEqual:record])
+                {
+                    continue;
+                }
+                
+                if (mergeMask)
+                {
+                    ABRecordRef linkedRecordRef = (__bridge ABRecordRef)(linkedRecord);
+                    [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+                }
             }
         }
     }
