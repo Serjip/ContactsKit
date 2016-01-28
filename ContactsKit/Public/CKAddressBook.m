@@ -141,8 +141,8 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     });
 }
 
-- (void)loadContactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
-                      filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback
+- (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
+                  filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback
 {
     NSParameterAssert(callback);
     
@@ -157,7 +157,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     });
 }
 
-- (void)loadContactWithIdentifier:(NSString *)identifier
+- (void)contactWithIdentifier:(NSString *)identifier
 {
     CKContactField fieldMask = self.fieldsMask;
     CKContactField mergeMask = self.unifyLinkedContacts ? fieldMask : 0;
@@ -175,7 +175,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     });
 }
 
-- (void)loadContactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify completion:(void (^) (CKContact *contact))callback
+- (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify completion:(void (^) (CKContact *contact))callback
 {
     NSParameterAssert(identifier);
     NSParameterAssert(callback);

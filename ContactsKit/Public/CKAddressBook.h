@@ -52,12 +52,12 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 - (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback;
 
 - (void)loadContacts;
-- (void)loadContactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
-                      filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback;
+- (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
+                  filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback;
 
-- (void)loadContactWithIdentifier:(NSString *)identifier;
-- (void)loadContactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
-                       completion:(void (^) (CKContact *contact))callback;
+- (void)contactWithIdentifier:(NSString *)identifier;
+- (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
+                   completion:(void (^) (CKContact *contact))callback;
 
 - (void)startObserveChanges;
 - (void)stopObserveChanges;
