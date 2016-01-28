@@ -89,11 +89,6 @@
 
 #pragma mark - CKAddressBookDelegate
 
-- (void)addressBook:(CKAddressBook *)addressBook didFailLoadContacts:(NSError *)error
-{
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Dismiss", nil) otherButtonTitles:nil] show];
-}
-
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts
 {
     _contacts = contacts;
