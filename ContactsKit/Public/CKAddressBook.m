@@ -67,8 +67,8 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 #endif
         if (errorRef)
         {
+#warning Cannot create address book error;
             NSLog(@"%@", (__bridge_transfer NSString *)CFErrorCopyFailureReason(errorRef));
-            return nil;
         }
         
         // Set addressbook queue
@@ -106,7 +106,9 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 #if TARGET_OS_IOS
     ABAddressBookRequestAccessWithCompletion(_addressBookRef, ^(bool granted, CFErrorRef errorRef) {
         NSError *error = (__bridge_transfer NSError *)(errorRef);
-        callback(granted, error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(granted, error);
+        });
     });
 #elif TARGET_OS_MAC
 
