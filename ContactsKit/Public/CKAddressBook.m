@@ -72,7 +72,8 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         }
         
         // Set addressbook queue
-        _addressBookQueue = dispatch_queue_create("com.ttitt.contactskit.queue", DISPATCH_QUEUE_SERIAL);
+        NSString *queueName = [NSString stringWithFormat:@"com.ttitt.contactskit.queue.%d", arc4random()];
+        _addressBookQueue = dispatch_queue_create(queueName.UTF8String, DISPATCH_QUEUE_SERIAL);
         
         // Set default field masks
         _fieldsMask = CKContactFieldDefault;
