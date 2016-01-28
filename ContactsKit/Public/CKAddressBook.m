@@ -105,9 +105,11 @@
         NSError *error = (__bridge_transfer NSError *)(errorRef);
         callback(granted, error);
     });
-#endif
-    
+#elif TARGET_OS_MAC
+
 #warning Support osx
+
+#endif
 }
 
 - (void)loadContacts
@@ -116,25 +118,41 @@
     CKContactField mergeMask = self.unifyLinkedContacts ? fieldMask : 0;
     NSArray *descriptors = [self.sortDescriptors copy];
     
-    NSError *error = nil;
-    
     dispatch_async(_addressBookQueue, ^{
         
-        NSArray *contacts = [self ck_contactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors];
+        id filter = nil;
+        if ([self.delegate respondsToSelector:@selector(addressBook:shouldLoadContact:)])
+        {
+            filter = ^BOOL(CKContact *contact) {
+                return [self.delegate addressBook:self shouldLoadContact:contact];
+            };
+        }
         
-        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:orError:)])
+        NSArray *contacts = [self ck_contactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors filter:filter];
+        
+        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate addressBook:self didLoadContacts:contacts orError:error];
+                [self.delegate addressBook:self didLoadContacts:contacts];
             });
         }
     });
 }
 
-- (void)loadContactsWithCompletion:(void (^)(NSArray<CKContact *> *))callback
+- (void)loadContactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
+                      filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback
 {
     NSParameterAssert(callback);
-#warning Empty method
+    
+    dispatch_async(_addressBookQueue, ^{
+       
+        CKContactField mergeMask = unify ? mask : 0;
+        NSArray *contacts = [self ck_contactsWithFieldMask:mask mergeMask:mergeMask sortDescriptors:descriptors filter:filter];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(contacts);
+        });
+    });
 }
 
 - (void)loadContactWithIdentifier:(NSString *)identifier
@@ -144,24 +162,32 @@
     
     dispatch_async(_addressBookQueue, ^{
         
-        NSError *error = nil;
-#warning Error maker
         CKContact *contact = [self ck_contactWithIdentifier:identifier fieldMask:fieldMask mergeMask:mergeMask];
         
-        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:orError:)])
+        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:)])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate addressBook:self didLoadContact:contact orError:error];
+                [self.delegate addressBook:self didLoadContact:contact];
             });
         }
     });
 }
 
-- (void)loadContactWithIdentifier:(NSString *)identifier completion:(void (^)(CKContact *))callback
+- (void)loadContactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify completion:(void (^) (CKContact *contact))callback
 {
     NSParameterAssert(identifier);
     NSParameterAssert(callback);
-#warning Empty method
+
+    dispatch_async(_addressBookQueue, ^{
+        
+        CKContactField mergeMask = unify ? mask : 0;
+        
+        CKContact *contact = [self ck_contactWithIdentifier:identifier fieldMask:mask mergeMask:mergeMask];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(contact);
+        });
+    });
 }
 
 - (void)startObserveChanges
@@ -190,7 +216,7 @@
 
 #pragma mark - Private
 
-- (NSArray *)ck_contactsWithFieldMask:(CKContactField)fieldMask mergeMask:(CKContactField)mergeMask sortDescriptors:(NSArray *)descriptors
+- (NSArray *)ck_contactsWithFieldMask:(CKContactField)fieldMask mergeMask:(CKContactField)mergeMask sortDescriptors:(NSArray *)descriptors filter:(BOOL (^) (CKContact *contact))filter
 {
     // Gettings the array of people
 #if TARGET_OS_IOS
@@ -213,7 +239,7 @@
         CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
         
         // Filter the contact if needed
-        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldLoadContact:)] || [self.delegate addressBook:self shouldLoadContact:contact])
+        if (! filter || filter(contact))
         {
             [contacts addObject:contact];
         }
@@ -254,7 +280,7 @@
         CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
         
         // Filter the contact if needed
-        if (! [self.delegate respondsToSelector:@selector(addressBook:shouldLoadContact:)] || [self.delegate addressBook:self shouldLoadContact:contact])
+        if (! filter || filter(contact))
         {
             [contacts addObject:contact];
         }

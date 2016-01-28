@@ -43,18 +43,21 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @interface CKAddressBook : NSObject
 
 @property (nonatomic, readonly) CKAddressBookAccess access;
+@property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
+
 @property (nonatomic, assign) CKContactField fieldsMask;
 @property (nonatomic, assign) BOOL unifyLinkedContacts NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
-@property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 
 - (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback;
 
 - (void)loadContacts;
-- (void)loadContactsWithCompletion:(void (^) (NSArray<CKContact *> *contacts))callback;
+- (void)loadContactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
+                      filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback;
 
 - (void)loadContactWithIdentifier:(NSString *)identifier;
-- (void)loadContactWithIdentifier:(NSString *)identifier completion:(void (^) (CKContact *contact))callback;
+- (void)loadContactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
+                       completion:(void (^) (CKContact *contact))callback;
 
 - (void)startObserveChanges;
 - (void)stopObserveChanges;
@@ -66,7 +69,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @optional
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook;
 - (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact;
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact orError:(NSError *)error;
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts orError:(NSError *)error;
+- (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
+- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
 
 @end
