@@ -53,11 +53,11 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 - (void)loadContacts;
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
-                  filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback;
+                  filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback;
 
 - (void)contactWithIdentifier:(NSString *)identifier;
 - (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
-                   completion:(void (^) (CKContact *contact))callback;
+                   completion:(void (^) (CKContact *contact, NSError *error))callback;
 
 - (void)startObserveChanges;
 - (void)stopObserveChanges;
@@ -71,6 +71,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 - (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
+- (void)addressBook:(CKAddressBook *)addressBook didFailLoad:(NSError *)error;
 
 @end
 

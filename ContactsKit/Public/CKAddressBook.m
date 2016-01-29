@@ -160,29 +160,43 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
             };
         }
         
-        NSArray *contacts = [self ck_contactsWithFieldMask:fieldMask mergeMask:mergeMask sortDescriptors:descriptors filter:filter];
+        NSError *error = nil;
+        NSArray *contacts = [self ck_contactsWithFields:fieldMask merge:mergeMask sortDescriptors:descriptors filter:filter error:&error];
         
-        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
+        if (! error)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate addressBook:self didLoadContacts:contacts];
-            });
+            if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate addressBook:self didLoadContacts:contacts];
+                });
+            }
+        }
+        else
+        {
+            if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoad:)])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate addressBook:self didFailLoad:error];
+                });
+            }
         }
     });
 }
 
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
-                  filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts))callback
+                  filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback
 {
     NSParameterAssert(callback);
     
     dispatch_async(_addressBookQueue, ^{
        
         CKContactField mergeMask = unify ? mask : 0;
-        NSArray *contacts = [self ck_contactsWithFieldMask:mask mergeMask:mergeMask sortDescriptors:descriptors filter:filter];
+        NSError *error = nil;
+        NSArray *contacts = [self ck_contactsWithFields:mask merge:mergeMask sortDescriptors:descriptors filter:filter error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            callback(contacts);
+            callback(contacts, error);
         });
     });
 }
@@ -194,18 +208,31 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     
     dispatch_async(_addressBookQueue, ^{
         
-        CKContact *contact = [self ck_contactWithIdentifier:identifier fieldMask:fieldMask mergeMask:mergeMask];
+        NSError *error = nil;
+        CKContact *contact = [self ck_contactWithIdentifier:identifier fields:fieldMask merge:mergeMask error:&error];
         
-        if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:)])
+        if (! error)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate addressBook:self didLoadContact:contact];
-            });
+            if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:)])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate addressBook:self didLoadContact:contact];
+                });
+            }
+        }
+        else
+        {
+            if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoad:)])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate addressBook:self didFailLoad:error];
+                });
+            }
         }
     });
 }
 
-- (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify completion:(void (^) (CKContact *contact))callback
+- (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify completion:(void (^) (CKContact *contact, NSError *error))callback
 {
     NSParameterAssert(identifier);
     NSParameterAssert(callback);
@@ -214,10 +241,11 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         
         CKContactField mergeMask = unify ? mask : 0;
         
-        CKContact *contact = [self ck_contactWithIdentifier:identifier fieldMask:mask mergeMask:mergeMask];
+        NSError *error = nil;
+        CKContact *contact = [self ck_contactWithIdentifier:identifier fields:mask merge:mergeMask error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            callback(contact);
+            callback(contact, error);
         });
     });
 }
@@ -230,8 +258,8 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     ABAddressBookRegisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
 #elif TARGET_OS_MAC
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(notificaitonDataBaseChanged:) name:kABDatabaseChangedNotification object:nil];
-    [nc addObserver:self selector:@selector(notificaitonDatabaseChangedExternally:) name:kABDatabaseChangedExternallyNotification object:nil];
+    [nc addObserver:self selector:@selector(notificaitonDataBaseChanged:) name:kABDatabaseChangedNotification object:_addressBook];
+    [nc addObserver:self selector:@selector(notificaitonDatabaseChangedExternally:) name:kABDatabaseChangedExternallyNotification object:_addressBook];
 #endif
 }
 
@@ -241,17 +269,28 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     ABAddressBookUnregisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
 #elif TARGET_OS_MAC
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:kABDatabaseChangedNotification object:nil];
-    [nc removeObserver:self name:kABDatabaseChangedExternallyNotification object:nil];
+    [nc removeObserver:self name:kABDatabaseChangedNotification object:_addressBook];
+    [nc removeObserver:self name:kABDatabaseChangedExternallyNotification object:_addressBook];
 #endif
 }
 
 #pragma mark - Private
 
-- (NSArray *)ck_contactsWithFieldMask:(CKContactField)fieldMask mergeMask:(CKContactField)mergeMask sortDescriptors:(NSArray *)descriptors filter:(BOOL (^) (CKContact *contact))filter
+- (NSArray *)ck_contactsWithFields:(CKContactField)fields merge:(CKContactField)merge sortDescriptors:(NSArray *)descriptors
+                            filter:(BOOL (^) (CKContact *contact))filter error:(NSError **)error
 {
     // Gettings the array of people
 #if TARGET_OS_IOS
+    if (! _addressBookRef)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return nil;
+    }
+    
     CFArrayRef peopleArrayRef = ABAddressBookCopyArrayOfAllPeople(_addressBookRef);
     CFIndex contactCount = CFArrayGetCount(peopleArrayRef);
     NSMutableArray *contacts = [[NSMutableArray alloc] initWithCapacity:(NSUInteger)contactCount];
@@ -268,7 +307,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         }
         
         // Create the contact
-        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fields];
         
         // Filter the contact if needed
         if (! filter || filter(contact))
@@ -288,9 +327,9 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
                 continue;
             }
             
-            if (mergeMask)
+            if (merge)
             {
-                [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+                [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:merge];
                 [linkedContactsIDs addObject:@(ABRecordGetRecordID(recordRef))];
             }
         }
@@ -298,6 +337,17 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     }
     CFRelease(peopleArrayRef);
 #elif TARGET_OS_MAC
+    
+    if (! _addressBook)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return nil;
+    }
+    
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
     NSMutableSet *linkedContactsIDs = [NSMutableSet set];
     for (ABPerson *record in [_addressBook people])
@@ -309,7 +359,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         }
         
         ABRecordRef recordRef = (__bridge ABRecordRef)(record);
-        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fields];
         
         // Filter the contact if needed
         if (! filter || filter(contact))
@@ -334,10 +384,10 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
                     continue;
                 }
                 
-                if (mergeMask)
+                if (merge)
                 {
                     ABRecordRef linkedRecordRef = (__bridge ABRecordRef)(linkedRecord);
-                    [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+                    [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:merge];
                     [linkedContactsIDs addObject:linkedRecord.uniqueId];
                 }
             }
@@ -351,17 +401,28 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     return [[NSArray alloc] initWithArray:contacts];
 }
 
-- (CKContact *)ck_contactWithIdentifier:(NSString *)identifier fieldMask:(CKContactField)fieldMask mergeMask:(CKContactField)mergeMask
+- (CKContact *)ck_contactWithIdentifier:(NSString *)identifier fields:(CKContactField)fields merge:(CKContactField)merge error:(NSError **)error
 {
     NSParameterAssert(identifier);
     
     CKContact *contact = nil;
     
 #if TARGET_OS_IOS
+    
+    if (! _addressBookRef)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return nil;
+    }
+    
     ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)identifier.integerValue);
     if (recordRef != NULL)
     {
-        contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+        contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fields];
         
         CFArrayRef linkedPeopleArrayRef = ABPersonCopyArrayOfAllLinkedPeople(recordRef);
         CFIndex linkedCount = CFArrayGetCount(linkedPeopleArrayRef);
@@ -375,19 +436,30 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
                 continue;
             }
             
-            if (mergeMask)
+            if (merge)
             {
-                [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+                [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:merge];
             }
         }
         CFRelease(linkedPeopleArrayRef);
     }
 #elif TARGET_OS_MAC
+    
+    if (! _addressBook)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return nil;
+    }
+    
     ABRecord *record = [_addressBook recordForUniqueId:identifier];
     if (record)
     {
         ABRecordRef recordRef = (__bridge ABRecordRef)(record);
-        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fieldMask];
+        CKContact *contact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fields];
         
         // Check the method by selector response, because it's only for OSX 10.8
         NSArray *linkedPeople;
@@ -406,10 +478,10 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
                     continue;
                 }
                 
-                if (mergeMask)
+                if (merge)
                 {
                     ABRecordRef linkedRecordRef = (__bridge ABRecordRef)(linkedRecord);
-                    [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:mergeMask];
+                    [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:merge];
                 }
             }
         }
