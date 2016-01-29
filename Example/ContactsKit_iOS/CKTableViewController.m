@@ -41,9 +41,9 @@
     [super viewDidLoad];
     [self.tableView registerNib:[CKTableViewCell nib] forCellReuseIdentifier:[CKTableViewCell cellReuseIdentifier]];
 
-    [_book requestAccessWithCompletion:^(BOOL granted, NSError *error) {
+    [_book requestAccessWithCompletion:^(NSError *error) {
         
-        if (granted)
+        if (! error)
         {
             [_book loadContacts];
         }

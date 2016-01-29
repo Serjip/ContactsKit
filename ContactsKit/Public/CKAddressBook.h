@@ -49,7 +49,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @property (nonatomic, assign) BOOL unifyLinkedContacts NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 
-- (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback;
+- (void)requestAccessWithCompletion:(void (^)(NSError *error))callback;
 
 - (void)loadContacts;
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
@@ -74,4 +74,5 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @end
 
+extern NSString *const CKAddressBookErrorDomain;
 extern NSString *const CKAddressBookDidChangeNotification;

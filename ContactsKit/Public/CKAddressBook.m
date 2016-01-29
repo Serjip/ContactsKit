@@ -10,6 +10,7 @@
 #import "CKContact_Private.h"
 #import <AddressBook/AddressBook.h>
 
+NSString *const CKAddressBookErrorDomain = @"CKAddressBookErrorDomain";
 NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNotification";
 
 @implementation CKAddressBook {
@@ -17,6 +18,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 #if TARGET_OS_IOS
     ABAddressBookRef _addressBookRef;
 #elif TARGET_OS_MAC
+    BOOL _accessIsNotRequested;
     ABAddressBook *_addressBook;
 #endif
     dispatch_queue_t _addressBookQueue;
@@ -41,7 +43,11 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
             return CKAddressBookAccessUnknown;
     }
 #elif TARGET_OS_MAC
-    if (_addressBook)
+    if (_accessIsNotRequested)
+    {
+        return CKAddressBookAccessUnknown;
+    }
+    else if (_addressBook)
     {
         return CKAddressBookAccessGranted;
     }
@@ -62,8 +68,8 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 #if TARGET_OS_IOS
         _addressBookRef = ABAddressBookCreate();
 #elif TARGET_OS_MAC
-        _addressBook = [ABAddressBook addressBook];
-#endif   
+        _accessIsNotRequested = YES;
+#endif
         // Set addressbook queue
         NSString *queueName = [NSString stringWithFormat:@"com.ttitt.contactskit.queue.%d", arc4random()];
         _addressBookQueue = dispatch_queue_create(queueName.UTF8String, DISPATCH_QUEUE_SERIAL);
@@ -92,21 +98,49 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 
 #pragma mark - Public
 
-- (void)requestAccessWithCompletion:(void (^)(BOOL granted, NSError *error))callback
+- (void)requestAccessWithCompletion:(void (^)(NSError *error))callback
 {
     NSParameterAssert(callback);
 
+    [self willChangeValueForKey:NSStringFromSelector(@selector(access))];
+
 #if TARGET_OS_IOS
     ABAddressBookRequestAccessWithCompletion(_addressBookRef, ^(bool granted, CFErrorRef errorRef) {
-        NSError *error = (__bridge_transfer NSError *)(errorRef);
+        
+        NSError *error = nil;
+        if (! granted || errorRef)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            callback(granted, error);
+            [self didChangeValueForKey:NSStringFromSelector(@selector(access))];
+            callback(error);
         });
     });
 #elif TARGET_OS_MAC
-
-#warning Support osx
-
+    dispatch_async(_addressBookQueue, ^{
+        
+        _accessIsNotRequested = NO;
+        
+        if (! _addressBook)
+        {
+            _addressBook = [ABAddressBook addressBook];
+        }
+        
+        NSError *error = nil;
+        if (! _addressBook)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self didChangeValueForKey:NSStringFromSelector(@selector(access))];
+            callback(error);
+        });
+    });
 #endif
 }
 
