@@ -30,7 +30,14 @@
     _book.delegate = self;
     [_book startObserveChanges];
     
-    [_book loadContacts];
+    [_book requestAccessWithCompletion:^(NSError *error) {
+        
+        if (! error)
+        {
+            [_book loadContacts];
+        }
+        
+    }];
 }
 
 #pragma mark - NSTableViewDataSource
