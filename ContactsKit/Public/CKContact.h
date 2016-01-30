@@ -10,7 +10,7 @@
 
 @class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail;
 
-@interface CKContact : NSObject <NSCopying, NSSecureCoding>
+@interface CKContact : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 
 @property (nonatomic, strong, readonly) NSString *identifier;
 
@@ -37,5 +37,31 @@
 @property (nonatomic, strong, readonly) NSDate *birthday;
 @property (nonatomic, strong, readonly) NSDate *creationDate;
 @property (nonatomic, strong, readonly) NSDate *modificationDate;
+
+@end
+
+
+@interface CKMutableContact : CKContact
+
+@property (nonatomic, strong) NSString *firstName;
+@property (nonatomic, strong) NSString *middleName;
+@property (nonatomic, strong) NSString *lastName;
+@property (nonatomic, strong) NSString *nickname;
+
+@property (nonatomic, strong) NSString *company;
+@property (nonatomic, strong) NSString *jobTitle;
+@property (nonatomic, strong) NSString *department;
+
+@property (nonatomic, strong) NSString *note;
+
+@property (nonatomic, strong) NSData *imageData;
+
+@property (nonatomic, strong) NSArray<CKPhone *> *phones;
+@property (nonatomic, strong) NSArray<CKEmail *> *emails;
+@property (nonatomic, strong) NSArray<CKAddress *> *addresses;
+@property (nonatomic, strong) NSArray<CKSocialProfile *> *socialProfiles;
+@property (nonatomic, strong) NSArray<CKURL *> *URLs;
+
+@property (nonatomic, strong) NSDate *birthday;
 
 @end

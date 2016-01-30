@@ -18,3 +18,12 @@
 - (void)mergeLinkedRecordRef:(ABRecordRef)recordRef mergeMask:(CKContactField)mergeMask;
 
 @end
+
+@interface CKMutableContact ()
+
+@property (nonatomic, strong) NSString *identifier;
+@property (nonatomic, strong) NSData *thumbnailData;
+@property (nonatomic, strong) NSDate *creationDate;
+@property (nonatomic, strong) NSDate *modificationDate;
+
+@end

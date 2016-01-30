@@ -374,6 +374,76 @@
     }
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CKContact *copy = [[[self class] alloc] init];
+    if (copy)
+    {
+        copy->_identifier = [self.identifier copyWithZone:zone];
+        copy->_firstName = [self.firstName copyWithZone:zone];
+        copy->_middleName = [self.middleName copyWithZone:zone];
+        copy->_lastName = [self.lastName copyWithZone:zone];
+        copy->_nickname = [self.nickname copyWithZone:zone];
+        
+        copy->_company = [self.company copyWithZone:zone];
+        copy->_jobTitle = [self.jobTitle copyWithZone:zone];
+        copy->_department = [self.department copyWithZone:zone];
+        
+        copy->_note = [self.note copyWithZone:zone];
+        
+        copy->_imageData = [self.imageData copyWithZone:zone];
+        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
+        
+        copy->_phones = [self.phones copyWithZone:zone];
+        copy->_emails = [self.emails copyWithZone:zone];
+        copy->_addresses = [self.addresses copyWithZone:zone];
+        copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
+        copy->_URLs = [self.URLs copyWithZone:zone];
+        
+        copy->_birthday = [self.birthday copyWithZone:zone];
+        copy->_creationDate = [self.creationDate copyWithZone:zone];
+        copy->_modificationDate = [self.modificationDate copyWithZone:zone];
+    }
+    return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(nullable NSZone *)zone
+{
+    CKMutableContact *mutableCopy = [[CKMutableContact alloc] init];
+    if (mutableCopy)
+    {
+        mutableCopy.identifier = [self.identifier copyWithZone:zone];
+        mutableCopy.firstName = [self.firstName copyWithZone:zone];
+        mutableCopy.middleName = [self.middleName copyWithZone:zone];
+        mutableCopy.lastName = [self.lastName copyWithZone:zone];
+        mutableCopy.nickname = [self.nickname copyWithZone:zone];
+        
+        mutableCopy.company = [self.company copyWithZone:zone];
+        mutableCopy.jobTitle = [self.jobTitle copyWithZone:zone];
+        mutableCopy.department = [self.department copyWithZone:zone];
+        
+        mutableCopy.note = [self.note copyWithZone:zone];
+        
+        mutableCopy.imageData = [self.imageData copyWithZone:zone];
+        mutableCopy.thumbnailData = [self.thumbnailData copyWithZone:zone];
+        
+        mutableCopy.phones = [self.phones copyWithZone:zone];
+        mutableCopy.emails = [self.emails copyWithZone:zone];
+        mutableCopy.addresses = [self.addresses copyWithZone:zone];
+        mutableCopy.socialProfiles = [self.socialProfiles copyWithZone:zone];
+        mutableCopy.URLs = [self.URLs copyWithZone:zone];
+        
+        mutableCopy.birthday = [self.birthday copyWithZone:zone];
+        mutableCopy.creationDate = [self.creationDate copyWithZone:zone];
+        mutableCopy.modificationDate = [self.modificationDate copyWithZone:zone];
+    }
+    return mutableCopy;
+}
+
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -440,41 +510,6 @@
 + (BOOL)supportsSecureCoding
 {
     return YES;
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    CKContact *copy = [[[self class] alloc] init];
-    if (copy)
-    {
-        copy->_identifier = [self.identifier copyWithZone:zone];
-        copy->_firstName = [self.firstName copyWithZone:zone];
-        copy->_middleName = [self.middleName copyWithZone:zone];
-        copy->_lastName = [self.lastName copyWithZone:zone];
-        copy->_nickname = [self.nickname copyWithZone:zone];
-        
-        copy->_company = [self.company copyWithZone:zone];
-        copy->_jobTitle = [self.jobTitle copyWithZone:zone];
-        copy->_department = [self.department copyWithZone:zone];
-        
-        copy->_note = [self.note copyWithZone:zone];
-        
-        copy->_imageData = [self.imageData copyWithZone:zone];
-        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
-        
-        copy->_phones = [self.phones copyWithZone:zone];
-        copy->_emails = [self.emails copyWithZone:zone];
-        copy->_addresses = [self.addresses copyWithZone:zone];
-        copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
-        copy->_URLs = [self.URLs copyWithZone:zone];
-    
-        copy->_birthday = [self.birthday copyWithZone:zone];
-        copy->_creationDate = [self.creationDate copyWithZone:zone];
-        copy->_modificationDate = [self.modificationDate copyWithZone:zone];
-    }
-    return copy;
 }
 
 #pragma mark - Equality
@@ -567,5 +602,15 @@
     }];
     return [NSArray arrayWithArray:objects];
 }
+
+@end
+
+@implementation CKMutableContact
+
+@synthesize identifier, firstName, lastName, middleName, nickname;
+@synthesize company, jobTitle, department;
+@synthesize note, imageData, thumbnailData;
+@synthesize phones, emails, addresses, socialProfiles, URLs;
+@synthesize birthday, creationDate, modificationDate;
 
 @end

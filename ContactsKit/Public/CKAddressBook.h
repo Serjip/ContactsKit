@@ -41,6 +41,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     
     CKContactFieldCreationDate     = 1 << 17,
     CKContactFieldModificationDate = 1 << 18,
+    
     CKContactFieldDefault          = CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
     CKContactFieldAll              = NSUIntegerMax
 };
