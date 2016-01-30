@@ -1,4 +1,4 @@
-ContactsKit it is an easy access to contacts for version prior iOS 6.0+ and OSX 10.7+.
+ContactsKit it is an easy access to contacts for iOS 6.0+ and OSX 10.7+.
 
 ## Installation with CocoaPods
 
