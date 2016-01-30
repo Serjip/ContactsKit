@@ -19,20 +19,28 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 {
     CKContactFieldFirstName        = 1 << 1,
     CKContactFieldLastName         = 1 << 2,
-    CKContactFieldCompany          = 1 << 3,
-    CKContactFieldJobTitle         = 1 << 4,
-    CKContactFieldPhones           = 1 << 5,
-    CKContactFieldEmails           = 1 << 6,
-    CKContactFieldImageData        = 1 << 7,
-    CKContactFieldThumbnailData    = 1 << 8,
-    CKContactFieldAddresses        = 1 << 9,
-    CKContactFieldBirthday         = 1 << 10,
-    CKContactFieldCreationDate     = 1 << 11,
-    CKContactFieldModificationDate = 1 << 12,
-    CKContactFieldMiddleName       = 1 << 13,
+    CKContactFieldMiddleName       = 1 << 3,
+    CKContactFieldNickname         = 1 << 4,
+
+    CKContactFieldCompany          = 1 << 5,
+    CKContactFieldJobTitle         = 1 << 6,
+    CKContactFieldDepartment       = 1 << 7,
+    
+    CKContactFieldNote             = 1 << 8,
+    
+    CKContactFieldImageData        = 1 << 9,
+    CKContactFieldThumbnailData    = 1 << 10,
+    
+    CKContactFieldPhones           = 1 << 11,
+    CKContactFieldEmails           = 1 << 12,
+    CKContactFieldAddresses        = 1 << 13,
     CKContactFieldSocialProfiles   = 1 << 14,
-    CKContactFieldNote             = 1 << 15,
-    CKContactFieldURLs             = 1 << 16,
+    CKContactFieldURLs             = 1 << 15,
+    
+    CKContactFieldBirthday         = 1 << 16,
+    
+    CKContactFieldCreationDate     = 1 << 17,
+    CKContactFieldModificationDate = 1 << 18,
     CKContactFieldDefault          = CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
     CKContactFieldAll              = NSUIntegerMax
 };

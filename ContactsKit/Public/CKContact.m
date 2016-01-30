@@ -23,17 +23,23 @@
 #define kABPersonFirstNameProperty          (__bridge CFStringRef)kABFirstNameProperty
 #define kABPersonMiddleNameProperty         (__bridge CFStringRef)kABMiddleNameProperty
 #define kABPersonLastNameProperty           (__bridge CFStringRef)kABLastNameProperty
+#define kABPersonNicknameProperty           (__bridge CFStringRef)kABNicknameProperty
+
 #define kABPersonOrganizationProperty       (__bridge CFStringRef)kABOrganizationProperty
 #define kABPersonJobTitleProperty           (__bridge CFStringRef)kABJobTitleProperty
+#define kABPersonDepartmentProperty         (__bridge CFStringRef)kABDepartmentProperty
+
+#define kABPersonNoteProperty               (__bridge CFStringRef)kABNoteProperty
+
 #define kABPersonPhoneProperty              (__bridge CFStringRef)kABPhoneProperty
 #define kABPersonEmailProperty              (__bridge CFStringRef)kABEmailProperty
 #define kABPersonAddressProperty            (__bridge CFStringRef)kABAddressProperty
+#define kABPersonSocialProfileProperty      (__bridge CFStringRef)kABSocialProfileProperty
+#define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
+
 #define kABPersonBirthdayProperty           (__bridge CFStringRef)kABBirthdayProperty
 #define kABPersonCreationDateProperty       (__bridge CFStringRef)kABCreationDateProperty
 #define kABPersonModificationDateProperty   (__bridge CFStringRef)kABModificationDateProperty
-#define kABPersonSocialProfileProperty      (__bridge CFStringRef)kABSocialProfileProperty
-#define kABPersonNoteProperty               (__bridge CFStringRef)kABNoteProperty
-#define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
 
 #define ABMultiValueGetCount    ABMultiValueCount
 
@@ -56,6 +62,8 @@
         _identifier = (__bridge_transfer NSString *)ABRecordCopyUniqueId(recordRef);
 #endif
         
+        // Names
+        
         if (fieldMask & CKContactFieldFirstName)
         {
             _firstName = [self stringProperty:kABPersonFirstNameProperty fromRecord:recordRef];
@@ -71,6 +79,13 @@
             _lastName = [self stringProperty:kABPersonLastNameProperty fromRecord:recordRef];
         }
         
+        if (fieldMask & CKContactFieldNickname)
+        {
+            _nickname = [self stringProperty:kABPersonNicknameProperty fromRecord:recordRef];
+        }
+        
+        // Corp
+        
         if (fieldMask & CKContactFieldCompany)
         {
             _company = [self stringProperty:kABPersonOrganizationProperty fromRecord:recordRef];
@@ -81,15 +96,18 @@
             _jobTitle = [self stringProperty:kABPersonJobTitleProperty fromRecord:recordRef];
         }
         
-        if (fieldMask & CKContactFieldPhones)
+        if (fieldMask & CKContactFieldJobTitle)
         {
-            _phones = [self arrayObjectsOfClass:[CKPhone class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
+            _department = [self stringProperty:kABPersonDepartmentProperty fromRecord:recordRef];
         }
         
-        if (fieldMask & CKContactFieldEmails)
+        // Note
+        if (fieldMask & CKContactFieldNote)
         {
-            _emails = [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonEmailProperty fromRecord:recordRef];
+            _note = [self stringProperty:kABPersonNoteProperty fromRecord:recordRef];
         }
+        
+        // Images
         
         if (fieldMask & CKContactFieldImageData)
         {
@@ -99,6 +117,18 @@
         if (fieldMask & CKContactFieldThumbnailData)
         {
             _thumbnailData = [self imageDataWithFullSize:NO fromRecord:recordRef];
+        }
+        
+        // Arrays
+        
+        if (fieldMask & CKContactFieldPhones)
+        {
+            _phones = [self arrayObjectsOfClass:[CKPhone class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
+        }
+        
+        if (fieldMask & CKContactFieldEmails)
+        {
+            _emails = [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonEmailProperty fromRecord:recordRef];
         }
         
         if (fieldMask & CKContactFieldAddresses)
@@ -112,6 +142,25 @@
             }
             _addresses = addresses;
         }
+        
+        if (fieldMask & CKContactFieldSocialProfiles)
+        {
+            NSMutableArray *profiles = [[NSMutableArray alloc] init];
+            NSArray *array = [self arrayProperty:kABPersonSocialProfileProperty fromRecord:recordRef];
+            for (NSDictionary *dictionary in array)
+            {
+                CKSocialProfile *profile = [[CKSocialProfile alloc] initWithSocialDictionary:dictionary];
+                [profiles addObject:profile];
+            }
+            _socialProfiles = profiles;
+        }
+        
+        if (fieldMask & CKContactFieldURLs)
+        {
+            _URLs = [self arrayObjectsOfClass:[CKURL class] ofProperty:kABPersonURLProperty fromRecord:recordRef];
+        }
+        
+        // Dates
         
         if (fieldMask & CKContactFieldBirthday)
         {
@@ -128,33 +177,14 @@
             _modificationDate = [self dateProperty:kABPersonModificationDateProperty fromRecord:recordRef];
         }
         
-        if (fieldMask & CKContactFieldSocialProfiles)
-        {
-            NSMutableArray *profiles = [[NSMutableArray alloc] init];
-            NSArray *array = [self arrayProperty:kABPersonSocialProfileProperty fromRecord:recordRef];
-            for (NSDictionary *dictionary in array)
-            {
-                CKSocialProfile *profile = [[CKSocialProfile alloc] initWithSocialDictionary:dictionary];
-                [profiles addObject:profile];
-            }
-            _socialProfiles = profiles;
-        }
-        
-        if (fieldMask & CKContactFieldNote)
-        {
-            _note = [self stringProperty:kABPersonNoteProperty fromRecord:recordRef];
-        }
-        
-        if (fieldMask & CKContactFieldURLs)
-        {
-            _URLs = [self arrayObjectsOfClass:[CKURL class] ofProperty:kABPersonURLProperty fromRecord:recordRef];
-        }
     }
     return self;
 }
 
 - (void)mergeLinkedRecordRef:(ABRecordRef)recordRef mergeMask:(CKContactField)mergeMask
 {
+    // Names
+    
     if (mergeMask & CKContactFieldFirstName)
     {
         if (! self.firstName)
@@ -179,6 +209,16 @@
         }
     }
     
+    if (mergeMask & CKContactFieldNickname)
+    {
+        if (! self.nickname)
+        {
+            _nickname = [self stringProperty:kABPersonNicknameProperty fromRecord:recordRef];
+        }
+    }
+    
+    // Corp
+    
     if (mergeMask & CKContactFieldCompany)
     {
         if (! self.company ||! self.company.length)
@@ -189,11 +229,49 @@
     
     if (mergeMask & CKContactFieldJobTitle)
     {
-        if (! self.jobTitle ||! self.jobTitle.length)
+        if (! self.jobTitle)
         {
             _jobTitle = [self stringProperty:kABPersonJobTitleProperty fromRecord:recordRef];
         }
     }
+    
+    if (mergeMask & CKContactFieldDepartment)
+    {
+        if (! self.department)
+        {
+            _department = [self stringProperty:kABPersonDepartmentProperty fromRecord:recordRef];
+        }
+    }
+    
+    // Note
+    
+    if (mergeMask & CKContactFieldNote)
+    {
+        if (! self.note || ! self.note.length)
+        {
+            _note = [self stringProperty:kABPersonNoteProperty fromRecord:recordRef];
+        }
+    }
+    
+    // Images
+    
+    if (mergeMask & CKContactFieldImageData)
+    {
+        if (! self.imageData)
+        {
+            _imageData = [self imageDataWithFullSize:YES fromRecord:recordRef];
+        }
+    }
+    
+    if (mergeMask & CKContactFieldThumbnailData)
+    {
+        if (! self.thumbnailData)
+        {
+            _thumbnailData = [self imageDataWithFullSize:NO fromRecord:recordRef];
+        }
+    }
+    
+    // Arrays
     
     if (mergeMask & CKContactFieldPhones)
     {
@@ -230,22 +308,6 @@
         _emails = emails;
     }
 
-    if (mergeMask & CKContactFieldImageData)
-    {
-        if (! self.imageData)
-        {
-            _imageData = [self imageDataWithFullSize:YES fromRecord:recordRef];
-        }
-    }
-    
-    if (mergeMask & CKContactFieldThumbnailData)
-    {
-        if (! self.thumbnailData)
-        {
-            _thumbnailData = [self imageDataWithFullSize:YES fromRecord:recordRef];
-        }
-    }
-    
     if (mergeMask & CKContactFieldAddresses)
     {
         NSMutableArray *addresses = [NSMutableArray arrayWithArray:self.addresses];
@@ -264,14 +326,6 @@
         _addresses = addresses;
     }
     
-    if (mergeMask & CKContactFieldBirthday)
-    {
-        if (! self.birthday)
-        {
-            _birthday = [self dateProperty:kABPersonBirthdayProperty fromRecord:recordRef];
-        }
-    }
-
     if (mergeMask & CKContactFieldSocialProfiles)
     {
         NSMutableArray *profiles = [NSMutableArray arrayWithArray:self.socialProfiles];
@@ -290,14 +344,6 @@
         
         _socialProfiles = profiles;
     }
-
-    if (mergeMask & CKContactFieldNote)
-    {
-        if (! self.note || ! self.note.length)
-        {
-            _note = [self stringProperty:kABPersonNoteProperty fromRecord:recordRef];
-        }
-    }
     
     if (mergeMask & CKContactFieldURLs)
     {
@@ -305,16 +351,26 @@
         
         NSArray *URLsToMerge = [self arrayObjectsOfClass:[CKURL class] ofProperty:kABPersonURLProperty fromRecord:recordRef];
         
-        for (CKURL *Uwl in URLsToMerge)
+        for (CKURL *url in URLsToMerge)
         {
-            if ([self.URLs containsObject:Uwl])
+            if ([self.URLs containsObject:url])
             {
                 continue;
             }
-            [URLs addObject:Uwl];
+            [URLs addObject:url];
         }
         
         _URLs = URLs;
+    }
+    
+    // Dates
+    
+    if (mergeMask & CKContactFieldBirthday)
+    {
+        if (! self.birthday)
+        {
+            _birthday = [self dateProperty:kABPersonBirthdayProperty fromRecord:recordRef];
+        }
     }
 }
 
@@ -329,20 +385,26 @@
         _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(firstName))];
         _middleName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(middleName))];
         _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(lastName))];
+        _nickname = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(nickname))];
+        
         _company = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(company))];
         _jobTitle = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(jobTitle))];
-        _phones = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(phones))];
-        _emails = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(emails))];
-        _addresses = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(addresses))];
-        _birthday = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(birthday))];
-        _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(creationDate))];
-        _modificationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(modificationDate))];
-        _socialProfiles = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(socialProfiles))];
+        _department = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(department))];
+
         _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(note))];
-        _URLs = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(URLs))];
         
         _imageData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(imageData))];
         _thumbnailData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(thumbnailData))];
+        
+        _phones = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(phones))];
+        _emails = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(emails))];
+        _addresses = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(addresses))];
+        _socialProfiles = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(socialProfiles))];
+        _URLs = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(URLs))];
+        
+        _birthday = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(birthday))];
+        _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(creationDate))];
+        _modificationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(modificationDate))];
     }
     return self;
 }
@@ -353,20 +415,26 @@
     [aCoder encodeObject:_firstName forKey:NSStringFromSelector(@selector(firstName))];
     [aCoder encodeObject:_middleName forKey:NSStringFromSelector(@selector(middleName))];
     [aCoder encodeObject:_lastName forKey:NSStringFromSelector(@selector(lastName))];
+    [aCoder encodeObject:_nickname forKey:NSStringFromSelector(@selector(nickname))];
+    
     [aCoder encodeObject:_company forKey:NSStringFromSelector(@selector(company))];
     [aCoder encodeObject:_jobTitle forKey:NSStringFromSelector(@selector(jobTitle))];
-    [aCoder encodeObject:_phones forKey:NSStringFromSelector(@selector(phones))];
-    [aCoder encodeObject:_emails forKey:NSStringFromSelector(@selector(emails))];
-    [aCoder encodeObject:_addresses forKey:NSStringFromSelector(@selector(addresses))];
-    [aCoder encodeObject:_birthday forKey:NSStringFromSelector(@selector(birthday))];
-    [aCoder encodeObject:_creationDate forKey:NSStringFromSelector(@selector(creationDate))];
-    [aCoder encodeObject:_modificationDate forKey:NSStringFromSelector(@selector(modificationDate))];
-    [aCoder encodeObject:_socialProfiles forKey:NSStringFromSelector(@selector(socialProfiles))];
+    [aCoder encodeObject:_department forKey:NSStringFromSelector(@selector(department))];
+    
     [aCoder encodeObject:_note forKey:NSStringFromSelector(@selector(note))];
-    [aCoder encodeObject:_URLs forKey:NSStringFromSelector(@selector(URLs))];
 
     [aCoder encodeObject:_imageData forKey:NSStringFromSelector(@selector(imageData))];
     [aCoder encodeObject:_thumbnailData forKey:NSStringFromSelector(@selector(thumbnailData))];
+    
+    [aCoder encodeObject:_phones forKey:NSStringFromSelector(@selector(phones))];
+    [aCoder encodeObject:_emails forKey:NSStringFromSelector(@selector(emails))];
+    [aCoder encodeObject:_addresses forKey:NSStringFromSelector(@selector(addresses))];
+    [aCoder encodeObject:_socialProfiles forKey:NSStringFromSelector(@selector(socialProfiles))];
+    [aCoder encodeObject:_URLs forKey:NSStringFromSelector(@selector(URLs))];
+
+    [aCoder encodeObject:_birthday forKey:NSStringFromSelector(@selector(birthday))];
+    [aCoder encodeObject:_creationDate forKey:NSStringFromSelector(@selector(creationDate))];
+    [aCoder encodeObject:_modificationDate forKey:NSStringFromSelector(@selector(modificationDate))];
 }
 
 + (BOOL)supportsSecureCoding
@@ -385,20 +453,26 @@
         copy->_firstName = [self.firstName copyWithZone:zone];
         copy->_middleName = [self.middleName copyWithZone:zone];
         copy->_lastName = [self.lastName copyWithZone:zone];
+        copy->_nickname = [self.nickname copyWithZone:zone];
+        
         copy->_company = [self.company copyWithZone:zone];
         copy->_jobTitle = [self.jobTitle copyWithZone:zone];
+        copy->_department = [self.department copyWithZone:zone];
+        
+        copy->_note = [self.note copyWithZone:zone];
+        
+        copy->_imageData = [self.imageData copyWithZone:zone];
+        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
+        
         copy->_phones = [self.phones copyWithZone:zone];
         copy->_emails = [self.emails copyWithZone:zone];
         copy->_addresses = [self.addresses copyWithZone:zone];
+        copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
+        copy->_URLs = [self.URLs copyWithZone:zone];
+    
         copy->_birthday = [self.birthday copyWithZone:zone];
         copy->_creationDate = [self.creationDate copyWithZone:zone];
         copy->_modificationDate = [self.modificationDate copyWithZone:zone];
-        copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
-        copy->_note = [self.note copyWithZone:zone];
-        copy->_URLs = [self.URLs copyWithZone:zone];
-    
-        copy->_imageData = [self.imageData copyWithZone:zone];
-        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
     }
     return copy;
 }
