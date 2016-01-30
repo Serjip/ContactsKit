@@ -36,6 +36,38 @@
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CKSocialProfile *copy = [[[self class] alloc] init];
+    if (copy)
+    {
+        copy->_URL = [self.URL copyWithZone:zone];
+        copy->_username = [self.username copyWithZone:zone];
+        copy->_userIdentifier = [self.userIdentifier copyWithZone:zone];
+        copy->_service = [self.service copyWithZone:zone];
+        copy->_serviceType = self.serviceType;
+    }
+    return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(nullable NSZone *)zone
+{
+    CKMutableSocialProfile *mutableCopy = [[CKMutableSocialProfile alloc] init];
+    if (mutableCopy)
+    {
+        mutableCopy.URL = [self.URL copyWithZone:zone];
+        mutableCopy.username = [self.username copyWithZone:zone];
+        mutableCopy.userIdentifier = [self.userIdentifier copyWithZone:zone];
+        mutableCopy.service = [self.service copyWithZone:zone];
+        mutableCopy.serviceType = self.serviceType;
+    }
+    return mutableCopy;
+}
+
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -64,22 +96,6 @@
 + (BOOL)supportsSecureCoding
 {
     return YES;
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    CKSocialProfile *copy = [[[self class] alloc] init];
-    if (copy)
-    {
-        copy->_URL = [self.URL copyWithZone:zone];
-        copy->_username = [self.username copyWithZone:zone];
-        copy->_userIdentifier = [self.userIdentifier copyWithZone:zone];
-        copy->_service = [self.service copyWithZone:zone];
-        copy->_serviceType = self.serviceType;
-    }
-    return copy;
 }
 
 #pragma mark - Equality
@@ -158,5 +174,11 @@
         return CKSocialProfileServiceUnknown;
     }
 }
+
+@end
+
+@implementation CKMutableSocialProfile
+
+@synthesize URL, username, userIdentifier, service, serviceType;
 
 @end

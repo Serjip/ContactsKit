@@ -18,12 +18,22 @@ typedef NS_ENUM(NSUInteger, CKSocialProfileService)
     CKSocialProfileServiceMyspace  = 5,
 };
 
-@interface CKSocialProfile : NSObject <NSCopying, NSSecureCoding>
+@interface CKSocialProfile : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 
 @property (nonatomic, strong, readonly) NSURL *URL;
 @property (nonatomic, strong, readonly) NSString *username;
 @property (nonatomic, strong, readonly) NSString *userIdentifier;
 @property (nonatomic, strong, readonly) NSString *service;
 @property (nonatomic, assign, readonly) CKSocialProfileService serviceType;
+
+@end
+
+@interface CKMutableSocialProfile : CKSocialProfile
+
+@property (nonatomic, strong) NSURL *URL;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *userIdentifier;
+@property (nonatomic, strong) NSString *service;
+@property (nonatomic, assign) CKSocialProfileService serviceType;
 
 @end
