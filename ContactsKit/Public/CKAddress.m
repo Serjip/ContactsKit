@@ -39,6 +39,40 @@
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CKAddress *copy = [[[self class] alloc] init];
+    if (copy)
+    {
+        copy->_street = [self.street copyWithZone:zone];
+        copy->_city = [self.city copyWithZone:zone];
+        copy->_state = [self.state copyWithZone:zone];
+        copy->_zip = [self.zip copyWithZone:zone];
+        copy->_country = [self.country copyWithZone:zone];
+        copy->_ISOCountryCode = [self.ISOCountryCode copyWithZone:zone];
+    }
+    return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CKMutableAddress *mutableCopy = [[CKMutableAddress alloc] init];
+    if (mutableCopy)
+    {
+        mutableCopy.street = [self.street copyWithZone:zone];
+        mutableCopy.city = [self.city copyWithZone:zone];
+        mutableCopy.state = [self.state copyWithZone:zone];
+        mutableCopy.zip = [self.zip copyWithZone:zone];
+        mutableCopy.country = [self.country copyWithZone:zone];
+        mutableCopy.ISOCountryCode = [self.ISOCountryCode copyWithZone:zone];
+    }
+    return mutableCopy;
+}
+
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -69,23 +103,6 @@
 + (BOOL)supportsSecureCoding
 {
     return YES;
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    CKAddress *copy = [[[self class] alloc] init];
-    if (copy)
-    {
-        copy->_street = [self.street copyWithZone:zone];
-        copy->_city = [self.city copyWithZone:zone];
-        copy->_state = [self.state copyWithZone:zone];
-        copy->_zip = [self.zip copyWithZone:zone];
-        copy->_country = [self.country copyWithZone:zone];
-        copy->_ISOCountryCode = [self.ISOCountryCode copyWithZone:zone];
-    }
-    return copy;
 }
 
 #pragma mark - Equality
@@ -134,5 +151,11 @@
     
     return [self isEqualToAddress:object];
 }
+
+@end
+
+@implementation CKMutableAddress
+
+@synthesize street, city, state, zip, country, ISOCountryCode;
 
 @end
