@@ -1,5 +1,9 @@
 #Change Log
 
+## 1.0.3
+* Added nickname, department properties
+* Fixed merging issue thumbnailData
+
 ## 1.0.2 / 2016-01-30
 * Added getttings contacts with block
 * Added method for requesting an access of the address book
