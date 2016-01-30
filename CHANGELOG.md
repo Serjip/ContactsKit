@@ -1,6 +1,6 @@
 #Change Log
 
-## 1.0.2 /
+## 1.0.2 / 2016-01-30
 * Added getttings contacts with block
 * Added method for requesting an access of the address book
 * Fixed unifying contacts for `10.8+`
