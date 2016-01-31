@@ -8,6 +8,10 @@
 
 #import "CKLabel_Private.h"
 
+NSString * const CKLabelHome = @"_$!<Home>!$_";
+NSString * const CKLabelWork = @"_$!<Work>!$_";
+NSString * const CKLabelOther = @"_$!<Other>!$_";
+
 @implementation CKLabel
 
 #pragma mark - Properties
