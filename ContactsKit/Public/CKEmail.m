@@ -96,6 +96,15 @@ NSString * const CKEmailiCloud = @"iCloud";
     return [NSString stringWithFormat:@"%@ (%@)", self.address, self.originalLabel];
 }
 
+#pragma mark - Class methods
+
++ (NSArray *)labels
+{
+    NSMutableArray *labels = [[super labels] mutableCopy];
+    [labels addObject:CKEmailiCloud];
+    return labels;
+}
+
 @end
 
 @implementation CKMutableEmail
