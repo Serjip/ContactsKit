@@ -9,6 +9,8 @@
 #import "CKEmail.h"
 #import "CKLabel_Private.h"
 
+NSString * const CKEmailiCloud = @"iCloud";
+
 @implementation CKEmail
 
 #pragma mark - Lifecycle
