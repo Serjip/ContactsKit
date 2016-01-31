@@ -10,6 +10,17 @@
 
 @implementation CKLabel
 
+#pragma mark - Properties
+
+- (NSString *)localizedLabel
+{
+#if TARGET_OS_IOS
+    return (__bridge_transfer NSString *)ABAddressBookCopylocalizedLabel((__bridge CFStringRef)(self.originalLabel));
+#elif TARGET_OS_MAC
+    return (__bridge_transfer NSString *)ABCopyLocalizedPropertyOrLabel((__bridge CFStringRef)(self.originalLabel));
+#endif
+}
+
 #pragma mark - Lifecycle
 
 - (instancetype)initWithMultiValue:(ABMultiValueRef)multiValue index:(CFIndex)index
@@ -17,43 +28,9 @@
     self = [super init];
     if(self)
     {        
-        CFStringRef label = ABMultiValueCopyLabelAtIndex(multiValue, index);
-        if (label)
-        {
-            _originalLabel = (__bridge NSString *)label;
-#if TARGET_OS_IOS
-            _localizedLabel = (__bridge_transfer NSString *)ABAddressBookCopyLocalizedLabel(label);
-#elif TARGET_OS_MAC
-            _localizedLabel = (__bridge_transfer NSString *)ABCopyLocalizedPropertyOrLabel(label);
-#endif
-            CFRelease(label);
-        }
+        _originalLabel = (__bridge_transfer NSString *)ABMultiValueCopyLabelAtIndex(multiValue, index);
     }
     return self;
-}
-
-#pragma mark - NSSecureCoding
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if (self)
-    {
-        _originalLabel = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(originalLabel))];
-        _localizedLabel = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(localizedLabel))];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:_originalLabel forKey:NSStringFromSelector(@selector(originalLabel))];
-    [aCoder encodeObject:_localizedLabel forKey:NSStringFromSelector(@selector(localizedLabel))];
-}
-
-+ (BOOL)supportsSecureCoding
-{
-    return YES;
 }
 
 #pragma mark - NSCopying
@@ -64,9 +41,42 @@
     if (copy)
     {
         copy->_originalLabel = [self.originalLabel copyWithZone:zone];
-        copy->_localizedLabel = [self.localizedLabel copyWithZone:zone];
     }
     return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CKMutableLabel *mutableCopy = [[CKMutableLabel alloc] init];
+    if (mutableCopy)
+    {
+        mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
+    }
+    return mutableCopy;
+}
+
+#pragma mark - NSSecureCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self)
+    {
+        _originalLabel = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(originalLabel))];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:_originalLabel forKey:NSStringFromSelector(@selector(originalLabel))];
+}
+
++ (BOOL)supportsSecureCoding
+{
+    return YES;
 }
 
 #pragma mark - Equal
@@ -97,5 +107,11 @@
 {
     return [NSString stringWithFormat:@"%p %@", self, self.originalLabel];
 }
+
+@end
+
+@implementation CKMutableLabel
+
+@synthesize originalLabel;
 
 @end
