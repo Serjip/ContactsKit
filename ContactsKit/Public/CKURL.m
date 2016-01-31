@@ -9,6 +9,8 @@
 #import "CKURL.h"
 #import "CKLabel_Private.h"
 
+NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
+
 @implementation CKURL
 
 #pragma mark - Lifecycle

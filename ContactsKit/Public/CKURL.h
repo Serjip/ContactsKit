@@ -20,4 +20,4 @@
 
 @end
 
-extern NSString * const CNURLAddressHomePage;
+extern NSString * const CKURLHomePage;
