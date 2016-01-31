@@ -19,7 +19,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 - (NSString *)localizedLabel
 {
 #if TARGET_OS_IOS
-    return (__bridge_transfer NSString *)ABAddressBookCopylocalizedLabel((__bridge CFStringRef)(self.originalLabel));
+    return (__bridge_transfer NSString *)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)(self.originalLabel));
 #elif TARGET_OS_MAC
     return (__bridge_transfer NSString *)ABCopyLocalizedPropertyOrLabel((__bridge CFStringRef)(self.originalLabel));
 #endif
