@@ -14,6 +14,8 @@
 @property (nonatomic, copy, readonly) NSString *localizedLabel;
 
 + (NSString *)localizedStringForLabel:(NSString *)label;
++ (NSArray *)labels;
++ (NSArray *)localizedLabels;
 
 @end
 

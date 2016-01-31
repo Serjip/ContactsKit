@@ -119,6 +119,22 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 #endif
 }
 
++ (NSArray *)labels
+{
+    return [[NSArray alloc] initWithObjects:CKLabelHome, CKLabelWork, CKLabelOther, nil];
+}
+
++ (NSArray *)localizedLabels
+{
+    NSMutableArray *localizedLabels = [[NSMutableArray alloc] init];
+    for (NSString *label in [self labels])
+    {
+        NSString *localizedLabel = [self localizedStringForLabel:label];
+        [localizedLabels addObject:localizedLabel];
+    }
+    return localizedLabels;
+}
+
 @end
 
 @implementation CKMutableLabel
