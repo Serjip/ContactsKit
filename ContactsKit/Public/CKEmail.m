@@ -23,6 +23,30 @@
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CKEmail *copy = [super copyWithZone:zone];
+    if (copy)
+    {
+        copy->_address = [self.address copyWithZone:zone];
+    }
+    return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CKMutableEmail *mutableCopy = [super mutableCopyWithZone:zone];
+    if (mutableCopy)
+    {
+        mutableCopy.address = [self.address copyWithZone:zone];
+    }
+    return mutableCopy;
+}
+
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -39,18 +63,6 @@
 {
     [super encodeWithCoder:aCoder];
     [aCoder encodeObject:_address forKey:NSStringFromSelector(@selector(address))];
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    CKEmail *copy = [super copyWithZone:zone];
-    if (copy)
-    {
-        copy->_address = [self.address copyWithZone:zone];
-    }
-    return copy;
 }
 
 #pragma mark - Equality
