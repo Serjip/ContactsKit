@@ -9,16 +9,13 @@
 #import "CKPhone.h"
 #import "CKLabel_Private.h"
 
-//
-//extern NSString * const kABPhoneWorkLabel;         // Work phone
-//extern NSString * const kABPhoneHomeLabel;         // Home phone
-//extern NSString * const kABPhoneiPhoneLabel;       // iPhone
-//extern NSString * const kABPhoneMobileLabel;       // Cell phone
-//extern NSString * const kABPhoneMainLabel;         // Main phone
-//extern NSString * const kABPhoneHomeFAXLabel;      // FAX number
-//extern NSString * const kABPhoneWorkFAXLabel;      // FAX number
-//extern NSString * const kABPhonePagerLabel;        // Pager number
-
+NSString * const CKPhoneiPhone = @"iPhone";
+NSString * const CKPhoneMobile = @"_$!<Mobile>!$_";
+NSString * const CKPhoneMain = @"_$!<Main>!$_";
+NSString * const CKPhoneHomeFax = @"_$!<HomeFAX>!$_";
+NSString * const CKPhoneWorkFax = @"_$!<WorkFAX>!$_";
+NSString * const CKPhoneOtherFax = @"";
+NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 @implementation CKPhone
 
