@@ -13,6 +13,8 @@
 @property (nonatomic, strong, readonly) NSString *originalLabel;
 @property (nonatomic, copy, readonly) NSString *localizedLabel;
 
++ (NSString *)localizedStringForLabel:(NSString *)label;
+
 @end
 
 @interface CKMutableLabel : CKLabel

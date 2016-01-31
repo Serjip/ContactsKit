@@ -18,11 +18,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 
 - (NSString *)localizedLabel
 {
-#if TARGET_OS_IOS
-    return (__bridge_transfer NSString *)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)(self.originalLabel));
-#elif TARGET_OS_MAC
-    return (__bridge_transfer NSString *)ABCopyLocalizedPropertyOrLabel((__bridge CFStringRef)(self.originalLabel));
-#endif
+    return [CKLabel localizedStringForLabel:self.originalLabel];
 }
 
 #pragma mark - Lifecycle
@@ -110,6 +106,17 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%p %@", self, self.originalLabel];
+}
+
+#pragma mark - Class Methods
+
++ (NSString *)localizedStringForLabel:(NSString *)label
+{
+#if TARGET_OS_IOS
+    return (__bridge_transfer NSString *)ABAddressBookCopyLocalizedLabel((__bridge CFStringRef)(label));
+#elif TARGET_OS_MAC
+    return (__bridge_transfer NSString *)ABCopyLocalizedPropertyOrLabel((__bridge CFStringRef)(label));
+#endif
 }
 
 @end
