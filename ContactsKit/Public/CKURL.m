@@ -84,6 +84,15 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
     return [NSString stringWithFormat:@"%@ (%@)", self.URLString, self.originalLabel];
 }
 
+#pragma mark - Class methods
+
++ (NSArray *)labels
+{
+    NSMutableArray *labels = [[super labels] mutableCopy];
+    [labels addObject:CKURLHomePage];
+    return labels;
+}
+
 @end
 
 @implementation CKMutableURL
