@@ -9,6 +9,17 @@
 #import "CKPhone.h"
 #import "CKLabel_Private.h"
 
+//
+//extern NSString * const kABPhoneWorkLabel;         // Work phone
+//extern NSString * const kABPhoneHomeLabel;         // Home phone
+//extern NSString * const kABPhoneiPhoneLabel;       // iPhone
+//extern NSString * const kABPhoneMobileLabel;       // Cell phone
+//extern NSString * const kABPhoneMainLabel;         // Main phone
+//extern NSString * const kABPhoneHomeFAXLabel;      // FAX number
+//extern NSString * const kABPhoneWorkFAXLabel;      // FAX number
+//extern NSString * const kABPhonePagerLabel;        // Pager number
+
+
 @implementation CKPhone
 
 #pragma mark - Lifecycle
@@ -81,5 +92,11 @@
 {
     return [NSString stringWithFormat:@"%@ (%@)", self.number, self.originalLabel];
 }
+
+@end
+
+@implementation CKMutablePhone
+
+#warning Class implementation
 
 @end
