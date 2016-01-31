@@ -90,6 +90,15 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
     return [NSString stringWithFormat:@"%@ (%@)", self.number, self.originalLabel];
 }
 
+#pragma mark - Class methods
+
++ (NSArray *)labels
+{
+    NSMutableArray *labels = [[super labels] mutableCopy];
+    [labels addObjectsFromArray:@[CKPhoneiPhone, CKPhoneMobile, CKPhoneMain, CKPhoneHomeFax, CKPhoneWorkFax, CKPhoneOtherFax, CKPhonePager]];
+    return labels;
+}
+
 @end
 
 @implementation CKMutablePhone
