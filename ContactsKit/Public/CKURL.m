@@ -83,3 +83,9 @@
 }
 
 @end
+
+@implementation CKMutableURL
+
+#warning Class implementation
+
+@end

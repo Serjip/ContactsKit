@@ -13,3 +13,11 @@
 @property (nonatomic, strong, readonly) NSString *URLString;
 
 @end
+
+@interface CKMutableURL : CKMutableLabel
+
+@property (nonatomic, strong) NSString *URLString;
+
+@end
+
+extern NSString * const CNURLAddressHomePage;
