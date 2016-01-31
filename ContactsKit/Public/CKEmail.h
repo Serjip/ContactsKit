@@ -13,3 +13,11 @@
 @property (nonatomic, strong, readonly) NSString *address;
 
 @end
+
+@interface CKMutableEmail : CKMutableLabel
+
+@property (nonatomic, strong) NSString *address;
+
+@end
+
+extern NSString * const CKEmailiCloud;

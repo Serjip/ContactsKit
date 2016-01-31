@@ -83,3 +83,9 @@
 }
 
 @end
+
+@implementation CKMutableEmail
+
+#warning Class implementation
+
+@end
