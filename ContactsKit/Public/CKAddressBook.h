@@ -46,7 +46,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldAll              = NSUIntegerMax
 };
 
-@class CKContact;
+@class CKContact, CKMutableContact;
 @protocol CKAddressBookDelegate;
 
 @interface CKAddressBook : NSObject
@@ -67,6 +67,9 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 - (void)contactWithIdentifier:(NSString *)identifier;
 - (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
                    completion:(void (^) (CKContact *contact, NSError *error))callback;
+
+- (void)addContact:(CKMutableContact *)contact;
+- (void)addContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
 
 - (void)startObserveChanges;
 - (void)stopObserveChanges;
