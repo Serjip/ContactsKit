@@ -135,4 +135,11 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
     return localizedLabels;
 }
 
+#pragma mark - Instance
+
+- (BOOL)setLabledValue:(ABMutableMultiValueRef)mutableMultiValue
+{
+    return NO;
+}
+
 @end

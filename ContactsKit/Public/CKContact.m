@@ -679,7 +679,17 @@
     
     if (result && self.phones)
     {
-#warning Phones
+        result = [self setLabledValues:self.phones forProperty:kABPersonPhoneProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.emails)
+    {
+        result = [self setLabledValues:self.emails forProperty:kABPersonEmailProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.URLs)
+    {
+        result = [self setLabledValues:self.URLs forProperty:kABPersonURLProperty toRecord:recordRef error:error];
     }
     
     // Dates
@@ -717,6 +727,48 @@
 #elif TARGET_OS_MAC
     BOOL result = ABPersonSetImageData(recordRef, (__bridge CFDataRef)(data));
 #endif
+    
+    if (! result && error)
+    {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Cannot set property", nil)};
+        *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+    }
+    return result;
+}
+
+- (BOOL)setLabledValues:(NSArray<CKLabel *> *)values forProperty:(ABPropertyID)property toRecord:(ABRecordRef)recordRef error:(NSError **)error
+{
+    BOOL result = YES;
+    
+#if TARGET_OS_IOS
+    ABMutableMultiValueRef mutableMultiValueRef = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+#elif TARGET_OS_MAC
+    ABMutableMultiValueRef mutableMultiValueRef = ABMultiValueCreateMutable();
+#endif
+    
+    for (CKLabel *label in values)
+    {
+        result = [label setLabledValue:mutableMultiValueRef];
+        
+        if (! result)
+        {
+            break;
+        }
+    }
+    
+    if (result)
+    {
+#if TARGET_OS_IOS
+        result = ABRecordSetValue(recordRef, property, mutableMultiValueRef, NULL);
+#elif TARGET_OS_MAC
+        result = ABRecordSetValue(recordRef, property, mutableMultiValueRef);
+#endif
+    }
+    
+    if (mutableMultiValueRef != NULL)
+    {
+        CFRelease(mutableMultiValueRef);
+    }
     
     if (! result && error)
     {

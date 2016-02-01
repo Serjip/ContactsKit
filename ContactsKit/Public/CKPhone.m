@@ -111,6 +111,17 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
     return labels;
 }
 
+#pragma mark - Instance
+
+- (BOOL)setLabledValue:(ABMutableMultiValueRef)mutableMultiValue
+{
+#if TARGET_OS_IOS
+    return ABMultiValueAddValueAndLabel(mutableMultiValue, (__bridge CFStringRef)(self.number), (__bridge CFStringRef)(self.originalLabel), NULL);
+#elif TARGET_OS_MAC
+    return ABMultiValueAdd(mutableMultiValue, (__bridge CFTypeRef)(self.number), (__bridge CFStringRef)(self.originalLabel), NULL);
+#endif
+}
+
 @end
 
 @implementation CKMutablePhone

@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *originalLabel;
 
 - (instancetype)initWithMultiValue:(ABMultiValueRef)multiValue index:(CFIndex)index;
+- (BOOL)setLabledValue:(ABMutableMultiValueRef)mutableMultiValue;
 
 @end
