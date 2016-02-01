@@ -19,12 +19,6 @@
 
 @end
 
-@interface CKMutableLabel : CKLabel
-
-@property (nonatomic, strong) NSString *originalLabel;
-
-@end
-
 extern NSString * const CKLabelHome;
 extern NSString * const CKLabelWork;
 extern NSString * const CKLabelOther;

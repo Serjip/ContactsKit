@@ -136,9 +136,3 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 }
 
 @end
-
-@implementation CKMutableLabel
-
-@synthesize originalLabel;
-
-@end
