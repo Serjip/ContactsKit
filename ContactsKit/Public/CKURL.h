@@ -8,15 +8,16 @@
 
 #import "CKLabel.h"
 
-@interface CKURL : CKLabel
+@interface CKURL : CKLabel <NSMutableCopying>
 
 @property (nonatomic, strong, readonly) NSString *URLString;
 
 @end
 
-@interface CKMutableURL : CKMutableLabel
+@interface CKMutableURL : CKURL
 
 @property (nonatomic, strong) NSString *URLString;
+@property (nonatomic, strong) NSString *originalLabel;
 
 @end
 

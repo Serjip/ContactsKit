@@ -25,6 +25,30 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CKURL *copy = [super copyWithZone:zone];
+    if (copy)
+    {
+        copy->_URLString = [self.URLString copyWithZone:zone];
+    }
+    return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CKMutableURL *mutableCopy = [super mutableCopyWithZone:zone];
+    if (mutableCopy)
+    {
+        mutableCopy.URLString = [self.URLString copyWithZone:zone];
+    }
+    return mutableCopy;
+}
+
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -41,18 +65,6 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
 {
     [super encodeWithCoder:aCoder];
     [aCoder encodeObject:_URLString forKey:NSStringFromSelector(@selector(URLString))];
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    CKURL *copy = [super copyWithZone:zone];
-    if (copy)
-    {
-        copy->_URLString = [self.URLString copyWithZone:zone];
-    }
-    return copy;
 }
 
 #pragma mark - Equality
@@ -97,6 +109,7 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
 
 @implementation CKMutableURL
 
-#warning Class implementation
+@dynamic originalLabel;
+@synthesize URLString;
 
 @end
