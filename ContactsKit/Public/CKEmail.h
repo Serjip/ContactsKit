@@ -8,15 +8,16 @@
 
 #import "CKLabel.h"
 
-@interface CKEmail : CKLabel
+@interface CKEmail : CKLabel <NSMutableCopying>
 
 @property (nonatomic, strong, readonly) NSString *address;
 
 @end
 
-@interface CKMutableEmail : CKMutableLabel
+@interface CKMutableEmail : CKEmail
 
 @property (nonatomic, strong) NSString *address;
+@property (nonatomic, strong) NSString *originalLabel;
 
 @end
 

@@ -109,6 +109,7 @@ NSString * const CKEmailiCloud = @"iCloud";
 
 @implementation CKMutableEmail
 
-#warning Class implementation
+@dynamic originalLabel;
+@synthesize address;
 
 @end
