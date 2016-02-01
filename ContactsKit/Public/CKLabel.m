@@ -49,7 +49,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKMutableLabel *mutableCopy = [[CKMutableLabel alloc] init];
+    CKLabel *mutableCopy = [[[self class] alloc] init];
     if (mutableCopy)
     {
         mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];

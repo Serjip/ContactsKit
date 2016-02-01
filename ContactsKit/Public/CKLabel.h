@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CKLabel : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
+@interface CKLabel : NSObject <NSCopying, NSSecureCoding>
 
 @property (nonatomic, strong, readonly) NSString *originalLabel;
 @property (nonatomic, copy, readonly) NSString *localizedLabel;

@@ -9,7 +9,9 @@
 #import "CKLabel.h"
 #import <AddressBook/AddressBook.h>
 
-@interface CKLabel ()
+@interface CKLabel () <NSMutableCopying>
+
+@property (nonatomic, strong) NSString *originalLabel;
 
 - (instancetype)initWithMultiValue:(ABMultiValueRef)multiValue index:(CFIndex)index;
 
