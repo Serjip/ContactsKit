@@ -8,15 +8,16 @@
 
 #import "CKLabel.h"
 
-@interface CKPhone : CKLabel
+@interface CKPhone : CKLabel <NSMutableCopying>
 
 @property (nonatomic, strong, readonly) NSString *number;
 
 @end
 
-@interface CKMutablePhone : CKMutableLabel
+@interface CKMutablePhone : CKPhone
 
 @property (nonatomic, strong) NSString *number;
+@property (nonatomic, strong) NSString *originalLabel;
 
 @end
 

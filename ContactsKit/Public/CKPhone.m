@@ -31,6 +31,30 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    CKPhone *copy = [super copyWithZone:zone];
+    if (copy)
+    {
+        copy->_number = [self.number copyWithZone:zone];
+    }
+    return copy;
+}
+
+#pragma mark - NSMutableCopying
+
+- (id)mutableCopyWithZone:(NSZone *)zone
+{
+    CKMutablePhone *mutableCopy = [super mutableCopyWithZone:zone];
+    if (mutableCopy)
+    {
+        mutableCopy.number = [self.number copyWithZone:zone];
+    }
+    return mutableCopy;
+}
+
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -47,18 +71,6 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 {
     [super encodeWithCoder:aCoder];
     [aCoder encodeObject:_number forKey:NSStringFromSelector(@selector(number))];
-}
-
-#pragma mark - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    CKPhone *copy = [super copyWithZone:zone];
-    if (copy)
-    {
-        copy->_number = [self.number copyWithZone:zone];
-    }
-    return copy;
 }
 
 #pragma mark - Equality
@@ -103,6 +115,7 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 @implementation CKMutablePhone
 
-#warning Class implementation
+@dynamic originalLabel;
+@synthesize number;
 
 @end
