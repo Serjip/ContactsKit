@@ -613,4 +613,87 @@
 @synthesize phones, emails, addresses, socialProfiles, URLs;
 @synthesize birthday, creationDate, modificationDate;
 
+- (BOOL)setRecordRef:(ABRecordRef)recordRef error:(NSError **)error
+{
+    BOOL result = YES;
+    
+    if (self.identifier)
+    {
+#warning ID
+    }
+    
+    // Names
+    
+    if (result && self.firstName)
+    {
+        result = [self setValue:self.firstName forProperty:kABPersonFirstNameProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.lastName)
+    {
+        result = [self setValue:self.lastName forProperty:kABPersonLastNameProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.middleName)
+    {
+        result = [self setValue:self.middleName forProperty:kABPersonMiddleNameProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.nickname)
+    {
+        result = [self setValue:self.nickname forProperty:kABPersonNicknameProperty toRecord:recordRef error:error];
+    }
+    
+    // Corp
+    
+    if (result && self.company)
+    {
+        result = [self setValue:self.company forProperty:kABPersonOrganizationProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.jobTitle)
+    {
+        result = [self setValue:self.jobTitle forProperty:kABPersonJobTitleProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.department)
+    {
+        result = [self setValue:self.department forProperty:kABPersonDepartmentProperty toRecord:recordRef error:error];
+    }
+    
+    // Note
+    
+    if (result && self.note)
+    {
+        result = [self setValue:self.note forProperty:kABPersonNoteProperty toRecord:recordRef error:error];
+    }
+    
+    // Dates
+    
+    if (result && self.birthday)
+    {
+        result = [self setValue:self.birthday forProperty:kABPersonBirthdayProperty toRecord:recordRef error:error];
+    }
+    
+    return result;
+}
+
+#pragma mark - Private
+
+- (BOOL)setValue:(id)value forProperty:(ABPropertyID)property toRecord:(ABRecordRef)recordRef error:(NSError **)error
+{
+#if TARGET_OS_IOS
+    BOOL result = ABRecordSetValue(recordRef, property, (__bridge CFTypeRef)(value), NULL);
+#elif TARGET_OS_MAC
+    BOOL result = ABRecordSetValue(recordRef, property, (__bridge CFTypeRef)(value));
+#endif
+    
+    if (! result && error)
+    {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Cannot set property", nil)};
+        *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+    }
+    return result;
+}
+
 @end

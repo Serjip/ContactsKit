@@ -26,4 +26,6 @@
 @property (nonatomic, strong) NSDate *creationDate;
 @property (nonatomic, strong) NSDate *modificationDate;
 
+- (BOOL)setRecordRef:(ABRecordRef)recordRef error:(NSError **)error;
+
 @end
