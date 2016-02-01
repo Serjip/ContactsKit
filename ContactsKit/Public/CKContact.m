@@ -668,6 +668,20 @@
         result = [self setValue:self.note forProperty:kABPersonNoteProperty toRecord:recordRef error:error];
     }
     
+    // Image
+    
+    if (result && self.imageData)
+    {
+        result = [self setImageData:self.imageData toRecord:recordRef error:error];
+    }
+    
+    // Arrays
+    
+    if (result && self.phones)
+    {
+#warning Phones
+    }
+    
     // Dates
     
     if (result && self.birthday)
@@ -686,6 +700,22 @@
     BOOL result = ABRecordSetValue(recordRef, property, (__bridge CFTypeRef)(value), NULL);
 #elif TARGET_OS_MAC
     BOOL result = ABRecordSetValue(recordRef, property, (__bridge CFTypeRef)(value));
+#endif
+    
+    if (! result && error)
+    {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Cannot set property", nil)};
+        *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+    }
+    return result;
+}
+
+- (BOOL)setImageData:(NSData *)data toRecord:(ABRecordRef)recordRef error:(NSError **)error
+{
+#if TARGET_OS_IOS
+    BOOL result = ABPersonSetImageData(recordRef, (__bridge CFDataRef)(data), NULL);
+#elif TARGET_OS_MAC
+    BOOL result = ABPersonSetImageData(recordRef, (__bridge CFDataRef)(data));
 #endif
     
     if (! result && error)
