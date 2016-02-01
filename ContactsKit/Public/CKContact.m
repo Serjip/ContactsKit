@@ -679,17 +679,25 @@
     
     if (result && self.phones)
     {
-        result = [self setLabledValues:self.phones forProperty:kABPersonPhoneProperty toRecord:recordRef error:error];
+        result = [self enumerateLabels:self.phones property:kABPersonPhoneProperty record:recordRef error:error];
     }
     
     if (result && self.emails)
     {
-        result = [self setLabledValues:self.emails forProperty:kABPersonEmailProperty toRecord:recordRef error:error];
+        result = [self enumerateLabels:self.emails property:kABPersonEmailProperty record:recordRef error:error];
     }
     
     if (result && self.URLs)
     {
-        result = [self setLabledValues:self.URLs forProperty:kABPersonURLProperty toRecord:recordRef error:error];
+        result = [self enumerateLabels:self.URLs property:kABPersonURLProperty record:recordRef error:error];
+    }
+    
+    if (result && self.socialProfiles)
+    {
+        result = [self enumerateValues:self.socialProfiles property:kABPersonSocialProfileProperty type:kABMultiDictionaryPropertyType
+                                record:recordRef block:^BOOL(CKSocialProfile *value, ABMutableMultiValueRef mutableMultiValueRef) {
+            return [value addPropertiesToMultiValue:mutableMultiValueRef];
+        } error:error];
     }
     
     // Dates
@@ -736,19 +744,30 @@
     return result;
 }
 
-- (BOOL)setLabledValues:(NSArray<CKLabel *> *)values forProperty:(ABPropertyID)property toRecord:(ABRecordRef)recordRef error:(NSError **)error
+- (BOOL)enumerateLabels:(NSArray<CKLabel *> *)labels property:(ABPropertyID)property record:(ABRecordRef)recordRef error:(NSError **)error
+{
+    return [self enumerateValues:labels property:property type:kABMultiStringPropertyType record:recordRef block:^BOOL(CKLabel *label, ABMutableMultiValueRef mutableMultiValueRef) {
+        
+        return [label setLabledValue:mutableMultiValueRef];
+        
+    } error:error];
+}
+
+
+- (BOOL)enumerateValues:(NSArray *)values property:(ABPropertyID)property type:(ABPropertyType)type record:(ABRecordRef)recordRef
+                  block:(BOOL (^) (id value, ABMutableMultiValueRef mutableMultiValueRef))block error:(NSError **)error
 {
     BOOL result = YES;
     
 #if TARGET_OS_IOS
-    ABMutableMultiValueRef mutableMultiValueRef = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    ABMutableMultiValueRef mutableMultiValueRef = ABMultiValueCreateMutable(type);
 #elif TARGET_OS_MAC
     ABMutableMultiValueRef mutableMultiValueRef = ABMultiValueCreateMutable();
 #endif
     
-    for (CKLabel *label in values)
+    for (id value in values)
     {
-        result = [label setLabledValue:mutableMultiValueRef];
+        result = block(value, mutableMultiValueRef);
         
         if (! result)
         {
@@ -777,5 +796,6 @@
     }
     return result;
 }
+
 
 @end

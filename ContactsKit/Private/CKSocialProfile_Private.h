@@ -7,9 +7,11 @@
 //
 
 #import "CKSocialProfile.h"
+#import <AddressBook/AddressBook.h>
 
 @interface CKSocialProfile ()
 
 - (instancetype)initWithSocialDictionary:(NSDictionary *)dictionary;
+- (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef;
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "CKSocialProfile_Private.h"
-#import <AddressBook/AddressBook.h>
 
 #if TARGET_OS_IOS
 
@@ -173,6 +172,21 @@
     {
         return CKSocialProfileServiceUnknown;
     }
+}
+
+- (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef
+{
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    [dictionary setValue:_URL.absoluteString forKey:kABSocialProfileURLKey];
+    [dictionary setValue:_username forKey:kABSocialProfileUsernameKey];
+    [dictionary setValue:_userIdentifier forKey:kABSocialProfileUserIdentifierKey];
+    [dictionary setValue:_service forKey:kABSocialProfileServiceKey];
+    
+#if TARGET_OS_IOS
+    return ABMultiValueAddValueAndLabel(mutableMultiValueRef, (__bridge CFTypeRef)(dictionary), NULL, NULL);
+#elif TARGET_OS_MAC
+    return ABMultiValueAdd(mutableMultiValueRef, (__bridge CFTypeRef)(dictionary), NULL, NULL);
+#endif
 }
 
 @end
