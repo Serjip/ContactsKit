@@ -43,6 +43,10 @@
 
 #define ABMultiValueGetCount    ABMultiValueCount
 
+// Fix for OSX
+#define kABMultiStringPropertyType 1
+#define kABMultiDictionaryPropertyType 1
+
 #endif
 
 @implementation CKContact
@@ -787,6 +791,14 @@
     {
         result = [self enumerateValues:self.socialProfiles property:kABPersonSocialProfileProperty type:kABMultiDictionaryPropertyType
                                 record:recordRef block:^BOOL(CKSocialProfile *value, ABMutableMultiValueRef mutableMultiValueRef) {
+            return [value addPropertiesToMultiValue:mutableMultiValueRef];
+        } error:error];
+    }
+    
+    if (result && self.addresses)
+    {
+        result = [self enumerateValues:self.addresses property:kABPersonAddressProperty type:kABMultiDictionaryPropertyType
+                                record:recordRef block:^BOOL(CKAddress *value, ABMutableMultiValueRef mutableMultiValueRef) {
             return [value addPropertiesToMultiValue:mutableMultiValueRef];
         } error:error];
     }
