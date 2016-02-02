@@ -68,6 +68,21 @@
     XCTAssertEqualObjects(c1.department, c2.department);
     
     XCTAssertEqualObjects(c1.note, c2.note);
+    
+    XCTAssertEqualObjects(c1.imageData, c2.imageData);
+    XCTAssertEqualObjects(c1.thumbnailData, c2.thumbnailData);
+    
+    XCTAssertEqualObjects(c1.phones, c2.phones);
+    XCTAssertEqualObjects(c1.emails, c2.emails);
+    XCTAssertEqualObjects(c1.URLs, c2.URLs);
+    XCTAssertEqualObjects(c1.socialProfiles, c2.socialProfiles);
+    XCTAssertEqualObjects(c1.addresses, c2.addresses);
+    
+    XCTAssertEqualObjects(c1.birthday, c2.birthday);
+    XCTAssertEqualObjects(c1.creationDate, c2.creationDate);
+    XCTAssertEqualObjects(c1.modificationDate, c2.modificationDate);
+    
+    XCTAssertTrue([c1 isEqual:c2]);
 }
 
 
