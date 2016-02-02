@@ -87,7 +87,7 @@
     XCTestExpectation *e2 = [self expectationWithDescription:@"expectation"];
     [self.addressBook contactsWithMask:CKContactFieldAll uinify:NO sortDescriptors:nil filter:^BOOL(CKContact *ctn) {
         
-        return [ctn isEqual:contact];
+        return [ctn.firstName isEqual:contact.firstName] && [ctn.lastName isEqual:contact.lastName];
         
     } completion:^(NSArray *cnts, NSError *er) {
         
@@ -102,7 +102,9 @@
     XCTAssertNil(error);
     XCTAssertEqual(contacts.count, 1);
     
+    CKContact *addedContact = contacts.firstObject;
     
+    XCTAssertEqualObjects(contact.socialProfiles, addedContact.socialProfiles);
 }
 
 @end
