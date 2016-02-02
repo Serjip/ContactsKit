@@ -9,8 +9,6 @@
 #import <XCTest/XCTest.h>
 #import <ContactsKit/ContactsKit.h>
 
-#define dispatch_semaphore_wait(sem, time) while (dispatch_semaphore_wait(sem, time)) [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]]
-
 @interface ContactsKit_iOS_Tests : XCTestCase
 
 @property (nonatomic, strong) CKAddressBook *addressBook;
@@ -75,17 +73,18 @@
     
     
     __block NSError *error = nil;
-    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    XCTestExpectation *e1 = [self expectationWithDescription:@"expectation"];
     [self.addressBook addContact:contact completion:^(NSError *er) {
         error = er;
-        dispatch_semaphore_signal(sem);
+        [e1 fulfill];
     }];
     
-    dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW);
+    [self waitForExpectationsWithTimeout:10 handler:nil];
     
     XCTAssertNil(error);
     
     __block NSArray *contacts = nil;
+    XCTestExpectation *e2 = [self expectationWithDescription:@"expectation"];
     [self.addressBook contactsWithMask:CKContactFieldAll uinify:NO sortDescriptors:nil filter:^BOOL(CKContact *ctn) {
         
         return [ctn isEqual:contact];
@@ -95,11 +94,15 @@
         contacts = cnts;
         error = er;
         
-        dispatch_semaphore_signal(sem);
+        [e2 fulfill];
     }];
-    dispatch_semaphore_wait(sem, DISPATCH_TIME_NOW);
+    
+    [self waitForExpectationsWithTimeout:10 handler:nil];
     
     XCTAssertNil(error);
+    XCTAssertEqual(contacts.count, 1);
+    
+    
 }
 
 @end

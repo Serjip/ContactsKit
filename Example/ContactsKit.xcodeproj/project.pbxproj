@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A6318119385405BBB86AAC1 /* libPods-ContactsKit_OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DCE8F9F9C180DAC7F1BB56C /* libPods-ContactsKit_OSX.a */; };
+		520093891C60AB4D008894EF /* CKContact_iOS_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 520093881C60AB4D008894EF /* CKContact_iOS_Tests.m */; };
 		523531AA1C522EFB00FB1E80 /* CKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531A91C522EFB00FB1E80 /* CKAppDelegate.m */; };
 		523531AD1C522EFB00FB1E80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AC1C522EFB00FB1E80 /* main.m */; };
 		523531B01C522EFB00FB1E80 /* CKContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AF1C522EFB00FB1E80 /* CKContactsViewController.m */; };
@@ -40,6 +41,7 @@
 		4453FC7F71A6152D6390BE56 /* Pods-ContactsKit_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_iOS/Pods-ContactsKit_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		4724CC2686988794E829470F /* libPods-ContactsKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ContactsKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C05248B0E74A30EF4AF618 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		520093881C60AB4D008894EF /* CKContact_iOS_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKContact_iOS_Tests.m; sourceTree = "<group>"; };
 		523531A61C522EFB00FB1E80 /* ContactsKit_OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsKit_OSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523531A81C522EFB00FB1E80 /* CKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAppDelegate.h; sourceTree = "<group>"; };
 		523531A91C522EFB00FB1E80 /* CKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKAppDelegate.m; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		D2F3CC4B1C5FF56000298EE4 /* ContactsKit_iOS_Tests */ = {
 			isa = PBXGroup;
 			children = (
+				520093881C60AB4D008894EF /* CKContact_iOS_Tests.m */,
 				D2F3CC4C1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m */,
 				D2F3CC4E1C5FF56000298EE4 /* Info.plist */,
 			);
@@ -516,6 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				520093891C60AB4D008894EF /* CKContact_iOS_Tests.m in Sources */,
 				D2F3CC4D1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
