@@ -11,6 +11,7 @@
 
 @interface CKContact_iOS_Tests : XCTestCase
 @property (nonatomic, strong) CKAddressBook *addressBook;
+@property (nonatomic, strong) CKContact *randContact;
 @end
 
 @implementation CKContact_iOS_Tests
@@ -36,26 +37,54 @@
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
-- (void)testCoder
+- (void)testGetRandomContact
 {
     [self testRequestAccess];
     
-    __block CKContact *c1 = nil;
+    __block CKContact *contact = nil;
     XCTestExpectation *expectation = [self expectationWithDescription:@"ex"];
     [self.addressBook contactsWithMask:CKContactFieldAll uinify:YES sortDescriptors:nil filter:nil completion:^(NSArray *contacts, NSError *error) {
         XCTAssertNil(error, @"Error not nil");
         
-        c1 = [contacts objectAtIndex:arc4random() % contacts.count];
+        contact = [contacts objectAtIndex:arc4random() % contacts.count];
         
         [expectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:10.f handler:nil];
     
-    XCTAssertNotNil(c1, @"No contact found");
+    XCTAssertNotNil(contact, @"No contact found");
+    self.randContact = contact;
+}
+
+- (void)testCoder
+{
+    [self testGetRandomContact];
+    
+    CKContact *c1 = self.randContact;
+    XCTAssertNotNil(c1, @"Tested contact is nil");
     
     NSData *contactData = [NSKeyedArchiver archivedDataWithRootObject:c1];
     CKContact *c2 = [NSKeyedUnarchiver unarchiveObjectWithData:contactData];
     
+    [self isEqualToContact:c1 contact:c2];
+}
+
+- (void)testMutableContact
+{
+    [self testGetRandomContact];
+    
+    CKContact *c1 = self.randContact;
+    XCTAssertNotNil(c1, @"Tested contact is nil");
+    
+    CKMutableContact *c2 = [c1 mutableCopy];
+    
+    [self isEqualToContact:c1 contact:c2];
+}
+
+#pragma mark - Common methods
+
+- (void)isEqualToContact:(CKContact *)c1 contact:(CKContact *)c2
+{
     XCTAssertEqualObjects(c1.identifier, c2.identifier);
     
     XCTAssertEqualObjects(c1.firstName, c2.firstName);
@@ -82,7 +111,7 @@
     XCTAssertEqualObjects(c1.creationDate, c2.creationDate);
     XCTAssertEqualObjects(c1.modificationDate, c2.modificationDate);
     
-    XCTAssertTrue([c1 isEqual:c2]);
+    XCTAssertEqualObjects(c1, c2, @"The contacts is not equal");
 }
 
 
