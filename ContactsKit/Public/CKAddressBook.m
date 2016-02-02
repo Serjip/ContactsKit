@@ -252,7 +252,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 
 - (void)addContact:(CKMutableContact *)contact
 {
-    
+#warning Adding contact
 }
 
 - (void)addContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback
@@ -510,7 +510,8 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 - (BOOL)ck_addContact:(CKMutableContact *)contact error:(NSError **)error
 {
     NSParameterAssert(contact);
-
+    
+#if TARGET_OS_IOS
     if (! _addressBookRef)
     {
         if (error)
@@ -530,7 +531,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     if (result)
     {
         result = ABAddressBookAddRecord(_addressBookRef, recordRef, &errorRef);
-    
+
         if (error && errorRef != NULL)
         {
             *error = (__bridge_transfer NSError *)(errorRef);
@@ -551,6 +552,36 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     {
         CFRelease(recordRef);
     }
+#elif TARGET_OS_MAC
+    if (! _addressBook)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return NO;
+    }
+    
+    ABRecord *record = [[ABRecord alloc] initWithAddressBook:_addressBook];
+    ABRecordRef recordRef = (__bridge ABRecordRef)(record);
+    BOOL result = [contact setRecordRef:recordRef error:error];
+    
+    if (result)
+    {
+        result = [_addressBook hasUnsavedChanges];
+        if (! result && error)
+        {
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Address book hasn't changes", nil)};
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:2 userInfo:userInfo];
+        }
+    }
+    
+    if (result)
+    {
+        result = [_addressBook saveAndReturnError:error];
+    }
+#endif
     
     return result;
 }
