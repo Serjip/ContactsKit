@@ -174,13 +174,15 @@
     }
 }
 
+#pragma mark - Instance
+
 - (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    [dictionary setValue:_URL.absoluteString forKey:kABSocialProfileURLKey];
-    [dictionary setValue:_username forKey:kABSocialProfileUsernameKey];
-    [dictionary setValue:_userIdentifier forKey:kABSocialProfileUserIdentifierKey];
-    [dictionary setValue:_service forKey:kABSocialProfileServiceKey];
+    [dictionary setValue:self.URL.absoluteString forKey:kABSocialProfileURLKey];
+    [dictionary setValue:self.username forKey:kABSocialProfileUsernameKey];
+    [dictionary setValue:self.userIdentifier forKey:kABSocialProfileUserIdentifierKey];
+    [dictionary setValue:self.service forKey:kABSocialProfileServiceKey];
     
 #if TARGET_OS_IOS
     return ABMultiValueAddValueAndLabel(mutableMultiValueRef, (__bridge CFTypeRef)(dictionary), NULL, NULL);

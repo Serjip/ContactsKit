@@ -15,3 +15,7 @@
 - (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef;
 
 @end
+
+@interface CKMutableSocialProfile ()
+
+@end
