@@ -7,7 +7,6 @@
 //
 
 #import "CKAddress_Private.h"
-#import <AddressBook/AddressBook.h>
 
 #if TARGET_OS_IOS
 
@@ -150,6 +149,25 @@
     }
     
     return [self isEqualToAddress:object];
+}
+
+#pragma mark - Public Instace
+
+- (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef
+{
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    [dictionary setValue:self.street forKey:kABAddressStreetKey];
+    [dictionary setValue:self.city forKey:kABAddressCityKey];
+    [dictionary setValue:self.state forKey:kABAddressStateKey];
+    [dictionary setValue:self.zip forKey:kABAddressZIPKey];
+    [dictionary setValue:self.country forKey:kABAddressCountryKey];
+    [dictionary setValue:self.ISOCountryCode forKey:kABAddressCountryCodeKey];
+    
+#if TARGET_OS_IOS
+    return ABMultiValueAddValueAndLabel(mutableMultiValueRef, (__bridge CFTypeRef)(dictionary), NULL, NULL);
+#elif TARGET_OS_MAC
+    return ABMultiValueAdd(mutableMultiValueRef, (__bridge CFTypeRef)(dictionary), NULL, NULL);
+#endif
 }
 
 @end

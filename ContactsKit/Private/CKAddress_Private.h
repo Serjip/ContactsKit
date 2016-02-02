@@ -7,9 +7,15 @@
 //
 
 #import "CKAddress.h"
+#import <AddressBook/AddressBook.h>
 
 @interface CKAddress ()
 
 - (instancetype)initWithAddressDictionary:(NSDictionary *)dictionary;
+- (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef;
+
+@end
+
+@interface CKMutableAddress ()
 
 @end
