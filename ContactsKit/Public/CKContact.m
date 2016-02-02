@@ -520,6 +520,97 @@
     {
         return NO;
     }
+    
+    if (! [self.firstName isEqualToString:contact.firstName])
+    {
+        return NO;
+    }
+    
+    if (! [self.lastName isEqualToString:contact.lastName])
+    {
+        return NO;
+    }
+    
+    if (! [self.middleName isEqualToString:contact.middleName])
+    {
+        return NO;
+    }
+    
+    if (! [self.nickname isEqualToString:contact.nickname])
+    {
+        return NO;
+    }
+    
+    if (! [self.company isEqualToString:contact.company])
+    {
+        return NO;
+    }
+    
+    if (! [self.jobTitle isEqualToString:contact.jobTitle])
+    {
+        return NO;
+    }
+    
+    if (! [self.department isEqualToString:contact.department])
+    {
+        return NO;
+    }
+    
+    if (! [self.note isEqualToString:contact.note])
+    {
+        return NO;
+    }
+    
+    if (! [self.imageData isEqualToData:contact.imageData])
+    {
+        return NO;
+    }
+    
+    if (! [self.thumbnailData isEqualToData:contact.thumbnailData])
+    {
+        return NO;
+    }
+    
+    if (! [self.phones isEqualToArray:contact.phones])
+    {
+        return NO;
+    }
+    
+    if (! [self.socialProfiles isEqualToArray:contact.socialProfiles])
+    {
+        return NO;
+    }
+    
+    if (! [self.emails isEqualToArray:contact.emails])
+    {
+        return NO;
+    }
+    
+    if (! [self.addresses isEqualToArray:contact.addresses])
+    {
+        return NO;
+    }
+    
+    if (! [self.URLs isEqualToArray:contact.URLs])
+    {
+        return NO;
+    }
+    
+    if (! [self.birthday isEqualToDate:contact.birthday])
+    {
+        return NO;
+    }
+    
+    if (! [self.creationDate isEqualToDate:contact.creationDate])
+    {
+        return NO;
+    }
+    
+    if (! [self.modificationDate isEqualToDate:contact.modificationDate])
+    {
+        return NO;
+    }
+    
     return YES;
 }
 
