@@ -15,6 +15,10 @@
 #import "CKPhone.h"
 #import "CKEmail.h"
 
+#import "CKMacros.h"
+#import "CKAutoCoder.h"
+
+#import <objc/runtime.h>
 #import <AddressBook/AddressBook.h>
 
 #if !(TARGET_OS_IOS)
@@ -48,8 +52,6 @@
 #define kABMultiDictionaryPropertyType 1
 
 #endif
-
-#define __IS_EQUAL(x, y) (x == y || [x isEqual:y])
 
 @implementation CKContact
 
@@ -387,30 +389,17 @@
     CKContact *copy = [[[self class] alloc] init];
     if (copy)
     {
-        copy->_identifier = [self.identifier copyWithZone:zone];
-        copy->_firstName = [self.firstName copyWithZone:zone];
-        copy->_middleName = [self.middleName copyWithZone:zone];
-        copy->_lastName = [self.lastName copyWithZone:zone];
-        copy->_nickname = [self.nickname copyWithZone:zone];
-        
-        copy->_company = [self.company copyWithZone:zone];
-        copy->_jobTitle = [self.jobTitle copyWithZone:zone];
-        copy->_department = [self.department copyWithZone:zone];
-        
-        copy->_note = [self.note copyWithZone:zone];
-        
-        copy->_imageData = [self.imageData copyWithZone:zone];
-        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
-        
-        copy->_phones = [self.phones copyWithZone:zone];
-        copy->_emails = [self.emails copyWithZone:zone];
-        copy->_addresses = [self.addresses copyWithZone:zone];
-        copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
-        copy->_URLs = [self.URLs copyWithZone:zone];
-        
-        copy->_birthday = [self.birthday copyWithZone:zone];
-        copy->_creationDate = [self.creationDate copyWithZone:zone];
-        copy->_modificationDate = [self.modificationDate copyWithZone:zone];
+        [copy enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
+            
+            if (type[0] == '@')
+            {
+                id value = [self valueForKey:name];
+                if ([value conformsToProtocol:@protocol(NSCopying)])
+                {
+                    [copy setValue:[value copyWithZone:zone] forKey:name];
+                }
+            }
+        }];
     }
     return copy;
 }
@@ -422,30 +411,17 @@
     CKMutableContact *mutableCopy = [[CKMutableContact alloc] init];
     if (mutableCopy)
     {
-        mutableCopy.identifier = [self.identifier copyWithZone:zone];
-        mutableCopy.firstName = [self.firstName copyWithZone:zone];
-        mutableCopy.middleName = [self.middleName copyWithZone:zone];
-        mutableCopy.lastName = [self.lastName copyWithZone:zone];
-        mutableCopy.nickname = [self.nickname copyWithZone:zone];
-        
-        mutableCopy.company = [self.company copyWithZone:zone];
-        mutableCopy.jobTitle = [self.jobTitle copyWithZone:zone];
-        mutableCopy.department = [self.department copyWithZone:zone];
-        
-        mutableCopy.note = [self.note copyWithZone:zone];
-        
-        mutableCopy.imageData = [self.imageData copyWithZone:zone];
-        mutableCopy.thumbnailData = [self.thumbnailData copyWithZone:zone];
-        
-        mutableCopy.phones = [self.phones copyWithZone:zone];
-        mutableCopy.emails = [self.emails copyWithZone:zone];
-        mutableCopy.addresses = [self.addresses copyWithZone:zone];
-        mutableCopy.socialProfiles = [self.socialProfiles copyWithZone:zone];
-        mutableCopy.URLs = [self.URLs copyWithZone:zone];
-        
-        mutableCopy.birthday = [self.birthday copyWithZone:zone];
-        mutableCopy.creationDate = [self.creationDate copyWithZone:zone];
-        mutableCopy.modificationDate = [self.modificationDate copyWithZone:zone];
+        [mutableCopy enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
+            
+            if (type[0] == '@')
+            {
+                id value = [self valueForKey:name];
+                if ([value conformsToProtocol:@protocol(NSCopying)])
+                {
+                    [mutableCopy setValue:[value copyWithZone:zone] forKey:name];
+                }
+            }
+        }];
     }
     return mutableCopy;
 }
@@ -457,60 +433,14 @@
     self = [super init];
     if (self)
     {
-        _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(identifier))];
-        _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(firstName))];
-        _middleName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(middleName))];
-        _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(lastName))];
-        _nickname = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(nickname))];
-        
-        _company = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(company))];
-        _jobTitle = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(jobTitle))];
-        _department = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(department))];
-
-        _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(note))];
-        
-        _imageData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(imageData))];
-        _thumbnailData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(thumbnailData))];
-        
-        _phones = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(phones))];
-        _emails = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(emails))];
-        _addresses = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(addresses))];
-        _socialProfiles = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(socialProfiles))];
-        _URLs = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(URLs))];
-        
-        _birthday = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(birthday))];
-        _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(creationDate))];
-        _modificationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(modificationDate))];
+        [aDecoder decodeIvars:self ignoreIvars:nil];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:_identifier forKey:NSStringFromSelector(@selector(identifier))];
-    [aCoder encodeObject:_firstName forKey:NSStringFromSelector(@selector(firstName))];
-    [aCoder encodeObject:_middleName forKey:NSStringFromSelector(@selector(middleName))];
-    [aCoder encodeObject:_lastName forKey:NSStringFromSelector(@selector(lastName))];
-    [aCoder encodeObject:_nickname forKey:NSStringFromSelector(@selector(nickname))];
-    
-    [aCoder encodeObject:_company forKey:NSStringFromSelector(@selector(company))];
-    [aCoder encodeObject:_jobTitle forKey:NSStringFromSelector(@selector(jobTitle))];
-    [aCoder encodeObject:_department forKey:NSStringFromSelector(@selector(department))];
-    
-    [aCoder encodeObject:_note forKey:NSStringFromSelector(@selector(note))];
-
-    [aCoder encodeObject:_imageData forKey:NSStringFromSelector(@selector(imageData))];
-    [aCoder encodeObject:_thumbnailData forKey:NSStringFromSelector(@selector(thumbnailData))];
-    
-    [aCoder encodeObject:_phones forKey:NSStringFromSelector(@selector(phones))];
-    [aCoder encodeObject:_emails forKey:NSStringFromSelector(@selector(emails))];
-    [aCoder encodeObject:_addresses forKey:NSStringFromSelector(@selector(addresses))];
-    [aCoder encodeObject:_socialProfiles forKey:NSStringFromSelector(@selector(socialProfiles))];
-    [aCoder encodeObject:_URLs forKey:NSStringFromSelector(@selector(URLs))];
-
-    [aCoder encodeObject:_birthday forKey:NSStringFromSelector(@selector(birthday))];
-    [aCoder encodeObject:_creationDate forKey:NSStringFromSelector(@selector(creationDate))];
-    [aCoder encodeObject:_modificationDate forKey:NSStringFromSelector(@selector(modificationDate))];
+    [aCoder encodeIvars:self ignoreIvars:nil];
 }
 
 + (BOOL)supportsSecureCoding
@@ -901,6 +831,5 @@
     }
     return result;
 }
-
 
 @end

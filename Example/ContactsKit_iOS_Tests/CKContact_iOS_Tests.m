@@ -81,6 +81,46 @@
     [self isEqualToContact:c1 contact:c2];
 }
 
+- (void)testContactCopy
+{
+    [self testGetRandomContact];
+    
+    CKContact *c1 = self.randContact;
+    XCTAssertNotNil(c1, @"Tested contact is nil");
+    
+    CKContact *c2 = [c1 copy];
+    
+    [self isEqualToContact:c1 contact:c2];
+}
+
+- (void)testMutableContactCopy
+{
+    [self testGetRandomContact];
+    
+    CKContact *c1 = self.randContact;
+    XCTAssertNotNil(c1, @"Tested contact is nil");
+    
+    CKMutableContact *c2 = [c1 mutableCopy];
+    CKMutableContact *c3 = [c2 copy];
+    
+    [self isEqualToContact:c2 contact:c3];
+}
+
+- (void)testMutablyCoding
+{
+    [self testGetRandomContact];
+    
+    CKContact *c1 = self.randContact;
+    XCTAssertNotNil(c1, @"Tested contact is nil");
+    CKMutableContact *c2 = [c1 mutableCopy];
+    
+    
+    NSData *contactData = [NSKeyedArchiver archivedDataWithRootObject:c2];
+    CKMutableContact *c3 = [NSKeyedUnarchiver unarchiveObjectWithData:contactData];
+    
+    [self isEqualToContact:c2 contact:c3];
+}
+
 #pragma mark - Common methods
 
 - (void)isEqualToContact:(CKContact *)c1 contact:(CKContact *)c2
