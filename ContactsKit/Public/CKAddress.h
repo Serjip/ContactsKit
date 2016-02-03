@@ -13,7 +13,7 @@
 @property (nonatomic, strong, readonly) NSString *street;
 @property (nonatomic, strong, readonly) NSString *city;
 @property (nonatomic, strong, readonly) NSString *state;
-@property (nonatomic, strong, readonly) NSString *zip;
+@property (nonatomic, strong, readonly) NSString *ZIP;
 @property (nonatomic, strong, readonly) NSString *country;
 @property (nonatomic, strong, readonly) NSString *ISOCountryCode;
 
@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSString *street;
 @property (nonatomic, strong) NSString *city;
 @property (nonatomic, strong) NSString *state;
-@property (nonatomic, strong) NSString *zip;
+@property (nonatomic, strong) NSString *ZIP;
 @property (nonatomic, strong) NSString *country;
 @property (nonatomic, strong) NSString *ISOCountryCode;
 
