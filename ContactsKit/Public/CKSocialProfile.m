@@ -188,4 +188,11 @@
 
 @synthesize URL, username, userIdentifier, service, serviceType;
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [super mutableCopyWithZone:zone];
+}
+
 @end
