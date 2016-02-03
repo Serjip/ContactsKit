@@ -49,6 +49,8 @@
 
 #endif
 
+#define __IS_EQUAL(x, y) (x == y || [x isEqual:y])
+
 @implementation CKContact
 
 #pragma mark - Lifecycle
@@ -520,97 +522,97 @@
 
 - (BOOL)isEqualToContact:(CKContact *)contact
 {
-    if (! [self.identifier isEqualToString:contact.identifier])
+    if (! __IS_EQUAL(self.identifier, contact.identifier))
     {
         return NO;
     }
     
-    if (! [self.firstName isEqualToString:contact.firstName])
+    if (! __IS_EQUAL(self.firstName, contact.firstName))
     {
         return NO;
     }
     
-    if (! [self.lastName isEqualToString:contact.lastName])
+    if (! __IS_EQUAL(self.lastName, contact.lastName))
     {
         return NO;
     }
     
-    if (! [self.middleName isEqualToString:contact.middleName])
+    if (! __IS_EQUAL(self.middleName, contact.middleName))
     {
         return NO;
     }
     
-    if (! [self.nickname isEqualToString:contact.nickname])
+    if (! __IS_EQUAL(self.nickname, contact.nickname))
     {
         return NO;
     }
     
-    if (! [self.company isEqualToString:contact.company])
+    if (! __IS_EQUAL(self.company, contact.company))
     {
         return NO;
     }
     
-    if (! [self.jobTitle isEqualToString:contact.jobTitle])
+    if (! __IS_EQUAL(self.jobTitle, contact.jobTitle))
     {
         return NO;
     }
     
-    if (! [self.department isEqualToString:contact.department])
+    if (! __IS_EQUAL(self.department, contact.department))
     {
         return NO;
     }
     
-    if (! [self.note isEqualToString:contact.note])
+    if (! __IS_EQUAL(self.note, contact.note))
     {
         return NO;
     }
     
-    if (! [self.imageData isEqualToData:contact.imageData])
+    if (! __IS_EQUAL(self.imageData, contact.imageData))
     {
         return NO;
     }
     
-    if (! [self.thumbnailData isEqualToData:contact.thumbnailData])
+    if (! __IS_EQUAL(self.thumbnailData, contact.thumbnailData))
     {
         return NO;
     }
     
-    if (! [self.phones isEqualToArray:contact.phones])
+    if (! __IS_EQUAL(self.phones, contact.phones))
     {
         return NO;
     }
     
-    if (! [self.socialProfiles isEqualToArray:contact.socialProfiles])
+    if (! __IS_EQUAL(self.socialProfiles, contact.socialProfiles))
     {
         return NO;
     }
     
-    if (! [self.emails isEqualToArray:contact.emails])
+    if (! __IS_EQUAL(self.emails, contact.emails))
     {
         return NO;
     }
     
-    if (! [self.addresses isEqualToArray:contact.addresses])
+    if (! __IS_EQUAL(self.addresses, contact.addresses))
     {
         return NO;
     }
     
-    if (! [self.URLs isEqualToArray:contact.URLs])
+    if (! __IS_EQUAL(self.URLs, contact.URLs))
     {
         return NO;
     }
     
-    if (! [self.birthday isEqualToDate:contact.birthday])
+    if (! __IS_EQUAL(self.birthday, contact.birthday))
     {
         return NO;
     }
     
-    if (! [self.creationDate isEqualToDate:contact.creationDate])
+    if (! __IS_EQUAL(self.creationDate, contact.creationDate))
     {
         return NO;
     }
     
-    if (! [self.modificationDate isEqualToDate:contact.modificationDate])
+    if (! __IS_EQUAL(self.modificationDate, contact.modificationDate))
     {
         return NO;
     }

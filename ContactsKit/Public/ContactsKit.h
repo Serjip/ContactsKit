@@ -5,6 +5,9 @@
 //  Copyright (c) 2016 ttitt. All rights reserved.
 //
 
+#ifndef __ContactsKit__
+#define __ContactsKit__
+
 #import <ContactsKit/CKAddress.h>
 #import <ContactsKit/CKAddressBook.h>
 #import <ContactsKit/CKContact.h>
@@ -12,3 +15,5 @@
 #import <ContactsKit/CKPhone.h>
 #import <ContactsKit/CKSocialProfile.h>
 #import <ContactsKit/CKURL.h>
+
+#endif
