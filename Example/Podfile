@@ -20,3 +20,10 @@ target "ContactsKit_iOS_Tests", :exclusive => true do
   platform :ios, "7.0"
 
 end
+
+target "ContactsKit_iOS_Logic_Tests", :exclusive => true do
+  
+  pod "ContactsKit", :path => "../"
+  platform :ios, "7.0"
+
+end

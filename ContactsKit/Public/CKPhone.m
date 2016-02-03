@@ -105,7 +105,7 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ (%@)", self.number, self.originalLabel];
+    return [NSString stringWithFormat:@"%p %@ (%@)", self, self.number, self.originalLabel];
 }
 
 #pragma mark - Class methods
@@ -134,5 +134,12 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 @dynamic originalLabel;
 @synthesize number;
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [super mutableCopyWithZone:zone];
+}
 
 @end
