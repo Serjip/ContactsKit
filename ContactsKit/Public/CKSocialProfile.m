@@ -8,6 +8,9 @@
 
 #import "CKSocialProfile_Private.h"
 
+#import "CKMacros.h"
+#import "CKAutoCoder.h"
+
 #if TARGET_OS_IOS
 
 #define kABSocialProfileURLKey              (__bridge_transfer NSString *)kABPersonSocialProfileURLKey
@@ -74,22 +77,14 @@
     self = [super init];
     if (self)
     {
-        _URL = [aDecoder decodeObjectOfClass:[NSURL class] forKey:NSStringFromSelector(@selector(URL))];
-        _username = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(username))];
-        _userIdentifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(userIdentifier))];
-        _service = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(service))];
-        _serviceType = (NSUInteger)[aDecoder decodeIntegerForKey:NSStringFromSelector(@selector(serviceType))];
+        [aDecoder decodeIvars:self ignoreIvars:nil];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:_URL forKey:NSStringFromSelector(@selector(URL))];
-    [aCoder encodeObject:_username forKey:NSStringFromSelector(@selector(username))];
-    [aCoder encodeObject:_userIdentifier forKey:NSStringFromSelector(@selector(userIdentifier))];
-    [aCoder encodeObject:_service forKey:NSStringFromSelector(@selector(service))];
-    [aCoder encodeInteger:(NSInteger)_serviceType forKey:NSStringFromSelector(@selector(serviceType))];
+    [aCoder encodeIvars:self ignoreIvars:nil];
 }
 
 + (BOOL)supportsSecureCoding
@@ -106,22 +101,22 @@
         return NO;
     }
     
-    if (! [self.service isEqualToString:socialProfile.service])
+    if (! __IS_EQUAL(self.service, socialProfile.service))
     {
         return NO;
     }
     
-    if (! [self.username isEqualToString:socialProfile.username])
+    if (! __IS_EQUAL(self.username, socialProfile.username))
     {
         return NO;
     }
     
-    if (! [self.userIdentifier isEqualToString:socialProfile.userIdentifier])
+    if (! __IS_EQUAL(self.userIdentifier, socialProfile.userIdentifier))
     {
         return NO;
     }
     
-    if (! [self.URL.absoluteString isEqualToString:socialProfile.URL.absoluteString])
+    if (! __IS_EQUAL(self.URL, socialProfile.URL))
     {
         return NO;
     }
