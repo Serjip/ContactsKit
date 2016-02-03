@@ -389,17 +389,30 @@
     CKContact *copy = [[[self class] alloc] init];
     if (copy)
     {
-        [copy enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
-            
-            if (type[0] == '@')
-            {
-                id value = [self valueForKey:name];
-                if ([value conformsToProtocol:@protocol(NSCopying)])
-                {
-                    [copy setValue:[value copyWithZone:zone] forKey:name];
-                }
-            }
-        }];
+        copy->_identifier = [self.identifier copyWithZone:zone];
+        copy->_firstName = [self.firstName copyWithZone:zone];
+        copy->_middleName = [self.middleName copyWithZone:zone];
+        copy->_lastName = [self.lastName copyWithZone:zone];
+        copy->_nickname = [self.nickname copyWithZone:zone];
+        
+        copy->_company = [self.company copyWithZone:zone];
+        copy->_jobTitle = [self.jobTitle copyWithZone:zone];
+        copy->_department = [self.department copyWithZone:zone];
+        
+        copy->_note = [self.note copyWithZone:zone];
+        
+        copy->_imageData = [self.imageData copyWithZone:zone];
+        copy->_thumbnailData = [self.thumbnailData copyWithZone:zone];
+        
+        copy->_phones = [self.phones copyWithZone:zone];
+        copy->_emails = [self.emails copyWithZone:zone];
+        copy->_addresses = [self.addresses copyWithZone:zone];
+        copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
+        copy->_URLs = [self.URLs copyWithZone:zone];
+        
+        copy->_birthday = [self.birthday copyWithZone:zone];
+        copy->_creationDate = [self.creationDate copyWithZone:zone];
+        copy->_modificationDate = [self.modificationDate copyWithZone:zone];
     }
     return copy;
 }
@@ -411,17 +424,30 @@
     CKMutableContact *mutableCopy = [[CKMutableContact alloc] init];
     if (mutableCopy)
     {
-        [mutableCopy enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
-            
-            if (type[0] == '@')
-            {
-                id value = [self valueForKey:name];
-                if ([value conformsToProtocol:@protocol(NSCopying)])
-                {
-                    [mutableCopy setValue:[value copyWithZone:zone] forKey:name];
-                }
-            }
-        }];
+        mutableCopy.identifier = [self.identifier copyWithZone:zone];
+        mutableCopy.firstName = [self.firstName copyWithZone:zone];
+        mutableCopy.middleName = [self.middleName copyWithZone:zone];
+        mutableCopy.lastName = [self.lastName copyWithZone:zone];
+        mutableCopy.nickname = [self.nickname copyWithZone:zone];
+        
+        mutableCopy.company = [self.company copyWithZone:zone];
+        mutableCopy.jobTitle = [self.jobTitle copyWithZone:zone];
+        mutableCopy.department = [self.department copyWithZone:zone];
+        
+        mutableCopy.note = [self.note copyWithZone:zone];
+        
+        mutableCopy.imageData = [self.imageData copyWithZone:zone];
+        mutableCopy.thumbnailData = [self.thumbnailData copyWithZone:zone];
+        
+        mutableCopy.phones = [self.phones copyWithZone:zone];
+        mutableCopy.emails = [self.emails copyWithZone:zone];
+        mutableCopy.addresses = [self.addresses copyWithZone:zone];
+        mutableCopy.socialProfiles = [self.socialProfiles copyWithZone:zone];
+        mutableCopy.URLs = [self.URLs copyWithZone:zone];
+        
+        mutableCopy.birthday = [self.birthday copyWithZone:zone];
+        mutableCopy.creationDate = [self.creationDate copyWithZone:zone];
+        mutableCopy.modificationDate = [self.modificationDate copyWithZone:zone];
     }
     return mutableCopy;
 }
@@ -644,6 +670,15 @@
 @synthesize note, imageData, thumbnailData;
 @synthesize phones, emails, addresses, socialProfiles, URLs;
 @synthesize birthday, creationDate, modificationDate;
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [super mutableCopyWithZone:zone];
+}
+
+#pragma mark - Instace
 
 - (BOOL)setRecordRef:(ABRecordRef)recordRef error:(NSError **)error
 {
