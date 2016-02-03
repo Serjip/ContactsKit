@@ -173,9 +173,23 @@
         {
             case '@':
             {
-#warning Secure coding
                 Ivar ivar = class_getInstanceVariable([object class], name.UTF8String);
-                object_setIvar(object, ivar, [self decodeObjectForKey:name]);
+                NSString *className = @(strndup(type + 2, strlen(type) - 3));
+                Class class = NSClassFromString(className);
+                
+                id value;
+                
+                if (class != Nil)
+                {
+                    [self decodeObjectOfClass:class forKey:name];
+                }
+                else
+                {
+                    [self decodeObjectForKey:name];
+                }
+                
+                object_setIvar(object, ivar, value);
+                
                 break;
             }
             case '#':
@@ -266,8 +280,8 @@
             {
                 NSString *reason = [NSString stringWithFormat:@"Cannot decode Ivar %@. Unsupported type %s.", name, type];
                 [[NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil] raise];
-            }
                 break;
+            }
         }
     }];
 }
