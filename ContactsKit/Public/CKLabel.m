@@ -84,6 +84,11 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 
 - (BOOL)isEqualToLabel:(CKLabel *)label
 {
+    if (! label)
+    {
+        return NO;
+    }
+    
     return __IS_EQUAL(self.originalLabel, label.originalLabel);
 }
 

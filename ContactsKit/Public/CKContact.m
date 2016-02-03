@@ -452,6 +452,11 @@
 
 - (BOOL)isEqualToContact:(CKContact *)contact
 {
+    if (! contact)
+    {
+        return NO;
+    }
+    
     if (! __IS_EQUAL(self.identifier, contact.identifier))
     {
         return NO;

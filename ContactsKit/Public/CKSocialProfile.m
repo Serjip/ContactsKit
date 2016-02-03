@@ -96,6 +96,11 @@
 
 - (BOOL)isEqualToSocialProfile:(CKSocialProfile *)socialProfile
 {
+    if (! socialProfile)
+    {
+        return NO;
+    }
+    
     if (self.serviceType != socialProfile.serviceType)
     {
         return NO;

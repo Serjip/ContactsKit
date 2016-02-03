@@ -89,6 +89,11 @@
 
 - (BOOL)isEqualToAddress:(CKAddress *)address
 {
+    if (! address)
+    {
+        return NO;
+    }
+    
     if (! __IS_EQUAL(self.street, address.street))
     {
         return NO;
