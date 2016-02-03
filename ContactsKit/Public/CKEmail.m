@@ -8,6 +8,7 @@
 
 #import "CKEmail.h"
 #import "CKLabel_Private.h"
+#import "CKMacros.h"
 
 NSString * const CKEmailiCloud = @"iCloud";
 
@@ -71,7 +72,17 @@ NSString * const CKEmailiCloud = @"iCloud";
 
 - (BOOL)isEqualToAddress:(CKEmail *)email
 {
-    return ([email.address isEqualToString:self.address] && [email.originalLabel isEqualToString:self.originalLabel]);
+    if (! [super isEqual:email])
+    {
+        return NO;
+    }
+    
+    if (! __IS_EQUAL(self.address, email.address))
+    {
+        return NO;
+    }
+    
+    return YES;
 }
 
 - (BOOL)isEqual:(id)object

@@ -7,6 +7,7 @@
 //
 
 #import "CKLabel_Private.h"
+#import "CKMacros.h"
 
 NSString * const CKLabelHome = @"_$!<Home>!$_";
 NSString * const CKLabelWork = @"_$!<Work>!$_";
@@ -83,7 +84,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 
 - (BOOL)isEqualToLabel:(CKLabel *)label
 {
-    return [label.originalLabel isEqualToString:self.originalLabel];
+    return __IS_EQUAL(self.originalLabel, label.originalLabel);
 }
 
 - (BOOL)isEqual:(id)object
