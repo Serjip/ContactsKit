@@ -176,20 +176,10 @@
                 Ivar ivar = class_getInstanceVariable([object class], name.UTF8String);
                 NSString *className = @(strndup(type + 2, strlen(type) - 3));
                 Class class = NSClassFromString(className);
-                
-                id value;
-                
                 if (class != Nil)
                 {
-                    [self decodeObjectOfClass:class forKey:name];
+                    object_setIvar(object, ivar, [self decodeObjectOfClass:class forKey:name]);
                 }
-                else
-                {
-                    [self decodeObjectForKey:name];
-                }
-                
-                object_setIvar(object, ivar, value);
-                
                 break;
             }
             case '#':
