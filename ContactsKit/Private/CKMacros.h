@@ -20,6 +20,11 @@
 #define kABAddressZIPKey            (__bridge NSString *)kABPersonAddressZIPKey
 #define kABAddressCountryKey        (__bridge NSString *)kABPersonAddressCountryKey
 #define kABAddressCountryCodeKey    (__bridge NSString *)kABPersonAddressCountryCodeKey
+// Social profile
+#define kABSocialProfileURLKey              (__bridge_transfer NSString *)kABPersonSocialProfileURLKey
+#define kABSocialProfileUsernameKey         (__bridge_transfer NSString *)kABPersonSocialProfileUsernameKey
+#define kABSocialProfileUserIdentifierKey   (__bridge_transfer NSString *)kABPersonSocialProfileUserIdentifierKey
+#define kABSocialProfileServiceKey          (__bridge_transfer NSString *)kABPersonSocialProfileServiceKey
 
 #endif
 

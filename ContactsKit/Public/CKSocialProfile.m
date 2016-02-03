@@ -11,15 +11,6 @@
 #import "CKMacros.h"
 #import "CKAutoCoder.h"
 
-#if TARGET_OS_IOS
-
-#define kABSocialProfileURLKey              (__bridge_transfer NSString *)kABPersonSocialProfileURLKey
-#define kABSocialProfileUsernameKey         (__bridge_transfer NSString *)kABPersonSocialProfileUsernameKey
-#define kABSocialProfileUserIdentifierKey   (__bridge_transfer NSString *)kABPersonSocialProfileUserIdentifierKey
-#define kABSocialProfileServiceKey          (__bridge_transfer NSString *)kABPersonSocialProfileServiceKey
-
-#endif
-
 @implementation CKSocialProfile
 
 #pragma mark - Lifecycle
