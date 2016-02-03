@@ -173,6 +173,7 @@
         {
             case '@':
             {
+#warning Secure coding
                 Ivar ivar = class_getInstanceVariable([object class], name.UTF8String);
                 object_setIvar(object, ivar, [self decodeObjectForKey:name]);
                 break;
@@ -180,7 +181,7 @@
             case '#':
             {
                 Ivar ivar = class_getInstanceVariable([object class], name.UTF8String);
-                NSString *className = [self decodeObjectForKey:name];
+                NSString *className = [self decodeObjectOfClass:[NSString class] forKey:name];
                 if (className)
                 {
                     object_setIvar(object, ivar, NSClassFromString(className));
@@ -189,64 +190,64 @@
             }
             case ':':
             {
-                NSString *selName = [self decodeObjectForKey:name];
-                if (selName)
+                NSString *selector = [self decodeObjectOfClass:[NSString class] forKey:name];
+                if (selector)
                 {
-                    *(SEL *)address = NSSelectorFromString(selName);
+                    *(SEL *)address = NSSelectorFromString(selector);
                 }
                 break;
             }
                 
             case 'c':
-                *(BOOL *)address = [[self decodeObjectForKey:name] boolValue];
+                *(BOOL *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] boolValue];
                 break;
                 
             case 'C':
-                *(unsigned char *)address = [[self decodeObjectForKey:name] unsignedCharValue];
+                *(unsigned char *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] unsignedCharValue];
                 break;
                 
             case 'i':
-                *(int *)address = [[self decodeObjectForKey:name] intValue];
+                *(int *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] intValue];
                 break;
                 
             case 'I':
-                *(unsigned int *)address = [[self decodeObjectForKey:name] unsignedIntValue];
+                *(unsigned int *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] unsignedIntValue];
                 break;
                 
             case 's':
-                *(short *)address = [[self decodeObjectForKey:name] shortValue];
+                *(short *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] shortValue];
                 break;
                 
             case 'S':
-                *(unsigned short *)address = [[self decodeObjectForKey:name] unsignedShortValue];
+                *(unsigned short *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] unsignedShortValue];
                 break;
                 
             case 'l':
-                *(long *)address = [[self decodeObjectForKey:name] longValue];
+                *(long *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] longValue];
                 break;
                 
             case 'L':
-                *(unsigned long *)address = [[self decodeObjectForKey:name] unsignedLongValue];
+                *(unsigned long *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] unsignedLongValue];
                 break;
                 
             case 'q':
-                *(long long *)address = [[self decodeObjectForKey:name] longLongValue];
+                *(long long *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] longLongValue];
                 break;
                 
             case 'Q':
-                *(unsigned long long *)address = [[self decodeObjectForKey:name] unsignedLongLongValue];
+                *(unsigned long long *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] unsignedLongLongValue];
                 break;
                 
             case 'f':
-                *(float *)address = [[self decodeObjectForKey:name] floatValue];
+                *(float *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] floatValue];
                 break;
                 
             case 'd':
-                *(double *)address = [[self decodeObjectForKey:name] doubleValue];
+                *(double *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] doubleValue];
                 break;
                 
             case 'B':
-                *(bool *)address = [[self decodeObjectForKey:name] boolValue];
+                *(bool *)address = [[self decodeObjectOfClass:[NSNumber class] forKey:name] boolValue];
                 break;
                 
             case '*':
