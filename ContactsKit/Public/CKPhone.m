@@ -8,6 +8,7 @@
 
 #import "CKPhone.h"
 #import "CKLabel_Private.h"
+#import "CKMacros.h"
 
 NSString * const CKPhoneiPhone = @"iPhone";
 NSString * const CKPhoneMobile = @"_$!<Mobile>!$_";
@@ -77,7 +78,12 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 - (BOOL)isEqualToPhone:(CKPhone *)phone
 {
-    return ([phone.number isEqualToString:self.number] && [phone.originalLabel isEqual:self.originalLabel]);
+    if (! [super isEqual:phone])
+    {
+        return NO;
+    }
+    
+    return __IS_EQUAL(self.number, phone.number);
 }
 
 - (BOOL)isEqual:(id)object

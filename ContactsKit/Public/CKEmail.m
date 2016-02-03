@@ -77,12 +77,7 @@ NSString * const CKEmailiCloud = @"iCloud";
         return NO;
     }
     
-    if (! __IS_EQUAL(self.address, email.address))
-    {
-        return NO;
-    }
-    
-    return YES;
+    return __IS_EQUAL(self.address, email.address);
 }
 
 - (BOOL)isEqual:(id)object

@@ -8,6 +8,7 @@
 
 #import "CKURL.h"
 #import "CKLabel_Private.h"
+#import "CKMacros.h"
 
 NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
 
@@ -71,7 +72,12 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
 
 - (BOOL)isEqualToURL:(CKURL *)URL
 {
-    return ([URL.URLString isEqualToString:self.URLString] && [URL.originalLabel isEqualToString:self.originalLabel]);
+    if (! [super isEqual:URL])
+    {
+        return NO;
+    }
+    
+    return __IS_EQUAL(self.URLString, URL.URLString);
 }
 
 - (BOOL)isEqual:(id)object
