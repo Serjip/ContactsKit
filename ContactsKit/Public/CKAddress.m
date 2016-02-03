@@ -162,4 +162,11 @@
 
 @synthesize street, city, state, ZIP, country, ISOCountryCode;
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [super mutableCopyWithZone:zone];
+}
+
 @end
