@@ -52,8 +52,6 @@
     
     [object enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
         
-        NSLog(@"%@", name);
-        
         if ([list containsObject:[NSValue valueWithPointer:address]])
         {
             return;
@@ -161,8 +159,6 @@
     }
     
     [object enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
-        
-        NSLog(@"%@", name);
         
         if ([list containsObject:[NSValue valueWithPointer:address]])
         {
