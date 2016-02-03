@@ -10,17 +10,6 @@
 #import "CKMacros.h"
 #import "CKAutoCoder.h"
 
-#if TARGET_OS_IOS
-
-#define kABAddressStreetKey         (__bridge NSString *)kABPersonAddressStreetKey
-#define kABAddressCityKey           (__bridge NSString *)kABPersonAddressCityKey
-#define kABAddressStateKey          (__bridge NSString *)kABPersonAddressStateKey
-#define kABAddressZIPKey            (__bridge NSString *)kABPersonAddressZIPKey
-#define kABAddressCountryKey        (__bridge NSString *)kABPersonAddressCountryKey
-#define kABAddressCountryCodeKey    (__bridge NSString *)kABPersonAddressCountryCodeKey
-
-#endif
-
 @implementation CKAddress
 
 #pragma mark - Lifecycle
