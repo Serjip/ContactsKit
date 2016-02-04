@@ -33,7 +33,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CKAddress *copy = [[[self class] alloc] init];
+    CKAddress *copy = [[[self class] allocWithZone:zone] init];
     if (copy)
     {
         copy->_street = [self.street copyWithZone:zone];
@@ -50,7 +50,7 @@
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKMutableAddress *mutableCopy = [[CKMutableAddress alloc] init];
+    CKMutableAddress *mutableCopy = [[CKMutableAddress allocWithZone:zone] init];
     if (mutableCopy)
     {
         mutableCopy.street = [self.street copyWithZone:zone];

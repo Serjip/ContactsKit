@@ -385,7 +385,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CKContact *copy = [[[self class] alloc] init];
+    CKContact *copy = [[[self class] allocWithZone:zone] init];
     if (copy)
     {
         copy->_identifier = [self.identifier copyWithZone:zone];
@@ -420,7 +420,7 @@
 
 - (id)mutableCopyWithZone:(nullable NSZone *)zone
 {
-    CKMutableContact *mutableCopy = [[CKMutableContact alloc] init];
+    CKMutableContact *mutableCopy = [[CKMutableContact allocWithZone:zone] init];
     if (mutableCopy)
     {
         mutableCopy.identifier = [self.identifier copyWithZone:zone];

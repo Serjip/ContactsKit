@@ -33,7 +33,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CKSocialProfile *copy = [[[self class] alloc] init];
+    CKSocialProfile *copy = [[[self class] allocWithZone:zone] init];
     if (copy)
     {
         copy->_URL = [self.URL copyWithZone:zone];
@@ -49,7 +49,7 @@
 
 - (id)mutableCopyWithZone:(nullable NSZone *)zone
 {
-    CKMutableSocialProfile *mutableCopy = [[CKMutableSocialProfile alloc] init];
+    CKMutableSocialProfile *mutableCopy = [[CKMutableSocialProfile allocWithZone:zone] init];
     if (mutableCopy)
     {
         mutableCopy.URL = [self.URL copyWithZone:zone];

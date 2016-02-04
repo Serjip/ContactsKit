@@ -38,7 +38,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CKLabel *copy = [[[self class] alloc] init];
+    CKLabel *copy = [[[self class] allocWithZone:zone] init];
     if (copy)
     {
         copy->_originalLabel = [self.originalLabel copyWithZone:zone];
@@ -50,7 +50,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKLabel *mutableCopy = [[[self class] alloc] init];
+    CKLabel *mutableCopy = [[[self class] allocWithZone:zone] init];
     if (mutableCopy)
     {
         mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
