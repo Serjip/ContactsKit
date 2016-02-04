@@ -46,18 +46,6 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
     return copy;
 }
 
-#pragma mark - NSMutableCopying
-
-- (id)mutableCopyWithZone:(NSZone *)zone
-{
-    CKLabel *mutableCopy = [[[self class] allocWithZone:zone] init];
-    if (mutableCopy)
-    {
-        mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
-    }
-    return mutableCopy;
-}
-
 #pragma mark - NSSecureCoding
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder

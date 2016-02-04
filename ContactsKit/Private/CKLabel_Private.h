@@ -9,7 +9,7 @@
 #import "CKLabel.h"
 #import <AddressBook/AddressBook.h>
 
-@interface CKLabel () <NSMutableCopying>
+@interface CKLabel ()
 
 @property (nonatomic, strong) NSString *originalLabel;
 

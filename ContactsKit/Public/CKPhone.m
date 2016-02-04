@@ -48,9 +48,10 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKMutablePhone *mutableCopy = [super mutableCopyWithZone:zone];
+    CKMutablePhone *mutableCopy = [[CKMutablePhone allocWithZone:zone] init];
     if (mutableCopy)
     {
+        mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
         mutableCopy.number = [self.number copyWithZone:zone];
     }
     return mutableCopy;

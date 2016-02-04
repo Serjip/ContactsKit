@@ -42,9 +42,10 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKMutableURL *mutableCopy = [super mutableCopyWithZone:zone];
+    CKMutableURL *mutableCopy = [[CKMutableURL allocWithZone:zone] init];
     if (mutableCopy)
     {
+        mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
         mutableCopy.URLString = [self.URLString copyWithZone:zone];
     }
     return mutableCopy;
@@ -128,5 +129,12 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
 
 @dynamic originalLabel;
 @synthesize URLString;
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [super mutableCopyWithZone:zone];
+}
 
 @end

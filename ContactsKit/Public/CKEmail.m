@@ -42,9 +42,10 @@ NSString * const CKEmailiCloud = @"iCloud";
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKMutableEmail *mutableCopy = [super mutableCopyWithZone:zone];
+    CKMutableEmail *mutableCopy = [[CKMutableEmail allocWithZone:zone] init];
     if (mutableCopy)
     {
+        mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
         mutableCopy.address = [self.address copyWithZone:zone];
     }
     return mutableCopy;
@@ -128,5 +129,12 @@ NSString * const CKEmailiCloud = @"iCloud";
 
 @dynamic originalLabel;
 @synthesize address;
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [super mutableCopyWithZone:zone];
+}
 
 @end
