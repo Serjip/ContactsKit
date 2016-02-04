@@ -148,7 +148,7 @@
                 CKAddress *address = [[CKAddress alloc] initWithAddressDictionary:dictionary];
                 [addresses addObject:address];
             }
-            _addresses = addresses;
+            _addresses = [[NSArray  alloc] initWithArray:addresses];
         }
         
         if (fieldMask & CKContactFieldSocialProfiles)
@@ -160,7 +160,7 @@
                 CKSocialProfile *profile = [[CKSocialProfile alloc] initWithSocialDictionary:dictionary];
                 [profiles addObject:profile];
             }
-            _socialProfiles = profiles;
+            _socialProfiles = [[NSArray  alloc] initWithArray:profiles];
         }
         
         if (fieldMask & CKContactFieldURLs)
@@ -255,7 +255,7 @@
     
     if (mergeMask & CKContactFieldNote)
     {
-        if (! self.note || ! self.note.length)
+        if (! self.note)
         {
             _note = [self stringProperty:kABPersonNoteProperty fromRecord:recordRef];
         }
@@ -283,7 +283,7 @@
     
     if (mergeMask & CKContactFieldPhones)
     {
-        NSMutableArray *phones = [NSMutableArray arrayWithArray:self.phones];
+        NSMutableArray *phones = [[NSMutableArray alloc] initWithArray:self.phones];
         NSArray *phonesToMerge = [self arrayObjectsOfClass:[CKPhone class] ofProperty:kABPersonPhoneProperty fromRecord:recordRef];
         
         for (CKPhone *p in phonesToMerge)
@@ -295,12 +295,12 @@
             [phones addObject:p];
         }
         
-        _phones = phones;
+        _phones = [[NSArray alloc] initWithArray:phones];
     }
     
     if (mergeMask & CKContactFieldEmails)
     {
-        NSMutableArray *emails = [NSMutableArray arrayWithArray:self.emails];
+        NSMutableArray *emails = [[NSMutableArray alloc] initWithArray:self.emails];
         NSArray *emailsToMerge =  [self arrayObjectsOfClass:[CKEmail class] ofProperty:kABPersonEmailProperty fromRecord:recordRef];
         
         for (CKEmail *email in emailsToMerge)
@@ -313,12 +313,12 @@
             [emails addObject:email];
         }
         
-        _emails = emails;
+        _emails = [[NSArray alloc] initWithArray:emails];
     }
 
     if (mergeMask & CKContactFieldAddresses)
     {
-        NSMutableArray *addresses = [NSMutableArray arrayWithArray:self.addresses];
+        NSMutableArray *addresses = [[NSMutableArray alloc] initWithArray:self.addresses];
         NSArray *array = [self arrayProperty:kABPersonAddressProperty fromRecord:recordRef];
         for (NSDictionary *dictionary in array)
         {
@@ -331,7 +331,7 @@
             
             [addresses addObject:address];
         }
-        _addresses = addresses;
+        _addresses = [[NSArray alloc] initWithArray:addresses];
     }
     
     if (mergeMask & CKContactFieldSocialProfiles)
@@ -350,13 +350,12 @@
             [profiles addObject:profile];
         }
         
-        _socialProfiles = profiles;
+        _socialProfiles = [[NSArray alloc] initWithArray:profiles];
     }
     
     if (mergeMask & CKContactFieldURLs)
     {
-        NSMutableArray *URLs = [NSMutableArray arrayWithArray:self.URLs];
-        
+        NSMutableArray *URLs = [[NSMutableArray alloc] initWithArray:self.URLs];
         NSArray *URLsToMerge = [self arrayObjectsOfClass:[CKURL class] ofProperty:kABPersonURLProperty fromRecord:recordRef];
         
         for (CKURL *url in URLsToMerge)
@@ -368,7 +367,7 @@
             [URLs addObject:url];
         }
         
-        _URLs = URLs;
+        _URLs = [[NSArray alloc] initWithArray:URLs];
     }
     
     // Dates
@@ -648,7 +647,7 @@
             [array addObject:value];
         }
     }];
-    return [NSArray arrayWithArray:array];
+    return [[NSArray  alloc] initWithArray:array];
 }
 
 - (NSArray *)arrayObjectsOfClass:(Class)class ofProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
@@ -658,7 +657,7 @@
         id obj = [[class alloc] initWithMultiValue:multiValue index:index];
         [objects addObject:obj];
     }];
-    return [NSArray arrayWithArray:objects];
+    return [[NSArray  alloc] initWithArray:objects];
 }
 
 @end
