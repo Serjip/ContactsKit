@@ -50,12 +50,12 @@
     phone.number = @"+79111364580";
     phone.originalLabel = CKLabelHome;
     
-//    XCTAssertEqualObjects(phone, [phone mutableCopy]);
-//    XCTAssertEqualObjects(phone, [phone copy]);
-//    XCTAssertNotEqualObjects([CKPhone new], phone);
-//    XCTAssertNotEqualObjects(phone, [CKPhone new]);
-//    XCTAssertNotEqualObjects(phone, [[CKPhone new] copy]);
-//    XCTAssertNotEqualObjects([[CKPhone new] copy], phone);
+    XCTAssertEqualObjects(phone, [phone mutableCopy]);
+    XCTAssertEqualObjects(phone, [phone copy]);
+    XCTAssertNotEqualObjects([CKPhone new], phone);
+    XCTAssertNotEqualObjects(phone, [CKPhone new]);
+    XCTAssertNotEqualObjects(phone, [[CKPhone new] copy]);
+    XCTAssertNotEqualObjects([[CKPhone new] copy], phone);
 
     XCTAssertNotEqualObjects([[CKPhone new] mutableCopy], phone);
     XCTAssertNotEqualObjects(phone, [[CKPhone new] mutableCopy]);
