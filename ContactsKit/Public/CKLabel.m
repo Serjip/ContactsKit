@@ -89,7 +89,7 @@ NSString * const CKLabelOther = @"_$!<Other>!$_";
         return NO;
     }
     
-    return __IS_EQUAL(self.originalLabel, label.originalLabel);
+    return CK_IS_EQUAL(self.originalLabel, label.originalLabel);
 }
 
 - (BOOL)isEqual:(id)object

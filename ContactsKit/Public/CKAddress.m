@@ -94,27 +94,27 @@
         return NO;
     }
     
-    if (! __IS_EQUAL(self.street, address.street))
+    if (! CK_IS_EQUAL(self.street, address.street))
     {
         return NO;
     }
-    if (! __IS_EQUAL(self.city, address.city))
+    if (! CK_IS_EQUAL(self.city, address.city))
     {
         return NO;
     }
-    if (! __IS_EQUAL(self.state, address.state))
+    if (! CK_IS_EQUAL(self.state, address.state))
     {
         return NO;
     }
-    if (! __IS_EQUAL(self.ZIP, address.ZIP))
+    if (! CK_IS_EQUAL(self.ZIP, address.ZIP))
     {
         return NO;
     }
-    if (! __IS_EQUAL(self.country, address.country))
+    if (! CK_IS_EQUAL(self.country, address.country))
     {
         return NO;
     }
-    if (! __IS_EQUAL(self.ISOCountryCode, address.ISOCountryCode))
+    if (! CK_IS_EQUAL(self.ISOCountryCode, address.ISOCountryCode))
     {
         return NO;
     }

@@ -483,97 +483,97 @@
         return NO;
     }
     
-    if (! __IS_EQUAL(self.identifier, contact.identifier))
+    if (! CK_IS_EQUAL(self.identifier, contact.identifier))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.firstName, contact.firstName))
+    if (! CK_IS_EQUAL(self.firstName, contact.firstName))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.lastName, contact.lastName))
+    if (! CK_IS_EQUAL(self.lastName, contact.lastName))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.middleName, contact.middleName))
+    if (! CK_IS_EQUAL(self.middleName, contact.middleName))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.nickname, contact.nickname))
+    if (! CK_IS_EQUAL(self.nickname, contact.nickname))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.company, contact.company))
+    if (! CK_IS_EQUAL(self.company, contact.company))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.jobTitle, contact.jobTitle))
+    if (! CK_IS_EQUAL(self.jobTitle, contact.jobTitle))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.department, contact.department))
+    if (! CK_IS_EQUAL(self.department, contact.department))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.note, contact.note))
+    if (! CK_IS_EQUAL(self.note, contact.note))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.imageData, contact.imageData))
+    if (! CK_IS_EQUAL(self.imageData, contact.imageData))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.thumbnailData, contact.thumbnailData))
+    if (! CK_IS_EQUAL(self.thumbnailData, contact.thumbnailData))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.phones, contact.phones))
+    if (! CK_IS_EQUAL(self.phones, contact.phones))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.socialProfiles, contact.socialProfiles))
+    if (! CK_IS_EQUAL(self.socialProfiles, contact.socialProfiles))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.emails, contact.emails))
+    if (! CK_IS_EQUAL(self.emails, contact.emails))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.addresses, contact.addresses))
+    if (! CK_IS_EQUAL(self.addresses, contact.addresses))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.URLs, contact.URLs))
+    if (! CK_IS_EQUAL(self.URLs, contact.URLs))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.birthday, contact.birthday))
+    if (! CK_IS_EQUAL(self.birthday, contact.birthday))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.creationDate, contact.creationDate))
+    if (! CK_IS_EQUAL(self.creationDate, contact.creationDate))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.modificationDate, contact.modificationDate))
+    if (! CK_IS_EQUAL(self.modificationDate, contact.modificationDate))
     {
         return NO;
     }

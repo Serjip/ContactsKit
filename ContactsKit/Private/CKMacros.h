@@ -10,7 +10,7 @@
 #define CKMacros_h
 
 
-#define __IS_EQUAL(x, y) (x == y || [x isEqual:y])
+#define CK_IS_EQUAL(obj1, obj2) (obj1 == obj2 || [obj1 isEqual:obj2])
 
 #if TARGET_OS_IOS
 // Address

@@ -83,7 +83,7 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
         return NO;
     }
     
-    return __IS_EQUAL(self.number, phone.number);
+    return CK_IS_EQUAL(self.number, phone.number);
 }
 
 - (BOOL)isEqual:(id)object

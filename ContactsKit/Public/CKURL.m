@@ -77,7 +77,7 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
         return NO;
     }
     
-    return __IS_EQUAL(self.URLString, URL.URLString);
+    return CK_IS_EQUAL(self.URLString, URL.URLString);
 }
 
 - (BOOL)isEqual:(id)object

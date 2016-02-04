@@ -97,22 +97,22 @@
         return NO;
     }
     
-    if (! __IS_EQUAL(self.service, socialProfile.service))
+    if (! CK_IS_EQUAL(self.service, socialProfile.service))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.username, socialProfile.username))
+    if (! CK_IS_EQUAL(self.username, socialProfile.username))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.userIdentifier, socialProfile.userIdentifier))
+    if (! CK_IS_EQUAL(self.userIdentifier, socialProfile.userIdentifier))
     {
         return NO;
     }
     
-    if (! __IS_EQUAL(self.URL, socialProfile.URL))
+    if (! CK_IS_EQUAL(self.URL, socialProfile.URL))
     {
         return NO;
     }
