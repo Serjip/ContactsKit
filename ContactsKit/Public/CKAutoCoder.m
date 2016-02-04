@@ -11,29 +11,37 @@
 
 @implementation NSObject (AutoCoder)
 
-- (void)enumerateIvarsUsingBlock:(void (^)(NSString *name, const char *type, void *address))block
+- (void)enumerateIvarsOfClass:(Class)aClass usingBlock:(void (^)(NSString *name, const char *type, void *address))block
 {
-    unsigned int count;
-    Ivar *ivars = class_copyIvarList([self class], &count);
-    
-    for (unsigned int i = 0; i < count; i++)
+    if ([self isKindOfClass:aClass])
     {
-        Ivar ivar = ivars[i];
-        const char *name = ivar_getName(ivar);
-        const char *type = ivar_getTypeEncoding(ivar);
-        ptrdiff_t offset = ivar_getOffset(ivar);
-        void *p = (UInt8 *)(__bridge void *)self + offset;
+        unsigned int count;
+        Ivar *ivars = class_copyIvarList(aClass, &count);
         
-        block(@(name), type, p);
+        for (unsigned int i = 0; i < count; i++)
+        {
+            Ivar ivar = ivars[i];
+            const char *name = ivar_getName(ivar);
+            const char *type = ivar_getTypeEncoding(ivar);
+            ptrdiff_t offset = ivar_getOffset(ivar);
+            void *p = (UInt8 *)(__bridge void *)self + offset;
+            
+            block(@(name), type, p);
+        }
+        free(ivars);
     }
-    free(ivars);
+    else
+    {
+        NSString *reason = [NSString stringWithFormat:@"Cannot enumerate Ivars. The object is not kind of class %@.", NSStringFromClass(aClass)];
+        [[NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil] raise];
+    }
 }
 
 @end
 
 @implementation NSCoder (AutoCoder)
 
-- (void)encodeIvars:(id)object ignoreIvars:(const void *)firstIvar, ...
+- (void)encodeIvarsWithObject:(id)anObject ofClass:(Class)aClass ignoreIvars:(const void *)firstIvar, ...
 {
     NSMutableArray *list = [[NSMutableArray alloc] init];
     if (firstIvar)
@@ -50,7 +58,7 @@
         va_end(argumentList);
     }
     
-    [object enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
+    [anObject enumerateIvarsOfClass:aClass usingBlock:^(NSString *name, const char *type, void *address) {
         
         if ([list containsObject:[NSValue valueWithPointer:address]])
         {
@@ -141,7 +149,7 @@
     }];
 }
 
-- (void)decodeIvars:(id)object ignoreIvars:(const void *)firstIvar, ...
+- (void)decodeIvarsWithObject:(id)anObject ofClass:(Class)aClass ignoreIvars:(const void *)firstIvar, ...
 {
     NSMutableArray *list = [[NSMutableArray alloc] init];
     if (firstIvar)
@@ -158,7 +166,7 @@
         va_end(argumentList);
     }
     
-    [object enumerateIvarsUsingBlock:^(NSString *name, const char *type, void *address) {
+    [anObject enumerateIvarsOfClass:aClass usingBlock:^(NSString *name, const char *type, void *address) {
         
         if ([list containsObject:[NSValue valueWithPointer:address]])
         {
@@ -169,22 +177,22 @@
         {
             case '@':
             {
-                Ivar ivar = class_getInstanceVariable([object class], name.UTF8String);
+                Ivar ivar = class_getInstanceVariable([anObject class], name.UTF8String);
                 NSString *className = @(strndup(type + 2, strlen(type) - 3));
                 Class class = NSClassFromString(className);
                 if (class != Nil)
                 {
-                    object_setIvar(object, ivar, [self decodeObjectOfClass:class forKey:name]);
+                    object_setIvar(anObject, ivar, [self decodeObjectOfClass:class forKey:name]);
                 }
                 break;
             }
             case '#':
             {
-                Ivar ivar = class_getInstanceVariable([object class], name.UTF8String);
+                Ivar ivar = class_getInstanceVariable([anObject class], name.UTF8String);
                 NSString *className = [self decodeObjectOfClass:[NSString class] forKey:name];
                 if (className)
                 {
-                    object_setIvar(object, ivar, NSClassFromString(className));
+                    object_setIvar(anObject, ivar, NSClassFromString(className));
                 }
                 break;
             }

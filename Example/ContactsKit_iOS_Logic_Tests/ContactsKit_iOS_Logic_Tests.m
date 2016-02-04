@@ -9,6 +9,63 @@
 #import <XCTest/XCTest.h>
 #import <ContactsKit/ContactsKit.h>
 
+#import <ContactsKit/CKAutoCoder.h>
+#import <objc/runtime.h>
+
+@interface Node : NSObject {
+    NSString *_node;
+}
+
+- (void)enumerate;
+
+@end
+
+@implementation Node
+
+- (void)enumerate
+{
+    NSLog(@"%s", class_getName([self class]));
+    
+    [self enumerateIvarsOfClass:[self class] usingBlock:^(NSString *name, const char *type, void *address) {
+        NSLog(@"%@ %@", name, self.class);
+    }];
+}
+
+- (Class)metaClass:(Class)aClass
+{
+    NSLog(@"Check %@", NSStringFromClass(aClass));
+    
+    if (class_isMetaClass(aClass))
+    {
+        return aClass;
+    }
+    
+    return [self metaClass:class_getSuperclass(aClass)];
+}
+
+@end
+
+@interface SubNode : Node {
+    NSString *_subnode;
+}
+@end
+
+@implementation SubNode
+
+- (void)enumerate
+{
+    [super enumerate];
+    
+    NSLog(@"%@", NSStringFromClass(object_getClass(self)));
+    
+    [self enumerateIvarsOfClass:[self class] usingBlock:^(NSString *name, const char *type, void *address) {
+        NSLog(@"%@ %@", name, self.class);
+    }];
+}
+
+@end
+
+
 @interface ContactsKit_iOS_Logic_Tests : XCTestCase
 
 @property (nonatomic, strong) CKAddress *address;
@@ -59,6 +116,11 @@
 
     XCTAssertNotEqualObjects([[CKPhone new] mutableCopy], phone);
     XCTAssertNotEqualObjects(phone, [[CKPhone new] mutableCopy]);
+}
+
+- (void)testEnumaratoin
+{
+    [[SubNode new] enumerate];
 }
 
 @end

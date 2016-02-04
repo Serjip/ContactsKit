@@ -68,14 +68,14 @@
     self = [super init];
     if (self)
     {
-        [aDecoder decodeIvars:self ignoreIvars:nil];
+        [aDecoder decodeIvarsWithObject:self ofClass:[CKSocialProfile class] ignoreIvars:nil];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeIvars:self ignoreIvars:nil];
+    [aCoder encodeIvarsWithObject:self ofClass:[CKSocialProfile class] ignoreIvars:nil];
 }
 
 + (BOOL)supportsSecureCoding
