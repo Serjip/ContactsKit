@@ -169,4 +169,22 @@
     return [super mutableCopyWithZone:zone];
 }
 
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [aDecoder decodeIvarsWithObject:self ofClass:[CKMutableAddress class] ignoreIvars:nil];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeIvarsWithObject:self ofClass:[CKMutableAddress class] ignoreIvars:nil];
+}
+
 @end
