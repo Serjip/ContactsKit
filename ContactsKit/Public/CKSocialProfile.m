@@ -24,7 +24,7 @@
         _username = [dictionary objectForKey:kABSocialProfileUsernameKey];
         _userIdentifier = [dictionary objectForKey:kABSocialProfileUserIdentifierKey];
         _service = [dictionary objectForKey:kABSocialProfileServiceKey];
-        _serviceType = [self socialNetworkTypeFromString:_service];
+        _serviceType = [self ck_socialNetworkTypeFromString:_service];
     }
     return self;
 }
@@ -137,7 +137,7 @@
 
 #pragma mark - Private
 
-- (CKSocialProfileService)socialNetworkTypeFromString:(NSString *)string
+- (CKSocialProfileService)ck_socialNetworkTypeFromString:(NSString *)string
 {
     if ([string isEqualToString:@"facebook"])
     {
@@ -165,6 +165,31 @@
     }
 }
 
+- (NSString *)ck_stringForomSocialNetwork:(CKSocialProfileService)socialNetwork
+{
+    switch (socialNetwork)
+    {
+        case CKSocialProfileServiceFacebook:
+            return @"facebook";
+            
+        case CKSocialProfileServiceTwitter:
+            return @"twitter";
+            
+        case CKSocialProfileServiceLinkedIn:
+            return @"linkedin";
+            
+        case CKSocialProfileServiceFlickr:
+            return @"flickr";
+            
+        case CKSocialProfileServiceMyspace:
+            return @"myspace";
+            
+        case CKSocialProfileServiceUnknown:
+        default:
+            return nil;
+    }
+}
+
 #pragma mark - Instance
 
 - (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef
@@ -186,7 +211,21 @@
 
 @implementation CKMutableSocialProfile
 
+#pragma mark - Properties
+
 @synthesize URL, username, userIdentifier, service, serviceType;
+
+- (void)setService:(NSString *)aService
+{
+    service = aService;
+    self.serviceType = [self ck_socialNetworkTypeFromString:aService];
+}
+
+- (void)setServiceType:(CKSocialProfileService)aServiceType
+{
+    serviceType = aServiceType;
+    self.service = [self ck_stringForomSocialNetwork:aServiceType];
+}
 
 #pragma mark - NSCopying
 
@@ -194,7 +233,6 @@
 {
     return [super mutableCopyWithZone:zone];
 }
-
 
 #pragma mark - NSCoding
 
