@@ -548,6 +548,11 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         }
     }
     
+    if (result && recordRef)
+    {
+        contact.identifier = @(ABRecordGetRecordID(recordRef)).stringValue;
+    }
+    
     if (recordRef)
     {
         CFRelease(recordRef);
@@ -580,6 +585,11 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     if (result)
     {
         result = [_addressBook saveAndReturnError:error];
+    }
+    
+    if (result)
+    {
+        contact.identifier = record.uniqueId;
     }
 #endif
     

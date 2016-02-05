@@ -701,11 +701,6 @@
 {
     BOOL result = YES;
     
-    if (self.identifier)
-    {
-#warning ID
-    }
-    
     // Names
     
     if (result && self.firstName)
