@@ -9,18 +9,6 @@
 #import "CKMessenger_Private.h"
 #import "CKMacros.h"
 
-//extern NSString * const kABInstantMessageProperty					AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER; // Instant Messaging - kABMultiDictionaryProperty
-//extern NSString * const kABInstantMessageServiceAIM			AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// AIM
-//extern NSString * const kABInstantMessageServiceFacebook	AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// Facebook
-//extern NSString * const kABInstantMessageServiceGaduGadu	AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// Gadu-Gadu
-//extern NSString * const kABInstantMessageServiceGoogleTalk	AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// Google Talk
-//extern NSString * const kABInstantMessageServiceICQ			AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// ICQ
-//extern NSString * const kABInstantMessageServiceJabber		AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// Jabber
-//extern NSString * const kABInstantMessageServiceMSN			AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// MSN
-//extern NSString * const kABInstantMessageServiceQQ			AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// QQ
-//extern NSString * const kABInstantMessageServiceSkype		AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// Skype
-//extern NSString * const kABInstantMessageServiceYahoo		AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER;		// Yahoo!
-
 @implementation CKMessenger
 
 #pragma mark - Lifecycle
