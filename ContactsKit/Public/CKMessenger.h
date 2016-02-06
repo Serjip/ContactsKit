@@ -11,6 +11,16 @@
 typedef NS_ENUM(NSUInteger, CKMessengerService)
 {
     CKMessengerServiceUnknown  = 0,
+    CKMessengerServiceAIM,          // AIM
+    CKMessengerServiceFacebook,     // Facebook
+    CKMessengerServiceGaduGadu,     // Gadu-Gadu
+    CKMessengerServiceGoogleTalk,   // Google Talk
+    CKMessengerServiceICQ,          // ICQ
+    CKMessengerServiceJabber,       // Jabber
+    CKMessengerServiceMSN,          // MSN
+    CKMessengerServiceQQ,           // QQ
+    CKMessengerServiceSkype,        // Skype
+    CKMessengerServiceYahoo,        // Yahoo!
 };
 
 @interface CKMessenger : NSObject <NSCopying, NSMutableCopying, NSCoding>

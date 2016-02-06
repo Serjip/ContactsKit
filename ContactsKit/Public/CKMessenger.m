@@ -7,6 +7,7 @@
 //
 
 #import "CKMessenger_Private.h"
+#import "CKAutoCoder.h"
 #import "CKMacros.h"
 
 @implementation CKMessenger
@@ -20,6 +21,7 @@
     {
         _username = [dictionary objectForKey:kABInstantMessageUsernameKey];
         _service = [dictionary objectForKey:kABInstantMessageServiceKey];
+        _serviceType = [self ck_serviceWithString:_service];
     }
     return self;
 }
@@ -32,7 +34,8 @@
     if (copy)
     {
         copy->_username = [self.username copyWithZone:zone];
-        copy->_service = [self.city copyWithZone:zone];
+        copy->_service = [self.service copyWithZone:zone];
+        copy->_serviceType = self.serviceType;
     }
     return copy;
 }
@@ -112,7 +115,90 @@
 
 - (CKMessengerService)ck_serviceWithString:(NSString *)string
 {
-    
+    if ([string isEqualToString:kABInstantMessageServiceAIM])
+    {
+        return CKMessengerServiceAIM;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceFacebook])
+    {
+        return CKMessengerServiceFacebook;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceGaduGadu])
+    {
+        return CKMessengerServiceGaduGadu;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceGoogleTalk])
+    {
+        return CKMessengerServiceGoogleTalk;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceICQ])
+    {
+        return CKMessengerServiceICQ;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceJabber])
+    {
+        return CKMessengerServiceJabber;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceMSN])
+    {
+        return CKMessengerServiceMSN;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceQQ])
+    {
+        return CKMessengerServiceQQ;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceSkype])
+    {
+        return CKMessengerServiceSkype;
+    }
+    else if ([string isEqualToString:kABInstantMessageServiceYahoo])
+    {
+        return CKMessengerServiceYahoo;
+    }
+    else
+    {
+        return CKMessengerServiceUnknown;
+    }
+}
+
+- (NSString *)ck_serviceStringWithType:(CKMessengerService)type
+{
+    switch (type)
+    {
+        case CKMessengerServiceAIM:
+            return kABInstantMessageServiceAIM;
+            
+        case CKMessengerServiceFacebook:
+            return kABInstantMessageServiceFacebook;
+        
+        case CKMessengerServiceGaduGadu:
+            return kABInstantMessageServiceGaduGadu;
+        
+        case CKMessengerServiceGoogleTalk:
+            return kABInstantMessageServiceGoogleTalk;
+            
+        case CKMessengerServiceICQ:
+            return kABInstantMessageServiceICQ;
+            
+        case CKMessengerServiceJabber:
+            return kABInstantMessageServiceJabber;
+            
+        case CKMessengerServiceMSN:
+            return kABInstantMessageServiceMSN;
+        
+        case CKMessengerServiceQQ:
+            return kABInstantMessageServiceQQ;
+        
+        case CKMessengerServiceSkype:
+            return kABInstantMessageServiceSkype;
+            
+        case CKMessengerServiceYahoo:
+            return kABInstantMessageServiceYahoo;
+            
+        case CKMessengerServiceUnknown:
+        default:
+            return nil;
+    }
 }
 
 #pragma mark - Public Instace
@@ -122,7 +208,6 @@
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     [dictionary setValue:self.username forKey:kABInstantMessageUsernameKey];
     [dictionary setValue:self.service forKey:kABInstantMessageServiceKey];
-    
 #if TARGET_OS_IOS
     return ABMultiValueAddValueAndLabel(mutableMultiValueRef, (__bridge CFTypeRef)(dictionary), NULL, NULL);
 #elif TARGET_OS_MAC
@@ -134,7 +219,21 @@
 
 @implementation CKMutableMessenger
 
-@synthesize username, service;
+#pragma mark - Properties
+
+@synthesize username, service, serviceType;
+
+- (void)setService:(NSString *)aService
+{
+    service = aService;
+    self.serviceType = [self ck_serviceWithString:aService];
+}
+
+- (void)setServiceType:(CKMessengerService)aServiceType
+{
+    serviceType = aServiceType;
+    self.service = [self ck_serviceStringWithType:aServiceType];
+}
 
 #pragma mark - NSCopying
 
