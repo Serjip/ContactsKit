@@ -20,11 +20,19 @@
 #define kABAddressZIPKey            (__bridge NSString *)kABPersonAddressZIPKey
 #define kABAddressCountryKey        (__bridge NSString *)kABPersonAddressCountryKey
 #define kABAddressCountryCodeKey    (__bridge NSString *)kABPersonAddressCountryCodeKey
+
 // Social profile
 #define kABSocialProfileURLKey              (__bridge NSString *)kABPersonSocialProfileURLKey
 #define kABSocialProfileUsernameKey         (__bridge NSString *)kABPersonSocialProfileUsernameKey
 #define kABSocialProfileUserIdentifierKey   (__bridge NSString *)kABPersonSocialProfileUserIdentifierKey
 #define kABSocialProfileServiceKey          (__bridge NSString *)kABPersonSocialProfileServiceKey
+
+#define kABSocialProfileServiceTwitter      (__bridge NSString *)kABPersonSocialProfileServiceTwitter       // Twitter
+#define kABSocialProfileServiceFacebook     (__bridge NSString *)kABPersonSocialProfileServiceFacebook      // Facebook
+#define kABSocialProfileServiceLinkedIn     (__bridge NSString *)kABPersonSocialProfileServiceLinkedIn      // LinkedIn
+#define kABSocialProfileServiceFlickr       (__bridge NSString *)kABPersonSocialProfileServiceFlickr        // Flickr
+#define kABSocialProfileServiceMySpace      (__bridge NSString *)kABPersonSocialProfileServiceMyspace       // Myspace
+#define kABSocialProfileServiceSinaWeibo    (__bridge NSString *)kABPersonSocialProfileServiceSinaWeibo     // SinaWeibo
 
 // Messenger
 #define kABInstantMessageUsernameKey    (__bridge NSString *)kABPersonInstantMessageUsernameKey

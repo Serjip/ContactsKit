@@ -11,11 +11,12 @@
 typedef NS_ENUM(NSUInteger, CKSocialProfileService)
 {
     CKSocialProfileServiceUnknown  = 0,
-    CKSocialProfileServiceFacebook = 1,
-    CKSocialProfileServiceTwitter  = 2,
-    CKSocialProfileServiceLinkedIn = 3,
-    CKSocialProfileServiceFlickr   = 4,
-    CKSocialProfileServiceMyspace  = 5,
+    CKSocialProfileServiceTwitter,       // Twitter
+    CKSocialProfileServiceFacebook,      // Facebook
+    CKSocialProfileServiceLinkedIn,      // LinkedIn
+    CKSocialProfileServiceFlickr,        // Flickr
+    CKSocialProfileServiceMyspace,       // Myspace
+    CKSocialProfileServiceSinaWeibo,     // SinaWeibo
 };
 
 @interface CKSocialProfile : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>

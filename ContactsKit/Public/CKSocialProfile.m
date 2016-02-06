@@ -56,7 +56,8 @@
         mutableCopy.username = [self.username copyWithZone:zone];
         mutableCopy.userIdentifier = [self.userIdentifier copyWithZone:zone];
         mutableCopy.service = [self.service copyWithZone:zone];
-        mutableCopy.serviceType = self.serviceType;
+// Don't need to copy service type, it sould set automaticatly form the sertter
+// mutableCopy.serviceType = self.serviceType;
     }
     return mutableCopy;
 }
@@ -139,25 +140,29 @@
 
 - (CKSocialProfileService)ck_socialNetworkTypeFromString:(NSString *)string
 {
-    if ([string isEqualToString:@"facebook"])
+    if ([string isEqualToString:kABSocialProfileServiceFacebook])
     {
         return CKSocialProfileServiceFacebook;
     }
-    else if ([string isEqualToString:@"twitter"])
+    else if ([string isEqualToString:kABSocialProfileServiceTwitter])
     {
         return CKSocialProfileServiceTwitter;
     }
-    else if ([string isEqualToString:@"linkedin"])
+    else if ([string isEqualToString:kABSocialProfileServiceLinkedIn])
     {
         return CKSocialProfileServiceLinkedIn;
     }
-    else if ([string isEqualToString:@"flickr"])
+    else if ([string isEqualToString:kABSocialProfileServiceFlickr])
     {
         return CKSocialProfileServiceFlickr;
     }
-    else if ([string isEqualToString:@"myspace"])
+    else if ([string isEqualToString:kABSocialProfileServiceMySpace])
     {
         return CKSocialProfileServiceMyspace;
+    }
+    else if ([string isEqualToString:kABSocialProfileServiceSinaWeibo])
+    {
+        return CKSocialProfileServiceSinaWeibo;
     }
     else
     {
@@ -170,19 +175,22 @@
     switch (socialNetwork)
     {
         case CKSocialProfileServiceFacebook:
-            return @"facebook";
+            return kABSocialProfileServiceFacebook;
             
         case CKSocialProfileServiceTwitter:
-            return @"twitter";
+            return kABSocialProfileServiceTwitter;
             
         case CKSocialProfileServiceLinkedIn:
-            return @"linkedin";
+            return kABSocialProfileServiceLinkedIn;
             
         case CKSocialProfileServiceFlickr:
-            return @"flickr";
+            return kABSocialProfileServiceFlickr;
             
         case CKSocialProfileServiceMyspace:
-            return @"myspace";
+            return kABSocialProfileServiceMySpace;
+            
+        case CKSocialProfileServiceSinaWeibo:
+            return kABSocialProfileServiceSinaWeibo;
             
         case CKSocialProfileServiceUnknown:
         default:
