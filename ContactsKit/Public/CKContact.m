@@ -37,6 +37,7 @@
 #define kABPersonPhoneProperty              (__bridge CFStringRef)kABPhoneProperty
 #define kABPersonEmailProperty              (__bridge CFStringRef)kABEmailProperty
 #define kABPersonAddressProperty            (__bridge CFStringRef)kABAddressProperty
+#define kABPersonInstantMessageProperty     (__bridge CFStringRef)kABInstantMessageProperty
 #define kABPersonSocialProfileProperty      (__bridge CFStringRef)kABSocialProfileProperty
 #define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
 
