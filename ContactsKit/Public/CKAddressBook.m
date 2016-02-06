@@ -250,17 +250,24 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     });
 }
 
-- (void)addContact:(CKMutableContact *)contact
-{
-#warning Adding contact
-}
-
 - (void)addContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback
 {
     NSParameterAssert(callback);
     dispatch_async(_addressBookQueue, ^{
         NSError *error = nil;
         [self ck_addContact:contact error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(error);
+        });
+    });
+}
+
+- (void)deleteContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback
+{
+    NSParameterAssert(callback);
+    dispatch_async(_addressBookQueue, ^{
+        NSError *error = nil;
+        [self ck_deleteContact:contact error:&error];
         dispatch_async(dispatch_get_main_queue(), ^{
             callback(error);
         });
@@ -591,6 +598,104 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     {
         contact.identifier = record.uniqueId;
     }
+#endif
+    
+    return result;
+}
+
+- (BOOL)ck_deleteContact:(CKMutableContact *)contact error:(NSError **)error
+{
+    NSParameterAssert(contact);
+    
+#warning Check existing ID for the contact
+    
+#if TARGET_OS_IOS
+    
+    if (! _addressBookRef)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return NO;
+    }
+    
+    ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
+    
+    BOOL result = NO;
+    CFErrorRef errorRef = NULL;
+    
+    if (recordRef != NULL)
+    {
+        result = ABAddressBookRemoveRecord(_addressBookRef, recordRef, &errorRef);
+        
+        if (error && errorRef != NULL)
+        {
+            *error = (__bridge_transfer NSError *)(errorRef);
+        }
+    }
+    else
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Contact not found", nil)};
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+    }
+    
+    if (result)
+    {
+        result = ABAddressBookSave(_addressBookRef, &errorRef);
+        
+        if (error && errorRef != NULL)
+        {
+            *error = (__bridge_transfer NSError *)(errorRef);
+        }
+    }
+    
+#elif TARGET_OS_MAC
+    
+    if (! _addressBook)
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+        return NO;
+    }
+    
+    BOOL result = NO;
+    ABRecord *record = [_addressBook recordForUniqueId:contact.identifier];
+    if (record)
+    {
+        result = [_addressBook removeRecord:record error:error];
+        
+        if (result)
+        {
+            result = [_addressBook hasUnsavedChanges];
+            if (! result && error)
+            {
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Address book hasn't changes", nil)};
+                *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:2 userInfo:userInfo];
+            }
+        }
+        
+        if (result)
+        {
+            result = [_addressBook saveAndReturnError:error];
+        }
+    }
+    else
+    {
+        if (error)
+        {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Contact not found", nil)};
+            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+        }
+    }
+    
 #endif
     
     return result;
