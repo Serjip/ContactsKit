@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail;
+@class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail, CKMessenger;
 
 @interface CKContact : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 
@@ -31,6 +31,7 @@
 @property (nonatomic, strong, readonly) NSArray<CKPhone *> *phones;
 @property (nonatomic, strong, readonly) NSArray<CKEmail *> *emails;
 @property (nonatomic, strong, readonly) NSArray<CKAddress *> *addresses;
+@property (nonatomic, strong, readonly) NSArray<CKMessenger *> *instantMessengers;
 @property (nonatomic, strong, readonly) NSArray<CKSocialProfile *> *socialProfiles;
 @property (nonatomic, strong, readonly) NSArray<CKURL *> *URLs;
 
@@ -59,6 +60,7 @@
 @property (nonatomic, strong) NSArray<CKPhone *> *phones;
 @property (nonatomic, strong) NSArray<CKEmail *> *emails;
 @property (nonatomic, strong) NSArray<CKAddress *> *addresses;
+@property (nonatomic, strong) NSArray<CKMessenger *> *instantMessengers;
 @property (nonatomic, strong) NSArray<CKSocialProfile *> *socialProfiles;
 @property (nonatomic, strong) NSArray<CKURL *> *URLs;
 

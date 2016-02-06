@@ -9,6 +9,7 @@
 #import "CKContact_Private.h"
 #import "CKLabel_Private.h"
 #import "CKAddress_Private.h"
+#import "CKMessenger_Private.h"
 #import "CKSocialProfile_Private.h"
 
 #import "CKURL.h"
@@ -17,8 +18,6 @@
 
 #import "CKMacros.h"
 #import "CKAutoCoder.h"
-
-#import <objc/runtime.h>
 #import <AddressBook/AddressBook.h>
 
 #if !(TARGET_OS_IOS)
@@ -149,6 +148,18 @@
                 [addresses addObject:address];
             }
             _addresses = [[NSArray  alloc] initWithArray:addresses];
+        }
+        
+        if (fieldMask & CKContactFieldInstantMessengers)
+        {
+            NSMutableArray *messengers = [[NSMutableArray alloc] init];
+            NSArray *array = [self arrayProperty:kABPersonInstantMessageProperty fromRecord:recordRef];
+            for (NSDictionary *dictionary in array)
+            {
+                CKMessenger *messenger = [[CKMessenger alloc] initWithMessengerDictionary:dictionary];
+                [messengers addObject:messenger];
+            }
+            _instantMessengers = [[NSArray  alloc] initWithArray:messengers];
         }
         
         if (fieldMask & CKContactFieldSocialProfiles)
@@ -334,6 +345,25 @@
         _addresses = [[NSArray alloc] initWithArray:addresses];
     }
     
+    if (mergeMask & CKContactFieldInstantMessengers)
+    {
+        NSMutableArray *messengers = [NSMutableArray arrayWithArray:self.instantMessengers];
+        NSArray *array = [self arrayProperty:kABPersonInstantMessageProperty fromRecord:recordRef];
+        for (NSDictionary *dictionary in array)
+        {
+            CKMessenger *messenger = [[CKMessenger alloc] initWithMessengerDictionary:dictionary];
+            
+            if ([self.instantMessengers containsObject:messenger])
+            {
+                continue;
+            }
+            
+            [messengers addObject:messenger];
+        }
+        
+        _instantMessengers = [[NSArray alloc] initWithArray:messengers];
+    }
+    
     if (mergeMask & CKContactFieldSocialProfiles)
     {
         NSMutableArray *profiles = [NSMutableArray arrayWithArray:self.socialProfiles];
@@ -406,6 +436,7 @@
         copy->_phones = [self.phones copyWithZone:zone];
         copy->_emails = [self.emails copyWithZone:zone];
         copy->_addresses = [self.addresses copyWithZone:zone];
+        copy->_instantMessengers = [self.instantMessengers copyWithZone:zone];
         copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
         copy->_URLs = [self.URLs copyWithZone:zone];
         
@@ -441,6 +472,7 @@
         mutableCopy.phones = [self.phones copyWithZone:zone];
         mutableCopy.emails = [self.emails copyWithZone:zone];
         mutableCopy.addresses = [self.addresses copyWithZone:zone];
+        mutableCopy.instantMessengers = [self.instantMessengers copyWithZone:zone];
         mutableCopy.socialProfiles = [self.socialProfiles copyWithZone:zone];
         mutableCopy.URLs = [self.URLs copyWithZone:zone];
         
@@ -538,6 +570,11 @@
     }
     
     if (! CK_IS_EQUAL(self.phones, contact.phones))
+    {
+        return NO;
+    }
+    
+    if (! CK_IS_EQUAL(self.instantMessengers, contact.instantMessengers))
     {
         return NO;
     }
@@ -667,7 +704,7 @@
 @synthesize identifier, firstName, lastName, middleName, nickname;
 @synthesize company, jobTitle, department;
 @synthesize note, imageData, thumbnailData;
-@synthesize phones, emails, addresses, socialProfiles, URLs;
+@synthesize phones, emails, addresses, instantMessengers, socialProfiles, URLs;
 @synthesize birthday, creationDate, modificationDate;
 
 #pragma mark - NSCopying
@@ -769,6 +806,14 @@
     if (result && self.URLs)
     {
         result = [self enumerateLabels:self.URLs property:kABPersonURLProperty record:recordRef error:error];
+    }
+    
+    if (result && self.instantMessengers)
+    {
+        result = [self enumerateValues:self.instantMessengers property:kABPersonInstantMessageProperty type:kABMultiDictionaryPropertyType
+                                record:recordRef block:^BOOL(CKMessenger *value, ABMutableMultiValueRef mutableMultiValueRef) {
+                                    return [value addPropertiesToMultiValue:mutableMultiValueRef];
+                                } error:error];
     }
     
     if (result && self.socialProfiles)
