@@ -520,9 +520,12 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     return contact;
 }
 
-- (BOOL)ck_addContact:(CKMutableContact *)contact error:(NSError **)error
+- (BOOL)ck_addOrUpdateContact:(CKMutableContact *)contact error:(NSError **)error
 {
     NSParameterAssert(contact);
+    
+    BOOL result = NO;
+    ABRecordRef recordRef = NULL;
     
 #if TARGET_OS_IOS
     if (! _addressBookRef)
@@ -532,43 +535,56 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
             NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
-        return NO;
     }
     
-    if (1)
+#warning UPDATE
+    if (/* DISABLES CODE */ (1))
     {
-        ABRecordRef recordRef = ABPersonCreate();
+        recordRef = ABPersonCreate();
     }
     else
     {
-        ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
-        if (recordRef)
+        recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
+        if (recordRef != NULL)
         {
-            <#statements#>
+            result = YES;
+            CFRetain(recordRef);
         }
     }
     
-    BOOL result = [contact setRecordRef:recordRef error:error];
-    
-    CFErrorRef errorRef = NULL;
-    
     if (result)
     {
+        result = [contact setRecordRef:recordRef error:error];
+    }
+    
+#warning Skip adding contact
+    if (result)
+    {
+        CFErrorRef errorRef = NULL;
         result = ABAddressBookAddRecord(_addressBookRef, recordRef, &errorRef);
-
+        
         if (error && errorRef != NULL)
         {
             *error = (__bridge_transfer NSError *)(errorRef);
         }
+        else if (errorRef != NULL)
+        {
+            CFRelease(errorRef);
+        }
     }
     
     if (result)
     {
+        CFErrorRef errorRef = NULL;
         result = ABAddressBookSave(_addressBookRef, &errorRef);
         
         if (error && errorRef != NULL)
         {
             *error = (__bridge_transfer NSError *)(errorRef);
+        }
+        else if (errorRef != NULL)
+        {
+            CFRelease(errorRef);
         }
     }
     
@@ -594,7 +610,11 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     
     ABRecord *record = [[ABRecord alloc] initWithAddressBook:_addressBook];
     ABRecordRef recordRef = (__bridge ABRecordRef)(record);
-    BOOL result = [contact setRecordRef:recordRef error:error];
+    
+    if (result)
+    {
+        result = [contact setRecordRef:recordRef error:error];
+    }
     
     if (result)
     {
@@ -641,15 +661,19 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
     
     BOOL result = NO;
-    CFErrorRef errorRef = NULL;
     
     if (recordRef != NULL)
     {
+        CFErrorRef errorRef = NULL;
         result = ABAddressBookRemoveRecord(_addressBookRef, recordRef, &errorRef);
         
         if (error && errorRef != NULL)
         {
             *error = (__bridge_transfer NSError *)(errorRef);
+        }
+        else if (errorRef != NULL)
+        {
+            CFRelease(errorRef);
         }
     }
     else
@@ -663,11 +687,16 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     
     if (result)
     {
+        CFErrorRef errorRef = NULL;
         result = ABAddressBookSave(_addressBookRef, &errorRef);
         
         if (error && errorRef != NULL)
         {
             *error = (__bridge_transfer NSError *)(errorRef);
+        }
+        else if (errorRef != NULL)
+        {
+            CFRelease(errorRef);
         }
     }
     
