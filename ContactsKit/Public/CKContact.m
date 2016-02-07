@@ -20,39 +20,6 @@
 #import "CKAutoCoder.h"
 #import <AddressBook/AddressBook.h>
 
-#if !(TARGET_OS_IOS)
-
-#define ABPropertyID    CFStringRef
-#define kABPersonFirstNameProperty          (__bridge CFStringRef)kABFirstNameProperty
-#define kABPersonMiddleNameProperty         (__bridge CFStringRef)kABMiddleNameProperty
-#define kABPersonLastNameProperty           (__bridge CFStringRef)kABLastNameProperty
-#define kABPersonNicknameProperty           (__bridge CFStringRef)kABNicknameProperty
-
-#define kABPersonOrganizationProperty       (__bridge CFStringRef)kABOrganizationProperty
-#define kABPersonJobTitleProperty           (__bridge CFStringRef)kABJobTitleProperty
-#define kABPersonDepartmentProperty         (__bridge CFStringRef)kABDepartmentProperty
-
-#define kABPersonNoteProperty               (__bridge CFStringRef)kABNoteProperty
-
-#define kABPersonPhoneProperty              (__bridge CFStringRef)kABPhoneProperty
-#define kABPersonEmailProperty              (__bridge CFStringRef)kABEmailProperty
-#define kABPersonAddressProperty            (__bridge CFStringRef)kABAddressProperty
-#define kABPersonInstantMessageProperty     (__bridge CFStringRef)kABInstantMessageProperty
-#define kABPersonSocialProfileProperty      (__bridge CFStringRef)kABSocialProfileProperty
-#define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
-
-#define kABPersonBirthdayProperty           (__bridge CFStringRef)kABBirthdayProperty
-#define kABPersonCreationDateProperty       (__bridge CFStringRef)kABCreationDateProperty
-#define kABPersonModificationDateProperty   (__bridge CFStringRef)kABModificationDateProperty
-
-#define ABMultiValueGetCount    ABMultiValueCount
-
-// Fix for OSX
-#define kABMultiStringPropertyType 1
-#define kABMultiDictionaryPropertyType 1
-
-#endif
-
 @implementation CKContact
 
 #pragma mark - Lifecycle
