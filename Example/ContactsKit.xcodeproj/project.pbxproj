@@ -360,7 +360,6 @@
 					};
 					D24F79D71C6297370093D509 = {
 						CreatedOnToolsVersion = 7.2.1;
-						TestTargetID = 523531BD1C52315100FB1E80;
 					};
 					D2F3CC491C5FF56000298EE4 = {
 						CreatedOnToolsVersion = 7.2;
@@ -831,7 +830,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ttitt.ContactsKit-iOS-Logic-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ContactsKit_iOS.app/ContactsKit_iOS";
 			};
 			name = Debug;
 		};
@@ -844,7 +842,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ttitt.ContactsKit-iOS-Logic-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ContactsKit_iOS.app/ContactsKit_iOS";
 			};
 			name = Release;
 		};

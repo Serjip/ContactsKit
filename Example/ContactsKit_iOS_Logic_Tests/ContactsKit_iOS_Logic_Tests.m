@@ -9,66 +9,7 @@
 #import <XCTest/XCTest.h>
 #import <ContactsKit/ContactsKit.h>
 
-#import <ContactsKit/CKAutoCoder.h>
-#import <objc/runtime.h>
-
-@interface Node : NSObject {
-    NSString *_node;
-}
-
-- (void)enumerate;
-
-@end
-
-@implementation Node
-
-- (void)enumerate
-{
-    NSLog(@"%s", class_getName([self class]));
-    
-    [self enumerateIvarsOfClass:[self class] usingBlock:^(NSString *name, const char *type, void *address) {
-        NSLog(@"%@ %@", name, self.class);
-    }];
-}
-
-- (Class)metaClass:(Class)aClass
-{
-    NSLog(@"Check %@", NSStringFromClass(aClass));
-    
-    if (class_isMetaClass(aClass))
-    {
-        return aClass;
-    }
-    
-    return [self metaClass:class_getSuperclass(aClass)];
-}
-
-@end
-
-@interface SubNode : Node {
-    NSString *_subnode;
-}
-@end
-
-@implementation SubNode
-
-- (void)enumerate
-{
-    [super enumerate];
-    
-    NSLog(@"%@", NSStringFromClass(object_getClass(self)));
-    
-    [self enumerateIvarsOfClass:[self class] usingBlock:^(NSString *name, const char *type, void *address) {
-        NSLog(@"%@ %@", name, self.class);
-    }];
-}
-
-@end
-
-
 @interface ContactsKit_iOS_Logic_Tests : XCTestCase
-
-@property (nonatomic, strong) CKAddress *address;
 
 @end
 
@@ -77,13 +18,6 @@
 - (void)setUp
 {
     [super setUp];
-
-    CKMutableAddress *address = [CKMutableAddress new];
-    address.street = @"Stroiteley street 1 - 33";
-    address.city = @"Moskow";
-    address.ZIP = @"117331";
-    
-    self.address = address;
 }
 
 - (void)tearDown
@@ -91,18 +25,31 @@
     [super tearDown];
 }
 
-- (void)testEqualityOfAddress
+- (void)testAddress
 {
-    XCTAssertEqualObjects(self.address, [self.address mutableCopy]);
-    XCTAssertEqualObjects(self.address, [self.address copy]);
-    XCTAssertNotEqualObjects(self.address, nil);
+    CKMutableAddress *address = [[CKMutableAddress alloc] init];
+    address.street = @"Stroiteley street 1 - 33";
+    address.city = @"Moskow";
+    address.ZIP = @"117331";
+    
+    XCTAssertEqualObjects(address, [address mutableCopy]);
+    XCTAssertEqualObjects(address, [address copy]);
+    XCTAssertNotEqualObjects(address, nil);
     XCTAssertNotEqualObjects([CKAddress new], nil);
-    XCTAssertEqualObjects([CKAddress new], [CKAddress new]);
+    XCTAssertEqualObjects([CKAddress new], [CKMutableAddress new]);
+
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:address];
+    XCTAssertEqualObjects([NSKeyedUnarchiver unarchiveObjectWithData:data], address);
 }
 
-- (void)testEqualityOfPhone
+- (void)testContact
 {
-    
+    CKMutableContact *contact = [[CKMutableContact alloc] init];
+    contact.firstName = @"Sergey";
+}
+
+- (void)testPhone
+{
     CKMutablePhone *phone = [CKMutablePhone new];
     phone.number = @"+79111364580";
     phone.originalLabel = CKLabelHome;
@@ -116,11 +63,9 @@
 
     XCTAssertNotEqualObjects([[CKPhone new] mutableCopy], phone);
     XCTAssertNotEqualObjects(phone, [[CKPhone new] mutableCopy]);
-}
-
-- (void)testEnumaratoin
-{
-    [[SubNode new] enumerate];
+    
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:phone];
+    XCTAssertEqualObjects([NSKeyedUnarchiver unarchiveObjectWithData:data], phone);
 }
 
 @end
