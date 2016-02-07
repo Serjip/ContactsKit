@@ -13,6 +13,7 @@
 #import <ContactsKit/CKContact.h>
 #import <ContactsKit/CKEmail.h>
 #import <ContactsKit/CKPhone.h>
+#import <ContactsKit/CKMessenger.h>
 #import <ContactsKit/CKSocialProfile.h>
 #import <ContactsKit/CKURL.h>
 
