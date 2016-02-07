@@ -265,7 +265,14 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 - (void)updateContact:(CKMutableContact *)contact completion:(void (^)(NSError *))callback
 {
     NSParameterAssert(callback);
-#warning Update
+    
+    dispatch_async(_addressBookQueue, ^{
+        NSError *error = nil;
+        [self ck_updateContact:contact error:&error];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(error);
+        });
+    });
 }
 
 - (void)deleteContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback
@@ -520,7 +527,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     return contact;
 }
 
-- (BOOL)ck_addOrUpdateContact:(CKMutableContact *)contact error:(NSError **)error
+- (BOOL)ck_addContact:(CKMutableContact *)contact error:(NSError **)error
 {
     NSParameterAssert(contact);
     
@@ -528,27 +535,13 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     ABRecordRef recordRef = NULL;
     
 #if TARGET_OS_IOS
-#warning UPDATE
-    if (/* DISABLES CODE */ (1))
-    {
-        recordRef = ABPersonCreate();
-    }
-    else
-    {
-        recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
-        if (recordRef != NULL)
-        {
-            result = YES;
-            CFRetain(recordRef);
-        }
-    }
     
     if (result)
     {
+        recordRef = ABPersonCreate();
         result = [contact setRecordRef:recordRef error:error];
     }
     
-#warning Skip adding contact
     if (result)
     {
         CFErrorRef errorRef = NULL;
@@ -580,11 +573,13 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     }
 #elif TARGET_OS_MAC
     
-    ABRecord *record = [[ABRecord alloc] initWithAddressBook:_addressBook];
-    ABRecordRef recordRef = (__bridge ABRecordRef)(record);
+    ABRecord *record = nil;
     
     if (result)
     {
+        record = [[ABRecord alloc] initWithAddressBook:_addressBook];
+        recordRef = (__bridge ABRecordRef)(record);
+        
         result = [contact setRecordRef:recordRef error:error];
     }
     
@@ -598,6 +593,45 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         contact.identifier = record.uniqueId;
     }
 #endif
+    
+    return result;
+}
+
+- (BOOL)ck_updateContact:(CKMutableContact *)contact error:(NSError **)error
+{
+    NSParameterAssert(contact);
+    
+    BOOL result = [self ck_checkAccess:error];
+    ABRecordRef recordRef = NULL;
+    
+    if (result)
+    {
+#if TARGET_OS_IOS
+        recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
+#elif TARGET_OS_MAC
+        recordRef = (__bridge ABRecordRef)([_addressBook recordForUniqueId:contact.identifier]);
+#endif
+        
+        if (recordRef == NULL)
+        {
+            if (error)
+            {
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Contact not found", nil)};
+                *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+            }
+            result = NO;
+        }
+    }
+    
+    if (result)
+    {
+        [contact setRecordRef:recordRef error:error];
+    }
+    
+    if (result)
+    {
+        result = [self ck_saveAddressBook:error];
+    }
     
     return result;
 }
@@ -639,16 +673,6 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     }
     
 #elif TARGET_OS_MAC
-    
-    if (! _addressBook)
-    {
-        if (error)
-        {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
-            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
-        }
-        return NO;
-    }
     
     ABRecord *record = [_addressBook recordForUniqueId:contact.identifier];
     if (record)
