@@ -70,6 +70,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
                    completion:(void (^) (CKContact *contact, NSError *error))callback;
 
 - (void)addContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
+- (void)updateContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
 - (void)deleteContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
 
 - (void)startObserveChanges;

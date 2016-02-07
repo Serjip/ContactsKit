@@ -262,6 +262,12 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     });
 }
 
+- (void)updateContact:(CKMutableContact *)contact completion:(void (^)(NSError *))callback
+{
+    NSParameterAssert(callback);
+#warning Update
+}
+
 - (void)deleteContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback
 {
     NSParameterAssert(callback);
@@ -529,7 +535,18 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
         return NO;
     }
     
-    ABRecordRef recordRef = ABPersonCreate();
+    if (1)
+    {
+        ABRecordRef recordRef = ABPersonCreate();
+    }
+    else
+    {
+        ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(_addressBookRef, (int32_t)contact.identifier.integerValue);
+        if (recordRef)
+        {
+            <#statements#>
+        }
+    }
     
     BOOL result = [contact setRecordRef:recordRef error:error];
     
