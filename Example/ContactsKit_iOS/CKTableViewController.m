@@ -8,6 +8,7 @@
 
 #import "CKTableViewController.h"
 #import "CKTableViewCell.h"
+#import "CKDetailsTableViewController.h"
 
 #import <AddressBook/AddressBook.h>
 #import <ContactsKit/ContactsKit.h>
@@ -58,39 +59,61 @@
         
     }];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(actionRefreshContacts:)];
-    self.navigationItem.leftBarButtonItem = item;
+    
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(actionAddContact:)];
+    UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(actionRefreshContacts:)];
+    self.navigationItem.leftBarButtonItems = @[refreshItem, self.editButtonItem];
+    self.navigationItem.rightBarButtonItem = addItem;
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _contacts.count + 1;
+    return _contacts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < _contacts.count)
-    {
-        CKTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CKTableViewCell cellReuseIdentifier] forIndexPath:indexPath];
-        CKContact *contact = [_contacts objectAtIndex:indexPath.row];
-        [cell setContact:contact];
-        return cell;
-    }
-    else
-    {
-        static NSString *identifier = @"Cell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (! cell)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.textLabel.text = @"Add Contact";
-        return cell;
-    }
+    CKTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CKTableViewCell cellReuseIdentifier] forIndexPath:indexPath];
+    CKContact *contact = [_contacts objectAtIndex:indexPath.row];
+    [cell setContact:contact];
+    return cell;
     
     return nil;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        CKContact *contact = [_contacts objectAtIndex:indexPath.row];
+        [_book deleteContact:contact.mutableCopy completion:^(NSError *error) {
+            
+            if (! error)
+            {
+                NSMutableArray *contacts = _contacts.mutableCopy;
+                [contacts removeObjectAtIndex:indexPath.row];
+                _contacts = contacts;
+                
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] init];
+                alert.title = @"Cannot delete contact";
+                alert.message = error.localizedDescription;
+                [alert addButtonWithTitle:@"OK"];
+                [alert show];
+            }
+            
+        }];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -104,25 +127,10 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row < _contacts.count)
-    {
-        CKContact *contact = [_contacts objectAtIndex:indexPath.row];
-        
-        CFErrorRef errorRef = NULL;
-        ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &errorRef);
-        ABRecordRef recordRef = ABAddressBookGetPersonWithRecordID(addressBookRef, contact.identifier.intValue);
-        
-        ABPersonViewController *vc = [[ABPersonViewController alloc] init];
-        
-        vc.addressBook = addressBookRef;
-        vc.displayedPerson = recordRef;
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else
-    {
-        [self addContact];
-    }
+    CKContact *contact = [_contacts objectAtIndex:indexPath.row];
+
+    CKDetailsTableViewController *vc = [[CKDetailsTableViewController alloc] initWithContact:contact];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - CKAddressBookDelegate
@@ -150,21 +158,10 @@
     [_book loadContacts];
 }
 
-- (void)addContact
+- (void)actionAddContact:(UIBarButtonItem *)sender
 {
-    CKMutableContact *contact = [CKMutableContact new];
-    contact.firstName = @"Sergey";
-    contact.lastName = @"Popov";
-    contact.middleName = @"Middle";
-    contact.nickname = @"Nick";
-    contact.birthday = [NSDate date];
-    contact.note = @"note";
-    
-    [_book addContact:contact completion:^(NSError *error) {
-        
-        NSLog(@"%@", error);
-        
-    }];
+    CKDetailsTableViewController *vc = [[CKDetailsTableViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
