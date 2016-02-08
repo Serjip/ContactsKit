@@ -12,6 +12,7 @@
 
 @implementation CKDetailsTableViewController {
     CKMutableContact *_contact;
+    NSDictionary *_map;
 }
 
 #pragma mark - Lifecycle
@@ -43,6 +44,7 @@
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(actionSaveContact:)];
     self.navigationItem.rightBarButtonItem = saveItem;
     
+    NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
     
     unsigned int count = 0;
     objc_property_t *properties = class_copyPropertyList([CKContact class], &count);
@@ -55,6 +57,8 @@
         NSString *type = [attributes componentsSeparatedByString:@","].firstObject;
         
         NSLog(@"%@ %@",name, type);
+        
+        
     }
     free(properties);
 }
