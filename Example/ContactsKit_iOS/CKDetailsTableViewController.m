@@ -120,13 +120,13 @@
 {
     [self ck_enumeratePropertiesOfClass:aClass usingBlock:^(NSString *name, __unsafe_unretained Class aClass) {
         
-        if (aClass == [NSString class])
+        if (aClass == [NSString class] || aClass == [NSDate class])
         {
-            NSMutableArray *array = [map objectForKey:NSStringFromClass(aClass)];
+            NSMutableArray *array = [map objectForKey:@"Contact"];
             if (! array)
             {
                 array = [[NSMutableArray alloc] init];
-                [map setObject:array forKey:NSStringFromClass(aClass)];
+                [map setObject:array forKey:@"Contact"];
             }
             [array addObject:name];
         }
