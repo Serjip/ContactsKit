@@ -226,13 +226,13 @@
 - (void)setService:(NSString *)aService
 {
     service = aService;
-    self.serviceType = [self ck_socialNetworkTypeFromString:aService];
+    serviceType = [self ck_socialNetworkTypeFromString:aService];
 }
 
 - (void)setServiceType:(CKSocialProfileService)aServiceType
 {
     serviceType = aServiceType;
-    self.service = [self ck_stringForomSocialNetwork:aServiceType];
+    service = [self ck_stringForomSocialNetwork:aServiceType];
 }
 
 #pragma mark - NSCopying
