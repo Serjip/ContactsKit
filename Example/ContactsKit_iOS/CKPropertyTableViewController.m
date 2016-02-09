@@ -8,6 +8,7 @@
 
 #import "CKPropertyTableViewController.h"
 #import "NSObject+Enumerator.h"
+#import "CKDetailsTableViewCell.h"
 
 @interface CKPropertyTableViewController ()
 
@@ -15,11 +16,12 @@
 
 @implementation CKPropertyTableViewController {
     NSArray *_properties;
+    id _object;
 }
 
 #pragma mark - Lifecycle
 
-- (instancetype)initWithClass:(Class)aClass
+- (instancetype)initWithObject:(id)anObject ofClass:(Class)aClass
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
@@ -36,6 +38,7 @@
         }];
         
         _properties = array;
+        _object = anObject;
     }
     return self;
 }
@@ -43,6 +46,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.tableView registerNib:[CKDetailsTableViewCell nib] forCellReuseIdentifier:[CKDetailsTableViewCell cellReuseIdentifier]];
 }
 
 #pragma mark - Table view data source
@@ -59,15 +64,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (! cell)
+    CKDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CKDetailsTableViewCell cellReuseIdentifier] forIndexPath:indexPath];
+    
+    NSString *key = _properties[indexPath.row];
+    cell.name = key;
+    
+    id value = [_object valueForKey:key];
+    
+    if ([value isKindOfClass:[NSString class]])
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.value = value;
     }
-    cell.textLabel.text = _properties[indexPath.row];
+    else if ([value isKindOfClass:[NSDate class]])
+    {
+        cell.value = [value description];
+    }
+    
     return cell;
 }
-
 
 @end

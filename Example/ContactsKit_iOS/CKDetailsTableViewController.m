@@ -27,20 +27,22 @@ typedef enum : NSUInteger {
 
 - (instancetype)init
 {
-    self = [super initWithClass:[CKContact class]];
+    CKMutableContact *contact = [[CKMutableContact alloc] init];
+    self = [super initWithObject:contact ofClass:[CKContact class]];
     if (self)
     {
-        _contact = [[CKMutableContact alloc] init];
+        _contact = contact;
     }
     return self;
 }
 
-- (instancetype)initWithContact:(CKContact *)contact
+- (instancetype)initWithContact:(CKContact *)aContact
 {
-    self = [super initWithClass:[CKContact class]];
+    CKMutableContact *contact = aContact.mutableCopy;
+    self = [super initWithObject:contact ofClass:[CKContact class]];
     if (self)
     {
-        _contact = contact.mutableCopy;
+        _contact = contact;
     }
     return self;
 }
@@ -51,6 +53,7 @@ typedef enum : NSUInteger {
     
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(actionSaveContact:)];
     self.navigationItem.rightBarButtonItem = saveItem;
+    self.editing = YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -88,66 +91,144 @@ typedef enum : NSUInteger {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    static NSString *identifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (! cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    cell.textLabel.text = @"Add new";
+    
+    NSInteger count = [tableView numberOfRowsInSection:indexPath.section];
     
     switch ((TableSection)indexPath.section)
     {
         case TableSectionPhones:
-        {
-            CKPhone *phone = _contact.phones[indexPath.row];
-            cell.textLabel.text = phone.number;
-            return cell;
-        }
+            if (indexPath.row < count - 1)
+            {
+                CKPhone *phone = _contact.phones[indexPath.row];
+                cell.textLabel.text = phone.number;
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
             
         case TableSectionEmails:
         {
-            CKEmail *phone = _contact.emails[indexPath.row];
-            cell.textLabel.text = phone.address;
-            return cell;
+            if (indexPath.row < count - 1)
+            {
+                CKEmail *phone = _contact.emails[indexPath.row];
+                cell.textLabel.text = phone.address;
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
         }
             
         case TableSectionAddresses:
         {
-            CKAddress *phone = _contact.addresses[indexPath.row];
-            cell.textLabel.text = phone.street;
-            return cell;
+            if (indexPath.row < count - 1)
+            {
+                CKAddress *phone = _contact.addresses[indexPath.row];
+                cell.textLabel.text = phone.street;
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
         }
             
         case TableSectionMessengers:
         {
-            CKMessenger *phone = _contact.instantMessengers[indexPath.row];
-            cell.textLabel.text = phone.service;
-            return cell;
+            if (indexPath.row < count - 1)
+            {
+                CKMessenger *phone = _contact.instantMessengers[indexPath.row];
+                cell.textLabel.text = phone.service;
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
         }
             
         case TableSectionProfiles:
         {
-            CKSocialProfile *phone = _contact.socialProfiles[indexPath.row];
-            cell.textLabel.text = phone.service;
-            return cell;
+            if (indexPath.row < count - 1)
+            {
+                CKSocialProfile *phone = _contact.socialProfiles[indexPath.row];
+                cell.textLabel.text = phone.service;
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
         }
             
         case TableSectionURLs:
         {
-            CKURL *phone = _contact.URLs[indexPath.row];
-            cell.textLabel.text = phone.URLString;
-            return cell;
+            if (indexPath.row < count - 1)
+            {
+                CKURL *phone = _contact.URLs[indexPath.row];
+                cell.textLabel.text = phone.URLString;
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
         }
     }
     
-    return cell;
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch ((TableSection)indexPath.section)
+    {
+        case TableSectionAddresses:
+        case TableSectionEmails:
+        case TableSectionMessengers:
+        case TableSectionPhones:
+        case TableSectionProfiles:
+        case TableSectionURLs:
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger count = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-
-    if (indexPath.row == count - 1)
+    switch ((TableSection)indexPath.section)
     {
-        return UITableViewCellEditingStyleInsert;
+        case TableSectionAddresses:
+        case TableSectionEmails:
+        case TableSectionMessengers:
+        case TableSectionPhones:
+        case TableSectionProfiles:
+        case TableSectionURLs:
+        {
+            NSInteger count = [tableView numberOfRowsInSection:indexPath.section];;
+            if (indexPath.row == count - 1)
+            {
+                return UITableViewCellEditingStyleInsert;
+            }
+            return UITableViewCellEditingStyleDelete;
+        }
     }
+    
     return UITableViewCellEditingStyleNone;
 }
 
@@ -160,8 +241,6 @@ typedef enum : NSUInteger {
 
 #pragma mark - Private
 
-
-//
 //- (void)ck_fillMap:(NSMutableDictionary *)map class:(Class)aClass
 //{
 //    [self ck_enumeratePropertiesOfClass:aClass usingBlock:^(NSString *name, __unsafe_unretained Class aClass) {

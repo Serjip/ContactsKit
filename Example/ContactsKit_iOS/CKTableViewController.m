@@ -57,9 +57,8 @@
             [alert addButtonWithTitle:@"OK"];
             [alert show];
         }
-        
+
     }];
-    
     
     UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(actionAddContact:)];
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(actionRefreshContacts:)];
@@ -86,7 +85,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -129,7 +128,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     CKContact *contact = [_contacts objectAtIndex:indexPath.row];
-
     CKDetailsTableViewController *vc = [[CKDetailsTableViewController alloc] initWithContact:contact];
     [self.navigationController pushViewController:vc animated:YES];
 }

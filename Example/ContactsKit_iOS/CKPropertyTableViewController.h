@@ -10,6 +10,6 @@
 
 @interface CKPropertyTableViewController : UITableViewController
 
-- (instancetype)initWithClass:(Class)aClass;
+- (instancetype)initWithObject:(id)anObject ofClass:(Class)aClass;
 
 @end

@@ -23,6 +23,8 @@
 		523531DF1C52325A00FB1E80 /* CKTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523531DD1C52325A00FB1E80 /* CKTableViewCell.xib */; };
 		528844011C69EFB0006AEC7E /* CKPropertyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528844001C69EFB0006AEC7E /* CKPropertyTableViewController.m */; };
 		528844041C69F072006AEC7E /* NSObject+Enumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 528844031C69F072006AEC7E /* NSObject+Enumerator.m */; };
+		528844071C6A4173006AEC7E /* CKDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 528844061C6A4173006AEC7E /* CKDetailsTableViewCell.m */; };
+		528844091C6A41A3006AEC7E /* CKDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528844081C6A41A3006AEC7E /* CKDetailsTableViewCell.xib */; };
 		52C726861C6904020000E805 /* CKDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C726851C6904020000E805 /* CKDetailsTableViewController.m */; };
 		61A88EAD5AF34C59B9AB0CF7 /* libPods-ContactsKit_iOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FD5631E9646B5F356C0D76 /* libPods-ContactsKit_iOS_Tests.a */; };
 		7611346429DBAA138E686D5F /* libPods-ContactsKit_iOS_Logic_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4159D86E4B1D22CFB1461A76 /* libPods-ContactsKit_iOS_Logic_Tests.a */; };
@@ -81,6 +83,9 @@
 		528844001C69EFB0006AEC7E /* CKPropertyTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKPropertyTableViewController.m; sourceTree = "<group>"; };
 		528844021C69F072006AEC7E /* NSObject+Enumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Enumerator.h"; sourceTree = "<group>"; };
 		528844031C69F072006AEC7E /* NSObject+Enumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Enumerator.m"; sourceTree = "<group>"; };
+		528844051C6A4173006AEC7E /* CKDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKDetailsTableViewCell.h; sourceTree = "<group>"; };
+		528844061C6A4173006AEC7E /* CKDetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKDetailsTableViewCell.m; sourceTree = "<group>"; };
+		528844081C6A41A3006AEC7E /* CKDetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKDetailsTableViewCell.xib; sourceTree = "<group>"; };
 		529BDAE81C56566300BA46D8 /* ContactsKit_OSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ContactsKit_OSX.entitlements; sourceTree = "<group>"; };
 		52C726841C6904020000E805 /* CKDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKDetailsTableViewController.h; sourceTree = "<group>"; };
 		52C726851C6904020000E805 /* CKDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKDetailsTableViewController.m; sourceTree = "<group>"; };
@@ -175,9 +180,7 @@
 				52C726851C6904020000E805 /* CKDetailsTableViewController.m */,
 				528843FF1C69EFB0006AEC7E /* CKPropertyTableViewController.h */,
 				528844001C69EFB0006AEC7E /* CKPropertyTableViewController.m */,
-				523531DB1C52325A00FB1E80 /* CKTableViewCell.h */,
-				523531DC1C52325A00FB1E80 /* CKTableViewCell.m */,
-				523531DD1C52325A00FB1E80 /* CKTableViewCell.xib */,
+				5288440A1C6A41AB006AEC7E /* Cells */,
 				523531CC1C52315100FB1E80 /* Assets.xcassets */,
 				523531CE1C52315100FB1E80 /* LaunchScreen.storyboard */,
 				523531D11C52315100FB1E80 /* Info.plist */,
@@ -192,6 +195,19 @@
 				523531C11C52315100FB1E80 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5288440A1C6A41AB006AEC7E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				523531DB1C52325A00FB1E80 /* CKTableViewCell.h */,
+				523531DC1C52325A00FB1E80 /* CKTableViewCell.m */,
+				523531DD1C52325A00FB1E80 /* CKTableViewCell.xib */,
+				528844051C6A4173006AEC7E /* CKDetailsTableViewCell.h */,
+				528844061C6A4173006AEC7E /* CKDetailsTableViewCell.m */,
+				528844081C6A41A3006AEC7E /* CKDetailsTableViewCell.xib */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		52AAF8A91C4CF1E20019ABFB = {
@@ -419,6 +435,7 @@
 			files = (
 				523531DF1C52325A00FB1E80 /* CKTableViewCell.xib in Resources */,
 				523531D01C52315100FB1E80 /* LaunchScreen.storyboard in Resources */,
+				528844091C6A41A3006AEC7E /* CKDetailsTableViewCell.xib in Resources */,
 				523531CD1C52315100FB1E80 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -639,6 +656,7 @@
 			files = (
 				528844011C69EFB0006AEC7E /* CKPropertyTableViewController.m in Sources */,
 				523531DA1C52323D00FB1E80 /* CKTableViewController.m in Sources */,
+				528844071C6A4173006AEC7E /* CKDetailsTableViewCell.m in Sources */,
 				523531DE1C52325A00FB1E80 /* CKTableViewCell.m in Sources */,
 				528844041C69F072006AEC7E /* NSObject+Enumerator.m in Sources */,
 				52C726861C6904020000E805 /* CKDetailsTableViewController.m in Sources */,
