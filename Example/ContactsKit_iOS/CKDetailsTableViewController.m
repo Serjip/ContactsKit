@@ -10,6 +10,15 @@
 #import <ContactsKit/ContactsKit.h>
 #import <objc/runtime.h>
 
+typedef enum : NSUInteger {
+    TableSectionPhones      = 1,
+    TableSectionEmails      = 2,
+    TableSectionAddresses   = 3,
+    TableSectionMessengers  = 4,
+    TableSectionProfiles    = 5,
+    TableSectionURLs        = 6,
+} TableSection;
+
 @implementation CKDetailsTableViewController {
     CKMutableContact *_contact;
     NSDictionary *_map;
@@ -53,14 +62,33 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _map.count;
+    return [super numberOfSectionsInTableView:tableView] + 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id key = _map.allKeys[section];
-    NSArray *array = _map[key];
-    return array.count;
+    switch ((TableSection)section)
+    {
+        case TableSectionPhones:
+            return _contact.phones.count;
+            
+        case TableSectionEmails:
+            return _contact.emails.count;
+            
+        case TableSectionAddresses:
+            return _contact.addresses.count;
+            
+        case TableSectionMessengers:
+            return _contact.instantMessengers.count;
+            
+        case TableSectionProfiles:
+            return _contact.socialProfiles.count;
+            
+        case TableSectionURLs:
+            return _contact.URLs.count;
+    }
+ 
+    return [super tableView:tableView numberOfRowsInSection:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
