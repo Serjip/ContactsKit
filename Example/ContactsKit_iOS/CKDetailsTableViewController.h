@@ -6,11 +6,11 @@
 //  Copyright © 2016 Sergey Popov. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CKPropertyTableViewController.h"
 
 @class CKContact;
 
-@interface CKDetailsTableViewController : UITableViewController
+@interface CKDetailsTableViewController : CKPropertyTableViewController
 
 - (instancetype)initWithContact:(CKContact *)contact;
 

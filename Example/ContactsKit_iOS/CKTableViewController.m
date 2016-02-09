@@ -31,6 +31,7 @@
     if (self)
     {
         _book = [[CKAddressBook alloc] init];
+        _book.fieldsMask = CKContactFieldAll;
         _book.delegate = self;
         [_book startObserveChanges];
     }
