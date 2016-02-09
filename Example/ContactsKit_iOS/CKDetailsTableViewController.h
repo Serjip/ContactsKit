@@ -10,7 +10,7 @@
 
 @class CKContact;
 
-@interface CKDetailsTableViewController : CKPropertyTableViewController
+@interface CKDetailsTableViewController : CKPropertyTableViewController <CKPropertyTableViewControllerDelegate>
 
 - (instancetype)initWithContact:(CKContact *)contact;
 

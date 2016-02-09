@@ -47,6 +47,7 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionSetPropertiesToObject:)];
     [self.tableView registerNib:[CKDetailsTableViewCell nib] forCellReuseIdentifier:[CKDetailsTableViewCell cellReuseIdentifier]];
 }
 
@@ -81,6 +82,26 @@
     }
     
     return cell;
+}
+
+#pragma mark - Actions
+
+- (void)actionSetPropertiesToObject:(UIBarButtonItem *)sender
+{
+    [_properties enumerateObjectsUsingBlock:^(NSString *name, NSUInteger idx, BOOL *stop) {
+        
+       CKDetailsTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+        
+        @try {
+            [_object setValue:cell.value forKey:name];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@",exception);
+        }
+        
+    }];
+    
+    [self.delegate propertyTableController:self didSaveObject:_object];
 }
 
 @end

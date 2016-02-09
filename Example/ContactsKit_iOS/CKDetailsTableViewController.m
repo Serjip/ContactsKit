@@ -43,6 +43,8 @@ typedef enum : NSUInteger {
     if (self)
     {
         _contact = contact;
+        self.editing = YES;
+        self.delegate = self;
     }
     return self;
 }
@@ -50,10 +52,6 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(actionSaveContact:)];
-    self.navigationItem.rightBarButtonItem = saveItem;
-    self.editing = YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -207,6 +205,74 @@ typedef enum : NSUInteger {
     return NO;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        NSMutableArray *array = nil;
+        
+        switch ((TableSection)indexPath.section)
+        {
+            case TableSectionAddresses:
+                array = [_contact mutableArrayValueForKey:@"addresses"];
+                break;
+            case TableSectionEmails:
+                array = [_contact mutableArrayValueForKey:@"emails"];
+                break;
+            case TableSectionMessengers:
+                array = [_contact mutableArrayValueForKey:@"instantMessengers"];
+                break;
+            case TableSectionPhones:
+                array = [_contact mutableArrayValueForKey:@"phones"];
+                break;
+            case TableSectionProfiles:
+                array = [_contact mutableArrayValueForKey:@"socialProfiles"];
+                break;
+            case TableSectionURLs:
+                array = [_contact mutableArrayValueForKey:@"URLs"];
+                break;
+        }
+        
+        [array removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else if (editingStyle == UITableViewCellEditingStyleInsert)
+    {
+        Class class;
+        switch ((TableSection)indexPath.section)
+        {
+            case TableSectionAddresses:
+                class = [CKMutableAddress class];
+                break;
+                
+            case TableSectionEmails:
+                class = [CKMutableEmail class];
+                break;
+                
+            case TableSectionMessengers:
+                class = [CKMutableMessenger class];
+                
+                break;
+            case TableSectionPhones:
+                class = [CKMutablePhone class];
+                break;
+                
+            case TableSectionProfiles:
+                class = [CKMutableSocialProfile class];
+                break;
+            
+            case TableSectionURLs:
+                class = [CKMutableURL class];
+                break;
+        }
+        
+        id object = [[class alloc] init];
+        CKPropertyTableViewController *vc = [[CKPropertyTableViewController alloc] initWithObject:object ofClass:class];
+        vc.delegate = self;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 #pragma mark - UITableViewDelegate
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -232,73 +298,74 @@ typedef enum : NSUInteger {
     return UITableViewCellEditingStyleNone;
 }
 
-#pragma mark - Actions
+#pragma mark - CKPropertyTableViewControllerDelegate
 
-- (void)actionSaveContact:(UIBarButtonItem *)sender
+- (void)propertyTableController:(CKPropertyTableViewController *)vc didSaveObject:(id)object
 {
+    if (vc == self)
+    {
+        [[CKAddressBook new] updateContact:_contact completion:^(NSError *error) {
+            
+            if (! error)
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] init];
+                alert.title = @"Cannot save contact";
+                alert.message = error.localizedDescription;
+                [alert addButtonWithTitle:@"OK"];
+                [alert show];
+            }
+            
+        }];
+    }
+    else
+    {
+        NSIndexPath *indexPath = nil;
+        
+        if ([object isKindOfClass:[CKPhone class]])
+        {
+            [[_contact mutableArrayValueForKey:@"phones"] addObject:object];
+            NSInteger index = [_contact.phones indexOfObject:object];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionPhones];
+        }
+        else if ([object isKindOfClass:[CKEmail class]])
+        {
+            [[_contact mutableArrayValueForKey:@"emails"] addObject:object];
+            NSInteger index = [_contact.emails indexOfObject:object];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionEmails];
+        }
+        else if ([object isKindOfClass:[CKAddress class]])
+        {
+            [[_contact mutableArrayValueForKey:@"addresses"] addObject:object];
+            NSInteger index = [_contact.addresses indexOfObject:object];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionAddresses];
+        }
+        else if ([object isKindOfClass:[CKMessenger class]])
+        {
+            [[_contact mutableArrayValueForKey:@"instantMessengers"] addObject:object];
+            NSInteger index = [_contact.instantMessengers indexOfObject:object];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionMessengers];
+        }
+        else if ([object isKindOfClass:[CKSocialProfile class]])
+        {
+            [[_contact mutableArrayValueForKey:@"socialProfiles"] addObject:object];
+            NSInteger index = [_contact.socialProfiles indexOfObject:object];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionProfiles];
+        }
+        else if ([object isKindOfClass:[CKURL class]])
+        {
+            [[_contact mutableArrayValueForKey:@"URLs"] addObject:object];
+            NSInteger index = [_contact.URLs indexOfObject:object];
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionURLs];
+        }
+        
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
     
+    [self.navigationController popViewControllerAnimated:YES];
 }
-
-#pragma mark - Private
-
-//- (void)ck_fillMap:(NSMutableDictionary *)map class:(Class)aClass
-//{
-//    [self ck_enumeratePropertiesOfClass:aClass usingBlock:^(NSString *name, __unsafe_unretained Class aClass) {
-//        
-//        if (aClass == [NSString class] || aClass == [NSDate class])
-//        {
-//            NSMutableArray *array = [map objectForKey:@"Contact"];
-//            if (! array)
-//            {
-//                array = [[NSMutableArray alloc] init];
-//                [map setObject:array forKey:@"Contact"];
-//            }
-//            [array addObject:name];
-//        }
-//        else if (aClass == [NSArray class])
-//        {
-//            Class subClass;
-//            
-//            if ([name isEqualToString:@"phones"])
-//            {
-//                subClass = [CKMutablePhone class];
-//            }
-//            else if ([name isEqualToString:@"emails"])
-//            {
-//                subClass = [CKMutableEmail class];
-//            }
-//            else if ([name isEqualToString:@"addresses"])
-//            {
-//                subClass = [CKAddress class];
-//            }
-//            else if ([name isEqualToString:@"instantMessengers"])
-//            {
-//                subClass = [CKMessenger class];
-//            }
-//            else if ([name isEqualToString:@"socialProfiles"])
-//            {
-//                subClass = [CKSocialProfile class];
-//            }
-//            else if ([name isEqualToString:@"URLs"])
-//            {
-//                subClass = [CKMutableURL class];
-//            }
-//            
-//            NSMutableArray *array = [map objectForKey:name];
-//            if (! array)
-//            {
-//                array = [[NSMutableArray alloc] init];
-//                [map setObject:array forKey:name];
-//            }
-//            
-//            [self ck_enumeratePropertiesOfClass:subClass usingBlock:^(NSString *name, __unsafe_unretained Class aClass) {
-//                
-//                [array addObject:name];
-//                
-//             }];
-//        }
-//        
-//    }];
-//}
 
 @end
