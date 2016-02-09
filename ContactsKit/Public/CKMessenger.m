@@ -226,13 +226,13 @@
 - (void)setService:(NSString *)aService
 {
     service = aService;
-    self.serviceType = [self ck_serviceWithString:aService];
+    serviceType = [self ck_serviceWithString:aService];
 }
 
 - (void)setServiceType:(CKMessengerService)aServiceType
 {
     serviceType = aServiceType;
-    self.service = [self ck_serviceStringWithType:aServiceType];
+    service = [self ck_serviceStringWithType:aServiceType];
 }
 
 #pragma mark - NSCopying
