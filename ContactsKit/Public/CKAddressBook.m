@@ -626,8 +626,6 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 {
     NSParameterAssert(contact);
     
-#warning Check existing ID for the contact
-    
     BOOL result = [self ck_checkAccess:error];
     
 #if TARGET_OS_IOS
