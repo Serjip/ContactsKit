@@ -1,4 +1,8 @@
-ContactsKit it is an easy access to contacts for iOS 6.0+ and OSX 10.7+.
+<p align="center" >
+  <img src="https://raw.githubusercontent.com/Serjip/ContactsKit/dev/image.png" alt="ContactsKit" title="ContactsKit" width=300>
+</p>
+
+ContactsKit is a library for easy contact management supports iOS and Mac OS X.
 
 ## Installation with CocoaPods
 
@@ -61,7 +65,7 @@ Then if the access is granted you can get contacts
 
 ```objectivec
 
-	// Get filds from the mask
+	// Get fields from the mask
     CKContactField mask = CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldBirthday;
     
     // Final sort of the contacts array
