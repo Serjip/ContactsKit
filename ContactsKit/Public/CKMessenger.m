@@ -111,6 +111,13 @@
     return [self isEqualToMessenger:object];
 }
 
+#pragma mark - NSObject
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ %@ %@", [super description], self.service, self.username];
+}
+
 #pragma mark - Private
 
 - (CKMessengerService)ck_serviceWithString:(NSString *)string
