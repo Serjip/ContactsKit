@@ -15,7 +15,7 @@
 @end
 
 @implementation CKPropertyTableViewController {
-    NSDictionary *_properties;
+    NSArray *_properties;
     id _object;
 }
 
@@ -26,28 +26,17 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        NSMutableArray *array = [[NSMutableArray alloc] init];
         
         [aClass enumeratePropertiesUsingBlock:^(NSString *name, __unsafe_unretained Class aClass) {
             
-            id value;
-            
             if (aClass == [NSString class])
             {
-                value = [anObject valueForKey:name];
+                [array addObject:name];
             }
-            else if (aClass == [NSDate class])
-            {
-                value = [[anObject valueForKey:name] description];
-            }
-            
-            value = value? : [NSNull null];
-            
-            [dict setValue:value forKey:name];
-            
         }];
         
-        _properties = dict;
+        _properties = array;
         _object = anObject;
     }
     return self;
@@ -77,11 +66,12 @@
 {
     CKDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CKDetailsTableViewCell cellReuseIdentifier] forIndexPath:indexPath];
     
-    NSString *key = _properties.allKeys[indexPath.row];
+    NSString *key = _properties[indexPath.row];
     cell.name = key;
     
-    id value = [_properties valueForKey:key];
+    id value = [_object valueForKey:key];
     cell.value = [value isKindOfClass:[NSString class]] ? value : nil;
+    cell.delegate = self;
 
     return cell;
 }
@@ -90,26 +80,13 @@
 
 - (void)cell:(CKDetailsTableViewCell *)cell didChangeValue:(NSString *)value forKey:(NSString *)key
 {
-    [_properties setValue:value forKey:key];
+    [_object setValue:value forKey:key];
 }
 
 #pragma mark - Actions
 
 - (void)actionSetPropertiesToObject:(UIBarButtonItem *)sender
 {
-    [_properties enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
-        
-        id val = [value isKindOfClass:[NSString class]] ? value : nil;
-        
-        @try {
-            [_object setValue:val forKey:key];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@",exception);
-        }
-        
-    }];
-    
     [self.delegate propertyTableController:self didSaveObject:_object];
 }
 
