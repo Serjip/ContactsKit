@@ -5,6 +5,7 @@
 * Fixed merging issue thumbnailData
 * Rename property zip -> ZIP
 * Added mutable classes
+* Added CKMessenger class
 * Added methods for getting labels
 * Added methods for "Add", "Delete", "Update" a contact
 
