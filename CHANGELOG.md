@@ -1,9 +1,12 @@
 #Change Log
 
-## 1.0.3
+## 1.1.0 / 2016-02-11
 * Added nickname, department properties
 * Fixed merging issue thumbnailData
 * Rename property zip -> ZIP
+* Added mutable classes
+* Added methods for getting labels
+* Added methods for "Add", "Delete", "Update" a contact
 
 ## 1.0.2 / 2016-01-30
 * Added getttings contacts with block
