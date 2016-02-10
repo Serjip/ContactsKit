@@ -10,12 +10,12 @@
 #import "NSObject+Enumerator.h"
 #import "CKDetailsTableViewCell.h"
 
-@interface CKPropertyTableViewController ()
+@interface CKPropertyTableViewController () <CKDetailsTableViewCellDelegate>
 
 @end
 
 @implementation CKPropertyTableViewController {
-    NSArray *_properties;
+    NSDictionary *_properties;
     id _object;
 }
 
@@ -26,18 +26,28 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         
-        NSMutableArray *array = [[NSMutableArray alloc] init];
         [aClass enumeratePropertiesUsingBlock:^(NSString *name, __unsafe_unretained Class aClass) {
             
-            if (aClass == [NSString class] || aClass == [NSDate class])
+            id value;
+            
+            if (aClass == [NSString class])
             {
-                [array addObject:name];
+                value = [anObject valueForKey:name];
             }
+            else if (aClass == [NSDate class])
+            {
+                value = [[anObject valueForKey:name] description];
+            }
+            
+            value = value? : [NSNull null];
+            
+            [dict setValue:value forKey:name];
             
         }];
         
-        _properties = array;
+        _properties = dict;
         _object = anObject;
     }
     return self;
@@ -67,33 +77,32 @@
 {
     CKDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CKDetailsTableViewCell cellReuseIdentifier] forIndexPath:indexPath];
     
-    NSString *key = _properties[indexPath.row];
+    NSString *key = _properties.allKeys[indexPath.row];
     cell.name = key;
     
-    id value = [_object valueForKey:key];
-    
-    if ([value isKindOfClass:[NSString class]])
-    {
-        cell.value = value;
-    }
-    else if ([value isKindOfClass:[NSDate class]])
-    {
-        cell.value = [value description];
-    }
-    
+    id value = [_properties valueForKey:key];
+    cell.value = [value isKindOfClass:[NSString class]] ? value : nil;
+
     return cell;
+}
+
+#pragma mark - CKDetailsTableViewCellDelegate
+
+- (void)cell:(CKDetailsTableViewCell *)cell didChangeValue:(NSString *)value forKey:(NSString *)key
+{
+    [_properties setValue:value forKey:key];
 }
 
 #pragma mark - Actions
 
 - (void)actionSetPropertiesToObject:(UIBarButtonItem *)sender
 {
-    [_properties enumerateObjectsUsingBlock:^(NSString *name, NSUInteger idx, BOOL *stop) {
+    [_properties enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
         
-       CKDetailsTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+        id val = [value isKindOfClass:[NSString class]] ? value : nil;
         
         @try {
-            [_object setValue:cell.value forKey:name];
+            [_object setValue:val forKey:key];
         }
         @catch (NSException *exception) {
             NSLog(@"%@",exception);

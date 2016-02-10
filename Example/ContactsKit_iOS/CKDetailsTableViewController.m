@@ -28,7 +28,7 @@ typedef enum : NSUInteger {
 - (instancetype)init
 {
     CKMutableContact *contact = [[CKMutableContact alloc] init];
-    self = [super initWithObject:contact ofClass:[CKContact class]];
+    self = [super initWithObject:contact ofClass:[CKMutableContact class]];
     if (self)
     {
         _contact = contact;
@@ -39,7 +39,7 @@ typedef enum : NSUInteger {
 - (instancetype)initWithContact:(CKContact *)aContact
 {
     CKMutableContact *contact = aContact.mutableCopy;
-    self = [super initWithObject:contact ofClass:[CKContact class]];
+    self = [super initWithObject:contact ofClass:[CKMutableContact class]];
     if (self)
     {
         _contact = contact;

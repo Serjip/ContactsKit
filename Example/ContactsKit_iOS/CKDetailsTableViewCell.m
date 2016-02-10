@@ -8,7 +8,7 @@
 
 #import "CKDetailsTableViewCell.h"
 
-@interface CKDetailsTableViewCell ()
+@interface CKDetailsTableViewCell () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
@@ -16,6 +16,8 @@
 @end
 
 @implementation CKDetailsTableViewCell
+
+#pragma mark - Properties
 
 - (void)setName:(NSString *)name
 {
@@ -37,6 +39,15 @@
 {
     return self.textField.text;
 }
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.delegate cell:self didChangeValue:self.value forKey:self.name];
+}
+
+#pragma mark - Class methods
 
 + (UINib *)nib
 {
