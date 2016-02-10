@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "ContactsKit"
   s.version      = "1.0.2"
-  s.summary      = "Getting iOS and OSX contacts without headache"
+  s.summary      = "Contacts management without headache"
   s.homepage     = "https://github.com/Serjip/ContactsKit"
   s.license      = { :type => "MIT", :file => "LICENSE.txt" }
   s.author       = { "Sergey Popov" => "serj@ttitt.ru" }
