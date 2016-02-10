@@ -316,18 +316,14 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 - (NSArray *)ck_contactsWithFields:(CKContactField)fields merge:(CKContactField)merge sortDescriptors:(NSArray *)descriptors
                             filter:(BOOL (^) (CKContact *contact))filter error:(NSError **)error
 {
-    // Gettings the array of people
-#if TARGET_OS_IOS
-    if (! _addressBookRef)
+    if (! [self ck_checkAccess:error])
     {
-        if (error)
-        {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
-            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
-        }
         return nil;
     }
     
+#if TARGET_OS_IOS
+    
+    // Gettings the array of people
     CFArrayRef peopleArrayRef = ABAddressBookCopyArrayOfAllPeople(_addressBookRef);
     CFIndex contactCount = CFArrayGetCount(peopleArrayRef);
     NSMutableArray *contacts = [[NSMutableArray alloc] initWithCapacity:(NSUInteger)contactCount];
@@ -374,16 +370,6 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     }
     CFRelease(peopleArrayRef);
 #elif TARGET_OS_MAC
-    
-    if (! _addressBook)
-    {
-        if (error)
-        {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
-            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
-        }
-        return nil;
-    }
     
     NSMutableArray *contacts = [[NSMutableArray alloc] init];
     NSMutableSet *linkedContactsIDs = [NSMutableSet set];
