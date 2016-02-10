@@ -32,6 +32,8 @@ typedef enum : NSUInteger {
     if (self)
     {
         _contact = contact;
+        self.editing = YES;
+        self.delegate = self;
     }
     return self;
 }
@@ -304,7 +306,7 @@ typedef enum : NSUInteger {
 {
     if (vc == self)
     {
-        [[CKAddressBook new] updateContact:_contact completion:^(NSError *error) {
+        id completion = ^(NSError *error) {
             
             if (! error)
             {
@@ -318,8 +320,16 @@ typedef enum : NSUInteger {
                 [alert addButtonWithTitle:@"OK"];
                 [alert show];
             }
-            
-        }];
+        };
+        
+        if (_contact.identifier)
+        {
+            [[CKAddressBook new] updateContact:_contact completion:completion];
+        }
+        else
+        {
+            [[CKAddressBook new] addContact:_contact completion:completion];
+        }
     }
     else
     {
@@ -327,38 +337,50 @@ typedef enum : NSUInteger {
         
         if ([object isKindOfClass:[CKPhone class]])
         {
-            [[_contact mutableArrayValueForKey:@"phones"] addObject:object];
-            NSInteger index = [_contact.phones indexOfObject:object];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.phones];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.phones = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionPhones];
         }
         else if ([object isKindOfClass:[CKEmail class]])
         {
-            [[_contact mutableArrayValueForKey:@"emails"] addObject:object];
-            NSInteger index = [_contact.emails indexOfObject:object];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.emails];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.emails = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionEmails];
         }
         else if ([object isKindOfClass:[CKAddress class]])
         {
-            [[_contact mutableArrayValueForKey:@"addresses"] addObject:object];
-            NSInteger index = [_contact.addresses indexOfObject:object];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.addresses];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.addresses = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionAddresses];
         }
         else if ([object isKindOfClass:[CKMessenger class]])
         {
-            [[_contact mutableArrayValueForKey:@"instantMessengers"] addObject:object];
-            NSInteger index = [_contact.instantMessengers indexOfObject:object];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.instantMessengers];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.instantMessengers = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionMessengers];
         }
         else if ([object isKindOfClass:[CKSocialProfile class]])
         {
-            [[_contact mutableArrayValueForKey:@"socialProfiles"] addObject:object];
-            NSInteger index = [_contact.socialProfiles indexOfObject:object];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.socialProfiles];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.socialProfiles = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionProfiles];
         }
         else if ([object isKindOfClass:[CKURL class]])
         {
-            [[_contact mutableArrayValueForKey:@"URLs"] addObject:object];
-            NSInteger index = [_contact.URLs indexOfObject:object];
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.URLs];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.URLs = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionURLs];
         }
         
