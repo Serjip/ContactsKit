@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3A6318119385405BBB86AAC1 /* libPods-ContactsKit_OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DCE8F9F9C180DAC7F1BB56C /* libPods-ContactsKit_OSX.a */; };
-		520093891C60AB4D008894EF /* CKContact_iOS_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 520093881C60AB4D008894EF /* CKContact_iOS_Tests.m */; };
 		523531AA1C522EFB00FB1E80 /* CKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531A91C522EFB00FB1E80 /* CKAppDelegate.m */; };
 		523531AD1C522EFB00FB1E80 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AC1C522EFB00FB1E80 /* main.m */; };
 		523531B01C522EFB00FB1E80 /* CKContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523531AF1C522EFB00FB1E80 /* CKContactsViewController.m */; };
@@ -26,22 +25,13 @@
 		528844071C6A4173006AEC7E /* CKDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 528844061C6A4173006AEC7E /* CKDetailsTableViewCell.m */; };
 		528844091C6A41A3006AEC7E /* CKDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528844081C6A41A3006AEC7E /* CKDetailsTableViewCell.xib */; };
 		52C726861C6904020000E805 /* CKDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C726851C6904020000E805 /* CKDetailsTableViewController.m */; };
-		61A88EAD5AF34C59B9AB0CF7 /* libPods-ContactsKit_iOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FD5631E9646B5F356C0D76 /* libPods-ContactsKit_iOS_Tests.a */; };
 		7611346429DBAA138E686D5F /* libPods-ContactsKit_iOS_Logic_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4159D86E4B1D22CFB1461A76 /* libPods-ContactsKit_iOS_Logic_Tests.a */; };
 		C57CC19BD9A3A2A3B9F30F55 /* libPods-ContactsKit_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D51CBB1D2DEBBDCEF67EE854 /* libPods-ContactsKit_iOS.a */; };
 		D24F79DB1C6297370093D509 /* ContactsKit_iOS_Logic_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = D24F79DA1C6297370093D509 /* ContactsKit_iOS_Logic_Tests.m */; };
-		D2F3CC4D1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F3CC4C1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		D24F79E01C629FD00093D509 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 52AAF8AA1C4CF1E20019ABFB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 523531BD1C52315100FB1E80;
-			remoteInfo = ContactsKit_iOS;
-		};
-		D2F3CC4F1C5FF56000298EE4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 52AAF8AA1C4CF1E20019ABFB /* Project object */;
 			proxyType = 1;
@@ -57,7 +47,6 @@
 		4453FC7F71A6152D6390BE56 /* Pods-ContactsKit_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_iOS/Pods-ContactsKit_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		4724CC2686988794E829470F /* libPods-ContactsKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ContactsKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C05248B0E74A30EF4AF618 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		520093881C60AB4D008894EF /* CKContact_iOS_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CKContact_iOS_Tests.m; sourceTree = "<group>"; };
 		523531A61C522EFB00FB1E80 /* ContactsKit_OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsKit_OSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523531A81C522EFB00FB1E80 /* CKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAppDelegate.h; sourceTree = "<group>"; };
 		523531A91C522EFB00FB1E80 /* CKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKAppDelegate.m; sourceTree = "<group>"; };
@@ -97,9 +86,6 @@
 		D24F79D81C6297370093D509 /* ContactsKit_iOS_Logic_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactsKit_iOS_Logic_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D24F79DA1C6297370093D509 /* ContactsKit_iOS_Logic_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactsKit_iOS_Logic_Tests.m; sourceTree = "<group>"; };
 		D24F79DC1C6297370093D509 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D2F3CC4A1C5FF56000298EE4 /* ContactsKit_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContactsKit_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2F3CC4C1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactsKit_iOS_Tests.m; sourceTree = "<group>"; };
-		D2F3CC4E1C5FF56000298EE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D51CBB1D2DEBBDCEF67EE854 /* libPods-ContactsKit_iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ContactsKit_iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D56F5E6649106C4277D74BD4 /* Pods-ContactsKit_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_iOS/Pods-ContactsKit_iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		EF38C6FFEB92E64C036FC227 /* Pods-ContactsKit_iOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_iOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_iOS_Tests/Pods-ContactsKit_iOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -129,14 +115,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7611346429DBAA138E686D5F /* libPods-ContactsKit_iOS_Logic_Tests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D2F3CC471C5FF56000298EE4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				61A88EAD5AF34C59B9AB0CF7 /* libPods-ContactsKit_iOS_Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +193,6 @@
 			children = (
 				523531BF1C52315100FB1E80 /* ContactsKit_iOS */,
 				523531A71C522EFB00FB1E80 /* ContactsKit_OSX */,
-				D2F3CC4B1C5FF56000298EE4 /* ContactsKit_iOS_Tests */,
 				D24F79D91C6297370093D509 /* ContactsKit_iOS_Logic_Tests */,
 				52AAF8B31C4CF1E20019ABFB /* Products */,
 				8534B7C6D8D28BC898E3DD77 /* Pods */,
@@ -228,7 +205,6 @@
 			children = (
 				523531A61C522EFB00FB1E80 /* ContactsKit_OSX.app */,
 				523531BE1C52315100FB1E80 /* ContactsKit_iOS.app */,
-				D2F3CC4A1C5FF56000298EE4 /* ContactsKit_iOS_Tests.xctest */,
 				D24F79D81C6297370093D509 /* ContactsKit_iOS_Logic_Tests.xctest */,
 			);
 			name = Products;
@@ -271,16 +247,6 @@
 				D24F79DC1C6297370093D509 /* Info.plist */,
 			);
 			path = ContactsKit_iOS_Logic_Tests;
-			sourceTree = "<group>";
-		};
-		D2F3CC4B1C5FF56000298EE4 /* ContactsKit_iOS_Tests */ = {
-			isa = PBXGroup;
-			children = (
-				520093881C60AB4D008894EF /* CKContact_iOS_Tests.m */,
-				D2F3CC4C1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m */,
-				D2F3CC4E1C5FF56000298EE4 /* Info.plist */,
-			);
-			path = ContactsKit_iOS_Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,27 +313,6 @@
 			productReference = D24F79D81C6297370093D509 /* ContactsKit_iOS_Logic_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D2F3CC491C5FF56000298EE4 /* ContactsKit_iOS_Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D2F3CC531C5FF56000298EE4 /* Build configuration list for PBXNativeTarget "ContactsKit_iOS_Tests" */;
-			buildPhases = (
-				F35EBF1213244C9A15EACC31 /* Check Pods Manifest.lock */,
-				D2F3CC461C5FF56000298EE4 /* Sources */,
-				D2F3CC471C5FF56000298EE4 /* Frameworks */,
-				D2F3CC481C5FF56000298EE4 /* Resources */,
-				0631DEBCCB0F2B6EB9560C02 /* Embed Pods Frameworks */,
-				17445FD1725E135B3706E365 /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D2F3CC501C5FF56000298EE4 /* PBXTargetDependency */,
-			);
-			name = ContactsKit_iOS_Tests;
-			productName = ContactsKit_iOS_Tests;
-			productReference = D2F3CC4A1C5FF56000298EE4 /* ContactsKit_iOS_Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -392,10 +337,6 @@
 					D24F79D71C6297370093D509 = {
 						CreatedOnToolsVersion = 7.2.1;
 					};
-					D2F3CC491C5FF56000298EE4 = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = 523531BD1C52315100FB1E80;
-					};
 				};
 			};
 			buildConfigurationList = 52AAF8AD1C4CF1E20019ABFB /* Build configuration list for PBXProject "ContactsKit" */;
@@ -413,7 +354,6 @@
 			targets = (
 				523531BD1C52315100FB1E80 /* ContactsKit_iOS */,
 				523531A51C522EFB00FB1E80 /* ContactsKit_OSX */,
-				D2F3CC491C5FF56000298EE4 /* ContactsKit_iOS_Tests */,
 				D24F79D71C6297370093D509 /* ContactsKit_iOS_Logic_Tests */,
 			);
 		};
@@ -447,46 +387,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2F3CC481C5FF56000298EE4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0631DEBCCB0F2B6EB9560C02 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ContactsKit_iOS_Tests/Pods-ContactsKit_iOS_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		17445FD1725E135B3706E365 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ContactsKit_iOS_Tests/Pods-ContactsKit_iOS_Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		1F42B0856DEC4AF815D9934B /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -622,21 +525,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F35EBF1213244C9A15EACC31 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -673,15 +561,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2F3CC461C5FF56000298EE4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				520093891C60AB4D008894EF /* CKContact_iOS_Tests.m in Sources */,
-				D2F3CC4D1C5FF56000298EE4 /* ContactsKit_iOS_Tests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -689,11 +568,6 @@
 			isa = PBXTargetDependency;
 			target = 523531BD1C52315100FB1E80 /* ContactsKit_iOS */;
 			targetProxy = D24F79E01C629FD00093D509 /* PBXContainerItemProxy */;
-		};
-		D2F3CC501C5FF56000298EE4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 523531BD1C52315100FB1E80 /* ContactsKit_iOS */;
-			targetProxy = D2F3CC4F1C5FF56000298EE4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -881,34 +755,6 @@
 			};
 			name = Release;
 		};
-		D2F3CC511C5FF56000298EE4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF38C6FFEB92E64C036FC227 /* Pods-ContactsKit_iOS_Tests.debug.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = ContactsKit_iOS_Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ttitt.ContactsKit-iOS-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ContactsKit_iOS.app/ContactsKit_iOS";
-			};
-			name = Debug;
-		};
-		D2F3CC521C5FF56000298EE4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8505917E61BDCDF03B44CCD /* Pods-ContactsKit_iOS_Tests.release.xcconfig */;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = ContactsKit_iOS_Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ttitt.ContactsKit-iOS-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ContactsKit_iOS.app/ContactsKit_iOS";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -944,15 +790,6 @@
 			buildConfigurations = (
 				D24F79DD1C6297370093D509 /* Debug */,
 				D24F79DE1C6297370093D509 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D2F3CC531C5FF56000298EE4 /* Build configuration list for PBXNativeTarget "ContactsKit_iOS_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D2F3CC511C5FF56000298EE4 /* Debug */,
-				D2F3CC521C5FF56000298EE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
