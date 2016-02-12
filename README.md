@@ -4,6 +4,12 @@
 
 ContactsKit is a library for easy contact management supports iOS and Mac OS X.
 
+## Features
+* Unifying linked contacts
+* Support Mac OS X
+* Contact management add, update, delete
+* Support NSCoding
+
 ## Installation with CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like ContactsKit in your projects. See more on [cocoapods.org](http://cocoapods.org). You can install it with the following command:
