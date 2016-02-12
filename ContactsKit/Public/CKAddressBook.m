@@ -17,6 +17,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 @private
 #if TARGET_OS_IOS
     ABAddressBookRef _addressBookRef;
+    NSArray *_contacts;
 #elif TARGET_OS_MAC
     BOOL _accessIsNotRequested;
     ABAddressBook *_addressBook;
@@ -293,6 +294,10 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     
 #if TARGET_OS_IOS
     ABAddressBookRegisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
+    
+    dispatch_async(_addressBookQueue, ^{
+        _contacts = [self ck_contactsWithFields:CKContactFieldModificationDate merge:0 sortDescriptors:nil filter:nil error:nil];
+    });
 #elif TARGET_OS_MAC
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(notificaitonDataBaseChanged:) name:kABDatabaseChangedNotification object:_addressBook];
@@ -304,6 +309,7 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 {
 #if TARGET_OS_IOS
     ABAddressBookUnregisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
+    _contacts = nil;
 #elif TARGET_OS_MAC
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc removeObserver:self name:kABDatabaseChangedNotification object:_addressBook];
@@ -753,6 +759,33 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
     return result;
 }
 
+- (void)ck_addressBookChangedExternally
+{
+    dispatch_async(_addressBookQueue, ^{
+       
+        NSArray *contacts = [self ck_contactsWithFields:CKContactFieldModificationDate merge:0 sortDescriptors:nil filter:nil error:nil];
+        NSMutableArray *changedContacts = [[NSMutableArray alloc] initWithArray:contacts];
+        
+        for (CKContact *contact in _contacts)
+        {
+            [changedContacts removeObject:contact];
+        }
+        
+        NSLog(@"%@", changedContacts);
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:nil];
+            
+            if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
+            {
+                [self.delegate addressBookDidChnage:self];
+            }
+        });
+    });
+}
+
 #if TARGET_OS_IOS
 
 #pragma mark - Callbacks
@@ -761,13 +794,7 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
 {
     ABAddressBookRevert(addressBookRef);
     CKAddressBook *addressBook = (__bridge CKAddressBook *)(context);
-    
-    if ([addressBook.delegate respondsToSelector:@selector(addressBookDidChnage:)])
-    {
-        [addressBook.delegate addressBookDidChnage:addressBook];
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:addressBook userInfo:nil];
+    [addressBook ck_addressBookChangedExternally];
 }
 
 #elif TARGET_OS_MAC
