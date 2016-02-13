@@ -150,6 +150,24 @@
     [addressBook loadContacts];
 }
 
+- (void)addressBook:(CKAddressBook *)addressBook didChangeForType:(CKAddressBookChangeType)type contactsIds:(NSArray<NSString *> *)ids
+{
+    switch (type)
+    {
+        case CKAddressBookChangeTypeAdd:
+            NSLog(@"Added ids %@", ids);
+            break;
+            
+        case CKAddressBookChangeTypeDelete:
+            NSLog(@"Deleted ids %@", ids);
+            break;
+            
+        case CKAddressBookChangeTypeUpdate:
+            NSLog(@"Updated ids %@", ids);
+            break;
+    }
+}
+
 #pragma mark - Actions
 
 - (void)actionRefreshContacts:(UIBarButtonItem *)sender
