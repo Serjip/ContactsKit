@@ -762,7 +762,9 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 - (void)ck_addressBookChangedExternally
 {
     dispatch_async(_addressBookQueue, ^{
-       
+        
+        ABAddressBookRevert(_addressBookRef);
+        
         NSArray *contacts = [self ck_contactsWithFields:CKContactFieldModificationDate merge:0 sortDescriptors:nil filter:nil error:nil];
         NSMutableArray *changedContacts = [[NSMutableArray alloc] initWithArray:contacts];
         
@@ -792,7 +794,6 @@ NSString *const CKAddressBookDidChangeNotification = @"CKAddressBookDidChangeNot
 
 static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef, CFDictionaryRef __unused info, void *context)
 {
-    ABAddressBookRevert(addressBookRef);
     CKAddressBook *addressBook = (__bridge CKAddressBook *)(context);
     [addressBook ck_addressBookChangedExternally];
 }
