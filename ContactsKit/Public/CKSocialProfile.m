@@ -136,6 +136,11 @@
     return [self isEqualToSocialProfile:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.service.hash ^ self.username.hash ^ self.userIdentifier.hash ^ self.URL.hash;
+}
+
 #pragma mark - Private
 
 - (CKSocialProfileService)ck_socialNetworkTypeFromString:(NSString *)string
