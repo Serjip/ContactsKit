@@ -102,6 +102,11 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
     return [self isEqualToPhone:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.number.hash ^ self.originalLabel.hash;
+}
+
 #pragma mark - NSObject
 
 - (NSString *)description
