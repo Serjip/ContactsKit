@@ -1,5 +1,8 @@
 #Change Log
 
+## 1.2.0	/ 2016-02-00
+* Added new delegate method for observe diff of the changed contacts
+
 ## 1.1.0 / 2016-02-11
 * Added nickname, department properties
 * Fixed merging issue thumbnailData
