@@ -299,7 +299,8 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     ABAddressBookRegisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
     
     dispatch_async(_addressBookQueue, ^{
-        _contacts = [self ck_contactsWithFields:CKContactFieldModificationDate merge:0 sortDescriptors:nil filter:nil error:nil];
+        CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
+        _contacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
     });
 #elif TARGET_OS_MAC
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -768,31 +769,72 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 {
     dispatch_async(_addressBookQueue, ^{
         
+        // Revert changes
         ABAddressBookRevert(_addressBookRef);
         
-        NSArray *contacts = [self ck_contactsWithFields:CKContactFieldModificationDate merge:0 sortDescriptors:nil filter:nil error:nil];
+        NSArray *oldContacts = _contacts;
+        CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
+        _contacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
+        NSMutableArray *changedContacts = [[NSMutableArray alloc] initWithArray:_contacts];
+       
+        // Get changed contacts
+        [changedContacts removeObjectsInArray:oldContacts];
         
+        NSMutableArray *insertedRecords = [[NSMutableArray alloc] init];
+        NSMutableArray *updatedRecords = [[NSMutableArray alloc] init];
         
-        
-        
-        
-        NSMutableArray *changedContacts = [[NSMutableArray alloc] initWithArray:contacts];
-        
-        for (CKContact *contact in _contacts)
+        for (CKContact *contact in changedContacts)
         {
-            [changedContacts removeObject:contact];
+            if ([contact.creationDate isEqualToDate:contact.modificationDate])
+            {
+                [insertedRecords addObject:contact];
+            }
+            else
+            {
+                [updatedRecords addObject:contact];
+            }
         }
         
-        NSLog(@"%@", changedContacts);
+        NSString *keyPath = @"identifier";
         
+        // Transform to array of Ids
+        insertedRecords = [insertedRecords valueForKeyPath:keyPath];
+        updatedRecords = [updatedRecords valueForKeyPath:keyPath];
+        
+        // Deleted contacts diff
+        NSMutableArray *deletedRecords = [[oldContacts valueForKeyPath:keyPath] mutableCopy];
+        [deletedRecords removeObjectsInArray:[_contacts valueForKeyPath:keyPath]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:nil];
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+            [userInfo setValue:insertedRecords forKey:CKAddressBookAddedContactsUserInfoKey];
+            [userInfo setValue:updatedRecords forKey:CKAddressBookUpdatedContactsUserInfoKey];
+            [userInfo setValue:deletedRecords forKey:CKAddressBookDeletedContactsUserInfoKey];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
             
             if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
             {
                 [self.delegate addressBookDidChnage:self];
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(addressBook:didChangeForType:contactsIds:)])
+            {
+                if (insertedRecords)
+                {
+                    [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeAdd contactsIds:insertedRecords];
+                }
+                
+                if (updatedRecords)
+                {
+                    [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeUpdate contactsIds:updatedRecords];
+                }
+                
+                if (deletedRecords)
+                {
+                    [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeDelete contactsIds:deletedRecords];
+                }
             }
         });
     });
@@ -829,6 +871,8 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
     [userInfo setValue:updatedRecords forKey:CKAddressBookUpdatedContactsUserInfoKey];
     [userInfo setValue:deletedRecords forKey:CKAddressBookDeletedContactsUserInfoKey];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
+    
     if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
     {
         [self.delegate addressBookDidChnage:self];
@@ -851,8 +895,6 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
             [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeDelete contactsIds:deletedRecords];
         }
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
 }
 
 #endif
