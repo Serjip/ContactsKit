@@ -137,6 +137,11 @@
     return [self isEqualToAddress:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.street.hash ^ self.city.hash ^ self.state.hash ^ self.ZIP.hash ^ self.country.hash ^ self.ISOCountryCode.hash;
+}
+
 #pragma mark - Public Instace
 
 - (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef
