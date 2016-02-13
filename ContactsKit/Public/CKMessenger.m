@@ -111,6 +111,11 @@
     return [self isEqualToMessenger:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.username.hash ^ self.service.hash;
+}
+
 #pragma mark - NSObject
 
 - (NSString *)description
