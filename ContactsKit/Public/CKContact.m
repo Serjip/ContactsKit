@@ -598,6 +598,11 @@
     return [self isEqualToContact:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.identifier.hash;
+}
+
 #pragma mark - NSObject
 
 - (NSString *)description
