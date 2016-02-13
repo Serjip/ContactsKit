@@ -96,6 +96,11 @@ NSString * const CKEmailiCloud = @"iCloud";
     return [self isEqualToAddress:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.address.hash ^ self.originalLabel.hash;
+}
+
 #pragma mark - NSObject
 
 - (NSString *)description

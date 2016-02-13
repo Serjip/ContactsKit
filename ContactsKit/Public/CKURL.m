@@ -96,6 +96,11 @@ NSString * const CKURLHomePage = @"_$!<HomePage>!$_";
     return [self isEqualToURL:object];
 }
 
+- (NSUInteger)hash
+{
+    return self.URLString.hash ^ self.originalLabel.hash;
+}
+
 #pragma mark - NSObject
 
 - (NSString *)description
