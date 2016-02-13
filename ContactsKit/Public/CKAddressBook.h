@@ -8,11 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+@class CKContact, CKMutableContact;
+@protocol CKAddressBookDelegate;
+
 typedef NS_ENUM(NSUInteger, CKAddressBookAccess)
 {
     CKAddressBookAccessUnknown = 0,
     CKAddressBookAccessGranted = 1,
     CKAddressBookAccessDenied  = 2
+};
+
+typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
+{
+    CKAddressBookChangeTypeAdd      = 0,
+    CKAddressBookChangeTypeUpdate   = 1,
+    CKAddressBookChangeTypeDelete   = 2
 };
 
 typedef NS_OPTIONS(NSUInteger , CKContactField)
@@ -47,9 +57,6 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldAll              = NSUIntegerMax
 };
 
-@class CKContact, CKMutableContact;
-@protocol CKAddressBookDelegate;
-
 @interface CKAddressBook : NSObject
 
 @property (nonatomic, readonly) CKAddressBookAccess access;
@@ -82,6 +89,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @optional
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook;
+- (void)addressBook:(CKAddressBook *)addressBook didChangeForType:(CKAddressBookChangeType)type contactsIds:(NSArray<NSString *> *)ids;
 - (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
@@ -90,4 +98,8 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @end
 
 extern NSString *const CKAddressBookErrorDomain;
+
 extern NSString *const CKAddressBookDidChangeNotification;
+extern NSString *const CKAddressBookAddedContactsUserInfoKey;   // Array of added contacts identifiers
+extern NSString *const CKAddressBookUpdatedContactsUserInfoKey; // Array of updated contacts identifiers
+extern NSString *const CKAddressBookDeletedContactsUserInfoKey; // Array of deleted contacts identifiers
