@@ -339,6 +339,29 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 #endif
 }
 
+#pragma mark - NSSecureCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [self init];
+    if (self)
+    {
+        _contacts = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@""];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+#warning Implement
+    [aCoder encodeObject:_contacts forKey:nil];
+}
+
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
 #pragma mark - Private
 
 - (NSArray *)ck_contactsWithFields:(CKContactField)fields merge:(CKContactField)merge sortDescriptors:(NSArray *)descriptors

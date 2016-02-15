@@ -75,7 +75,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldAll              = NSUIntegerMax
 };
 
-@interface CKAddressBook : NSObject
+@interface CKAddressBook : NSObject <NSSecureCoding>
 
 @property (nonatomic, readonly) CKAddressBookAccess access;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
