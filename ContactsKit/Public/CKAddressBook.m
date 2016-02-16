@@ -24,7 +24,7 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "CKAddressBook.h"
+#import "CKAddressBook_Private.h"
 #import "CKContact_Private.h"
 #import <AddressBook/AddressBook.h>
 
@@ -38,7 +38,6 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 @private
 #if TARGET_OS_IOS
     ABAddressBookRef _addressBookRef;
-    NSArray *_contacts;
 #elif TARGET_OS_MAC
     BOOL _accessIsNotRequested;
     ABAddressBook *_addressBook;
@@ -346,15 +345,14 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     self = [self init];
     if (self)
     {
-        _contacts = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@""];
+        _contacts = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(contacts))];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-#warning Implement
-    [aCoder encodeObject:_contacts forKey:nil];
+    [aCoder encodeObject:_contacts forKey:NSStringFromSelector(@selector(contacts))];
 }
 
 + (BOOL)supportsSecureCoding
