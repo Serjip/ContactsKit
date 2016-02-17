@@ -315,10 +315,14 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 #if TARGET_OS_IOS
     ABAddressBookRegisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
     
-    dispatch_async(_addressBookQueue, ^{
-        CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
-        _contacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
-    });
+    if (self.observeContactsDiff)
+    {
+        dispatch_async(_addressBookQueue, ^{
+            CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
+            _contacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
+        });
+    }
+    
 #elif TARGET_OS_MAC
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(notificaitonDataBaseChanged:) name:kABDatabaseChangedNotification object:_addressBook];
@@ -346,6 +350,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     if (self)
     {
         _contacts = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(contacts))];
+        _observeContactsDiff = [aDecoder decodeBoolForKey:NSStringFromSelector(@selector(observeContactsDiff))];
     }
     return self;
 }
@@ -353,6 +358,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:_contacts forKey:NSStringFromSelector(@selector(contacts))];
+    [aCoder encodeBool:_observeContactsDiff forKey:NSStringFromSelector(@selector(observeContactsDiff))];
 }
 
 + (BOOL)supportsSecureCoding

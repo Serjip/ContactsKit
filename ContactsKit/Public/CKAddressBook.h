@@ -77,9 +77,10 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @interface CKAddressBook : NSObject <NSSecureCoding>
 
-@property (nonatomic, readonly) CKAddressBookAccess access;
+@property (nonatomic, assign, readonly) CKAddressBookAccess access;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 
+@property (nonatomic, assign) BOOL observeContactsDiff;
 @property (nonatomic, assign) CKContactField fieldsMask;
 @property (nonatomic, assign) BOOL unifyLinkedContacts NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
