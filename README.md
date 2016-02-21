@@ -9,6 +9,7 @@ ContactsKit is a library for easy contact management supports iOS and Mac OS X.
 * Support Mac OS X
 * Contact management add, update, delete
 * Support NSCoding
+* Observing changes (adding, updating, deleting) for iOS
 
 ## Installation with CocoaPods
 
