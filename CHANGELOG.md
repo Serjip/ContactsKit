@@ -1,7 +1,8 @@
 #Change Log
 
-## 1.2.0	/ 2016-02-00
-* Added new delegate method for observe diff of the changed contacts
+## 1.2.0	/ 2016-02-21
+* Added new a delegate method for observe of the diff changed contacts
+* Added suppors of nscoder for CKAddressBook
 
 ## 1.1.0 / 2016-02-11
 * Added nickname, department properties
