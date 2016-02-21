@@ -19,6 +19,7 @@
 @end
 
 @implementation CKTableViewController {
+    NSString *_addressBookPath;
     NSArray *_contacts;
     CKAddressBook *_book;
 }
@@ -30,10 +31,23 @@
     self = [super initWithStyle:style];
     if (self)
     {
-        _book = [[CKAddressBook alloc] init];
+        [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] enumerateObjectsUsingBlock:^(NSURL *URL, NSUInteger idx, BOOL *stop) {
+            _addressBookPath = [URL.path stringByAppendingPathComponent:@"addressBook"];
+        }];
+        
+        _book = [NSKeyedUnarchiver unarchiveObjectWithFile:_addressBookPath];
+        if (! _book)
+        {
+            _book = [[CKAddressBook alloc] init];
+        }
+        
+        _book.observeContactsDiff = YES;
         _book.fieldsMask = CKContactFieldAll;
         _book.delegate = self;
         [_book startObserveChanges];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationApplicationWillTerminate:)
+                                                     name:UIApplicationWillTerminateNotification object:nil];
     }
     return self;
 }
@@ -64,6 +78,11 @@
     UIBarButtonItem *refreshItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(actionRefreshContacts:)];
     self.navigationItem.leftBarButtonItems = @[refreshItem, self.editButtonItem];
     self.navigationItem.rightBarButtonItem = addItem;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UITableViewDataSource
@@ -166,6 +185,13 @@
             NSLog(@"Updated ids %@", ids);
             break;
     }
+}
+
+#pragma mark - Notificaions
+
+- (void)notificationApplicationWillTerminate:(NSNotification *)aNotificaion
+{
+    [NSKeyedArchiver archiveRootObject:_book toFile:_addressBookPath];
 }
 
 #pragma mark - Actions
