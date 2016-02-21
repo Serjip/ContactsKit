@@ -103,7 +103,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 
 - (void)dealloc
 {
-    [self stopObserveChanges];
+    [self ck_removeObserver];
     
 #if TARGET_OS_IOS
     if (_addressBookRef)
@@ -310,7 +310,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 
 - (void)startObserveChanges
 {
-    [self stopObserveChanges];
+    [self ck_removeObserver];
     
 #if TARGET_OS_IOS
     ABAddressBookRegisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
@@ -318,8 +318,13 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     if (self.observeContactsDiff)
     {
         dispatch_async(_addressBookQueue, ^{
-            CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
-            _contacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
+            
+            NSArray *inserted, *updated, *deleted;
+            _contacts = [self ck_newContactsWithOldConctacts:_contacts inserted:&inserted updated:&updated deleted:&deleted];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self ck_recordsChangedInserted:inserted updated:updated deleted:deleted];
+            });
         });
     }
     
@@ -332,13 +337,9 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 
 - (void)stopObserveChanges
 {
+    [self ck_removeObserver];
 #if TARGET_OS_IOS
-    ABAddressBookUnregisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
     _contacts = nil;
-#elif TARGET_OS_MAC
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:kABDatabaseChangedNotification object:_addressBook];
-    [nc removeObserver:self name:kABDatabaseChangedExternallyNotification object:_addressBook];
 #endif
 }
 
@@ -808,6 +809,55 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     return result;
 }
 
+- (void)ck_removeObserver
+{
+#if TARGET_OS_IOS
+    ABAddressBookUnregisterExternalChangeCallback(_addressBookRef, CKAddressBookExternalChangeCallback, (__bridge void *)(self));
+#elif TARGET_OS_MAC
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:kABDatabaseChangedNotification object:_addressBook];
+    [nc removeObserver:self name:kABDatabaseChangedExternallyNotification object:_addressBook];
+#endif
+}
+
+- (void)ck_recordsChangedInserted:(NSArray *)inserted updated:(NSArray *)updated deleted:(NSArray *)deleted
+{
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+    [userInfo setValue:inserted forKey:CKAddressBookAddedContactsUserInfoKey];
+    [userInfo setValue:updated forKey:CKAddressBookUpdatedContactsUserInfoKey];
+    [userInfo setValue:deleted forKey:CKAddressBookDeletedContactsUserInfoKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
+    
+    if ([self.delegate respondsToSelector:@selector(addressBook:didChangeForType:contactsIds:)])
+    {
+        if (inserted)
+        {
+            [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeAdd contactsIds:inserted];
+        }
+        
+        if (updated)
+        {
+            [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeUpdate contactsIds:updated];
+        }
+        
+        if (deleted)
+        {
+            [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeDelete contactsIds:deleted];
+        }
+    }
+}
+
+- (void)ck_recordsChanged
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:nil];
+    
+    if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
+    {
+        [self.delegate addressBookDidChnage:self];
+    }
+}
+
 #if TARGET_OS_IOS
 
 - (void)ck_addressBookChangedExternally
@@ -817,11 +867,35 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         // Revert changes
         ABAddressBookRevert(_addressBookRef);
         
-        NSArray *oldContacts = _contacts;
-        CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
-        _contacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
-        NSMutableArray *changedContacts = [[NSMutableArray alloc] initWithArray:_contacts];
-       
+        if (self.observeContactsDiff)
+        {
+            NSArray *inserted, *updated, *deleted;
+            _contacts = [self ck_newContactsWithOldConctacts:_contacts inserted:&inserted updated:&updated deleted:&deleted];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self ck_recordsChangedInserted:inserted updated:updated deleted:deleted];
+            });
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self ck_recordsChanged];
+            });
+        }
+        
+    });
+}
+
+- (NSArray *)ck_newContactsWithOldConctacts:(NSArray *)oldContacts inserted:(NSArray **)inserted updated:(NSArray **)updated deleted:(NSArray **)deleted
+{
+    CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
+    NSArray *newContacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
+    
+    // If old contacts doesnt exists do not process the diff
+    if (oldContacts.count)
+    {
+        NSMutableArray *changedContacts = [[NSMutableArray alloc] initWithArray:newContacts];
+        
         // Get changed contacts
         [changedContacts removeObjectsInArray:oldContacts];
         
@@ -843,46 +917,16 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         NSString *keyPath = @"identifier";
         
         // Transform to array of Ids
-        insertedRecords = [insertedRecords valueForKeyPath:keyPath];
-        updatedRecords = [updatedRecords valueForKeyPath:keyPath];
+        *inserted = [insertedRecords valueForKeyPath:keyPath];
+        *updated = [updatedRecords valueForKeyPath:keyPath];
         
         // Deleted contacts diff
         NSMutableArray *deletedRecords = [[oldContacts valueForKeyPath:keyPath] mutableCopy];
-        [deletedRecords removeObjectsInArray:[_contacts valueForKeyPath:keyPath]];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-            [userInfo setValue:insertedRecords forKey:CKAddressBookAddedContactsUserInfoKey];
-            [userInfo setValue:updatedRecords forKey:CKAddressBookUpdatedContactsUserInfoKey];
-            [userInfo setValue:deletedRecords forKey:CKAddressBookDeletedContactsUserInfoKey];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
-            
-            if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
-            {
-                [self.delegate addressBookDidChnage:self];
-            }
-            
-            if ([self.delegate respondsToSelector:@selector(addressBook:didChangeForType:contactsIds:)])
-            {
-                if (insertedRecords)
-                {
-                    [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeAdd contactsIds:insertedRecords];
-                }
-                
-                if (updatedRecords)
-                {
-                    [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeUpdate contactsIds:updatedRecords];
-                }
-                
-                if (deletedRecords)
-                {
-                    [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeDelete contactsIds:deletedRecords];
-                }
-            }
-        });
-    });
+        [deletedRecords removeObjectsInArray:[newContacts valueForKeyPath:keyPath]];
+        *deleted = deletedRecords;
+    }
+    
+    return newContacts;
 }
 
 #pragma mark - Callbacks
@@ -911,35 +955,7 @@ static void CKAddressBookExternalChangeCallback(ABAddressBookRef addressBookRef,
     NSArray *updatedRecords = [aNotification.userInfo objectForKey:kABUpdatedRecords];
     NSArray *deletedRecords = [aNotification.userInfo objectForKey:kABDeletedRecords];
     
-    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-    [userInfo setValue:insertedRecords forKey:CKAddressBookAddedContactsUserInfoKey];
-    [userInfo setValue:updatedRecords forKey:CKAddressBookUpdatedContactsUserInfoKey];
-    [userInfo setValue:deletedRecords forKey:CKAddressBookDeletedContactsUserInfoKey];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
-    
-    if ([self.delegate respondsToSelector:@selector(addressBookDidChnage:)])
-    {
-        [self.delegate addressBookDidChnage:self];
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(addressBook:didChangeForType:contactsIds:)])
-    {
-        if (insertedRecords)
-        {
-            [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeAdd contactsIds:insertedRecords];
-        }
-        
-        if (updatedRecords)
-        {
-            [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeUpdate contactsIds:updatedRecords];
-        }
-        
-        if (deletedRecords)
-        {
-            [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeDelete contactsIds:deletedRecords];
-        }
-    }
+    [self ck_recordsChangedInserted:insertedRecords updated:updatedRecords deleted:deletedRecords];
 }
 
 #endif
