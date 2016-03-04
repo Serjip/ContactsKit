@@ -57,7 +57,7 @@ The user will only be prompted the first time access is requested.
         
         if (! error)
         {
-			// Erverything fine you can get contacts
+			// Everything fine you can get contacts
         }
         else
         {
