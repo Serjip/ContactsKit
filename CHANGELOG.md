@@ -1,5 +1,8 @@
 #Change Log
 
+## 1.2.1 / 2016-03-XX
+* Property `fieldMask` now is public
+
 ## 1.2.0	/ 2016-02-21
 * Added new a delegate method for observe of the diff changed contacts
 * Added suppors of nscoder for CKAddressBook
