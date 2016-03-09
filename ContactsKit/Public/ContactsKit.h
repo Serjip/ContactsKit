@@ -28,7 +28,6 @@
 
 #import <ContactsKit/CKAddress.h>
 #import <ContactsKit/CKAddressBook.h>
-#import <ContactsKit/CKContact.h>
 #import <ContactsKit/CKEmail.h>
 #import <ContactsKit/CKPhone.h>
 #import <ContactsKit/CKMessenger.h>

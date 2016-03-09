@@ -28,6 +28,38 @@
 
 @class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail, CKMessenger;
 
+typedef NS_OPTIONS(NSUInteger , CKContactField)
+{
+    CKContactFieldFirstName         = 1 << 1,
+    CKContactFieldLastName          = 1 << 2,
+    CKContactFieldMiddleName        = 1 << 3,
+    CKContactFieldNickname          = 1 << 4,
+    
+    CKContactFieldCompany           = 1 << 10,
+    CKContactFieldJobTitle          = 1 << 11,
+    CKContactFieldDepartment        = 1 << 12,
+    
+    CKContactFieldNote              = 1 << 15,
+    
+    CKContactFieldImageData         = 1 << 20,
+    CKContactFieldThumbnailData     = 1 << 21,
+    
+    CKContactFieldPhones            = 1 << 30,
+    CKContactFieldEmails            = 1 << 31,
+    CKContactFieldAddresses         = 1 << 31,
+    CKContactFieldInstantMessengers = 1 << 33,
+    CKContactFieldSocialProfiles    = 1 << 34,
+    CKContactFieldURLs              = 1 << 35,
+    
+    CKContactFieldBirthday          = 1 << 40,
+    
+    CKContactFieldCreationDate      = 1 << 45,
+    CKContactFieldModificationDate  = 1 << 46,
+    
+    CKContactFieldDefault          = CKContactFieldFirstName | CKContactFieldLastName | CKContactFieldPhones,
+    CKContactFieldAll              = NSUIntegerMax
+};
+
 @interface CKContact : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 
 @property (nonatomic, strong, readonly) NSString *identifier;
@@ -56,6 +88,8 @@
 @property (nonatomic, strong, readonly) NSDate *birthday;
 @property (nonatomic, strong, readonly) NSDate *creationDate;
 @property (nonatomic, strong, readonly) NSDate *modificationDate;
+
+@property (nonatomic, assign, readonly) CKContactField fieldMask;
 
 @end
 

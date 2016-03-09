@@ -26,11 +26,8 @@
 
 #import "CKContact.h"
 #import <AddressBook/AddressBook.h>
-#import "CKAddressBook.h"
 
 @interface CKContact ()
-
-@property (nonatomic, assign, readonly) CKContactField fieldMask;
 
 - (instancetype)initWithRecordRef:(ABRecordRef)recordRef fieldMask:(CKContactField)fieldMask;
 - (void)mergeLinkedRecordRef:(ABRecordRef)recordRef mergeMask:(CKContactField)mergeMask;

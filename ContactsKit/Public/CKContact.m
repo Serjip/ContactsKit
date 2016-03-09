@@ -25,6 +25,7 @@
 //
 
 #import "CKContact_Private.h"
+
 #import "CKLabel_Private.h"
 #import "CKAddress_Private.h"
 #import "CKMessenger_Private.h"
@@ -36,7 +37,7 @@
 
 #import "CKMacros.h"
 #import "CKAutoCoder.h"
-#import <AddressBook/AddressBook.h>
+#import "CKAddressBook.h"
 
 @implementation CKContact
 
