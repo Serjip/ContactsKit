@@ -27,7 +27,7 @@ To integrate ContactsKit into your Xcode project using CocoaPods, specify it in 
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '7.0'
 
-pod 'ConctactsKit'
+pod 'ContactsKit'
 ```
 
 Then, run the following command:
@@ -57,7 +57,7 @@ The user will only be prompted the first time access is requested.
         
         if (! error)
         {
-			// Erverything fine you can get contacts
+			// Everything fine you can get contacts
         }
         else
         {
