@@ -17,6 +17,7 @@ typedef enum : NSUInteger {
     TableSectionMessengers  = 4,
     TableSectionProfiles    = 5,
     TableSectionURLs        = 6,
+    TableSectionDates       = 7,
 } TableSection;
 
 @implementation CKDetailsTableViewController {
@@ -60,7 +61,7 @@ typedef enum : NSUInteger {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [super numberOfSectionsInTableView:tableView] + 6;
+    return [super numberOfSectionsInTableView:tableView] + 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -84,6 +85,9 @@ typedef enum : NSUInteger {
             
         case TableSectionURLs:
             return _contact.URLs.count + 1;
+            
+        case TableSectionDates:
+            return _contact.dates.count + 1;
     }
  
     return [super tableView:tableView numberOfRowsInSection:section];
@@ -184,6 +188,20 @@ typedef enum : NSUInteger {
                 return cell;
             }
         }
+            
+        case TableSectionDates:
+        {
+            if (indexPath.row < count - 1)
+            {
+                CKDate *date = _contact.dates[indexPath.row];
+                cell.textLabel.text = [date.value description];
+                return cell;
+            }
+            else
+            {
+                return cell;
+            }
+        }
     }
     
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -199,9 +217,8 @@ typedef enum : NSUInteger {
         case TableSectionPhones:
         case TableSectionProfiles:
         case TableSectionURLs:
-        {
+        case TableSectionDates:
             return YES;
-        }
     }
     
     return NO;
@@ -232,6 +249,9 @@ typedef enum : NSUInteger {
                 break;
             case TableSectionURLs:
                 array = [_contact mutableArrayValueForKey:@"URLs"];
+                break;
+            case TableSectionDates:
+                array = [_contact mutableArrayValueForKey:@"dates"];
                 break;
         }
         
@@ -266,6 +286,9 @@ typedef enum : NSUInteger {
             case TableSectionURLs:
                 class = [CKMutableURL class];
                 break;
+            case TableSectionDates:
+                class = [CKMutableDate class];
+                break;
         }
         
         id object = [[class alloc] init];
@@ -287,6 +310,7 @@ typedef enum : NSUInteger {
         case TableSectionPhones:
         case TableSectionProfiles:
         case TableSectionURLs:
+        case TableSectionDates:
         {
             NSInteger count = [tableView numberOfRowsInSection:indexPath.section];;
             if (indexPath.row == count - 1)
