@@ -44,5 +44,4 @@ extern NSString * const CKPhoneMobile;
 extern NSString * const CKPhoneMain;
 extern NSString * const CKPhoneHomeFax;
 extern NSString * const CKPhoneWorkFax;
-extern NSString * const CKPhoneOtherFax;
 extern NSString * const CKPhonePager;

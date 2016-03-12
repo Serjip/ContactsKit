@@ -33,7 +33,6 @@ NSString * const CKPhoneMobile = @"_$!<Mobile>!$_";
 NSString * const CKPhoneMain = @"_$!<Main>!$_";
 NSString * const CKPhoneHomeFax = @"_$!<HomeFAX>!$_";
 NSString * const CKPhoneWorkFax = @"_$!<WorkFAX>!$_";
-NSString * const CKPhoneOtherFax = @"";
 NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 @implementation CKPhone
@@ -137,7 +136,7 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 + (NSArray *)labels
 {
     NSMutableArray *labels = [[super labels] mutableCopy];
-    [labels addObjectsFromArray:@[CKPhoneiPhone, CKPhoneMobile, CKPhoneMain, CKPhoneHomeFax, CKPhoneWorkFax, CKPhoneOtherFax, CKPhonePager]];
+    [labels addObjectsFromArray:@[CKPhoneiPhone, CKPhoneMobile, CKPhoneMain, CKPhoneHomeFax, CKPhoneWorkFax, CKPhonePager]];
     return labels;
 }
 
