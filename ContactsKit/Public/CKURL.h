@@ -24,7 +24,7 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "CKLabel.h"
+#import <ContactsKit/CKLabel.h>
 
 @interface CKURL : CKLabel <NSMutableCopying>
 
