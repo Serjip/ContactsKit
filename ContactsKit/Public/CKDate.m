@@ -130,9 +130,7 @@ NSString * const CKDateAnniversary = @"_$!<Anniversary>!$_";
 
 + (NSArray *)labels
 {
-    NSMutableArray *labels = [[super labels] mutableCopy];
-    [labels addObject:CKDateAnniversary];
-    return labels;
+    return @[CKDateAnniversary];
 }
 
 #pragma mark - Instance
