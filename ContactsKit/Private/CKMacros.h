@@ -87,6 +87,7 @@
 #define kABPersonInstantMessageProperty     (__bridge CFStringRef)kABInstantMessageProperty
 #define kABPersonSocialProfileProperty      (__bridge CFStringRef)kABSocialProfileProperty
 #define kABPersonURLProperty                (__bridge CFStringRef)kABURLsProperty
+#define kABPersonDateProperty               (__bridge CFStringRef)kABOtherDatesProperty
 
 #define kABPersonBirthdayProperty           (__bridge CFStringRef)kABBirthdayProperty
 #define kABPersonCreationDateProperty       (__bridge CFStringRef)kABCreationDateProperty
