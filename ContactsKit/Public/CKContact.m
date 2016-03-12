@@ -32,8 +32,9 @@
 #import "CKSocialProfile_Private.h"
 
 #import "CKURL.h"
-#import "CKPhone.h"
+#import "CKDate.h"
 #import "CKEmail.h"
+#import "CKPhone.h"
 
 #import "CKMacros.h"
 #import "CKAutoCoder.h"
@@ -164,6 +165,11 @@
         if (fieldMask & CKContactFieldURLs)
         {
             _URLs = [self arrayObjectsOfClass:[CKURL class] ofProperty:kABPersonURLProperty fromRecord:recordRef];
+        }
+        
+        if (fieldMask & CKContactFieldDates)
+        {
+            _dates = [self arrayObjectsOfClass:[CKDate class] ofProperty:kABPersonDateProperty fromRecord:recordRef];
         }
         
         // Dates
@@ -387,6 +393,23 @@
         _URLs = [[NSArray alloc] initWithArray:URLs];
     }
     
+    if (mergeMask & CKContactFieldDates)
+    {
+        NSMutableArray *dates = [[NSMutableArray alloc] initWithArray:self.dates];
+        NSArray *datesToMerge = [self arrayObjectsOfClass:[CKDate class] ofProperty:kABPersonDateProperty fromRecord:recordRef];
+        
+        for (CKDate *date in datesToMerge)
+        {
+            if ([self.dates containsObject:date])
+            {
+                continue;
+            }
+            [dates addObject:date];
+        }
+        
+        _dates = [[NSArray alloc] initWithArray:dates];
+    }
+    
     // Dates
     
     if (mergeMask & CKContactFieldBirthday)
@@ -426,6 +449,7 @@
         copy->_instantMessengers = [self.instantMessengers copyWithZone:zone];
         copy->_socialProfiles = [self.socialProfiles copyWithZone:zone];
         copy->_URLs = [self.URLs copyWithZone:zone];
+        copy->_dates = [self.dates copyWithZone:zone];
         
         copy->_birthday = [self.birthday copyWithZone:zone];
         copy->_creationDate = [self.creationDate copyWithZone:zone];
@@ -462,6 +486,7 @@
         mutableCopy.instantMessengers = [self.instantMessengers copyWithZone:zone];
         mutableCopy.socialProfiles = [self.socialProfiles copyWithZone:zone];
         mutableCopy.URLs = [self.URLs copyWithZone:zone];
+        mutableCopy.dates = [self.dates copyWithZone:zone];
         
         mutableCopy.birthday = [self.birthday copyWithZone:zone];
         mutableCopy.creationDate = [self.creationDate copyWithZone:zone];
@@ -586,6 +611,11 @@
         return NO;
     }
     
+    if (! CK_IS_EQUAL(self.dates, contact.dates))
+    {
+        return NO;
+    }
+    
     if (! CK_IS_EQUAL(self.birthday, contact.birthday))
     {
         return NO;
@@ -696,7 +726,7 @@
 @synthesize identifier, firstName, lastName, middleName, nickname;
 @synthesize company, jobTitle, department;
 @synthesize note, imageData, thumbnailData;
-@synthesize phones, emails, addresses, instantMessengers, socialProfiles, URLs;
+@synthesize phones, emails, addresses, instantMessengers, socialProfiles, URLs, dates;
 @synthesize birthday, creationDate, modificationDate;
 
 #pragma mark - NSCopying
@@ -798,6 +828,11 @@
     if (result && self.URLs)
     {
         result = [self enumerateLabels:self.URLs property:kABPersonURLProperty record:recordRef error:error];
+    }
+    
+    if (result && self.dates)
+    {
+        result = [self enumerateLabels:self.dates property:kABPersonDateProperty record:recordRef error:error];
     }
     
     if (result && self.instantMessengers)
