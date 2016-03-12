@@ -39,7 +39,7 @@ NSString * const CKDateAnniversary = @"_$!<Anniversary>!$_";
     self = [super initWithMultiValue:multiValue index:index];
     if(self)
     {
-        _value = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, index);
+        _value = (__bridge_transfer NSDate *)ABMultiValueCopyValueAtIndex(multiValue, index);
     }
     return self;
 }
@@ -48,7 +48,7 @@ NSString * const CKDateAnniversary = @"_$!<Anniversary>!$_";
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CKDa *copy = [super copyWithZone:zone];
+    CKDate *copy = [super copyWithZone:zone];
     if (copy)
     {
         copy->_value = [self.value copyWithZone:zone];
