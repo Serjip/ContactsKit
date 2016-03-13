@@ -407,6 +407,14 @@ typedef enum : NSUInteger {
             _contact.URLs = array;
             indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionURLs];
         }
+        else if ([object isKindOfClass:[CKDate class]])
+        {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:_contact.dates];
+            [array addObject:object];
+            NSInteger index = [array indexOfObject:object];
+            _contact.dates = array;
+            indexPath = [NSIndexPath indexPathForRow:index inSection:TableSectionDates];
+        }
         
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
