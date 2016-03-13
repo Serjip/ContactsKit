@@ -130,7 +130,7 @@ NSString * const CKDateAnniversary = @"_$!<Anniversary>!$_";
 
 + (NSArray *)labels
 {
-    return @[CKDateAnniversary];
+    return @[CKDateAnniversary, CKLabelOther];
 }
 
 #pragma mark - Instance
