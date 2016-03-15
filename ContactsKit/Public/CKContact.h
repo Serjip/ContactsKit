@@ -26,7 +26,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail, CKMessenger;
+@class CKURL, CKPhone, CKSocialProfile, CKAddress, CKEmail, CKMessenger, CKDate;
 
 typedef NS_OPTIONS(NSUInteger , CKContactField)
 {
@@ -50,6 +50,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldInstantMessengers = 1 << 33,
     CKContactFieldSocialProfiles    = 1 << 34,
     CKContactFieldURLs              = 1 << 35,
+    CKContactFieldDates             = 1 << 36,
     
     CKContactFieldBirthday          = 1 << 40,
     
@@ -84,6 +85,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @property (nonatomic, strong, readonly) NSArray<CKMessenger *> *instantMessengers;
 @property (nonatomic, strong, readonly) NSArray<CKSocialProfile *> *socialProfiles;
 @property (nonatomic, strong, readonly) NSArray<CKURL *> *URLs;
+@property (nonatomic, strong, readonly) NSArray<CKDate *> *dates;
 
 @property (nonatomic, strong, readonly) NSDate *birthday;
 @property (nonatomic, strong, readonly) NSDate *creationDate;
@@ -115,6 +117,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @property (nonatomic, strong) NSArray<CKMessenger *> *instantMessengers;
 @property (nonatomic, strong) NSArray<CKSocialProfile *> *socialProfiles;
 @property (nonatomic, strong) NSArray<CKURL *> *URLs;
+@property (nonatomic, strong) NSArray<CKDate *> *dates;
 
 @property (nonatomic, strong) NSDate *birthday;
 

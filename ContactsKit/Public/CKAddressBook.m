@@ -831,17 +831,17 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     
     if ([self.delegate respondsToSelector:@selector(addressBook:didChangeForType:contactsIds:)])
     {
-        if (inserted)
+        if (inserted.count)
         {
             [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeAdd contactsIds:inserted];
         }
         
-        if (updated)
+        if (updated.count)
         {
             [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeUpdate contactsIds:updated];
         }
         
-        if (deleted)
+        if (deleted.count)
         {
             [self.delegate addressBook:self didChangeForType:CKAddressBookChangeTypeDelete contactsIds:deleted];
         }

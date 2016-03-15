@@ -15,7 +15,7 @@
 @end
 
 @implementation CKPropertyTableViewController {
-    NSArray *_properties;
+    NSDictionary *_properties;
     id _object;
 }
 
@@ -26,17 +26,17 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
-        NSMutableArray *array = [[NSMutableArray alloc] init];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         
         [aClass enumeratePropertiesUsingBlock:^(NSString *name, __unsafe_unretained Class aClass) {
             
-            if (aClass == [NSString class])
+            if (aClass == [NSString class] || aClass == [NSDate class])
             {
-                [array addObject:name];
+                [dict setObject:aClass forKey:name];
             }
         }];
         
-        _properties = array;
+        _properties = dict;
         _object = anObject;
     }
     return self;
@@ -66,11 +66,13 @@
 {
     CKDetailsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CKDetailsTableViewCell cellReuseIdentifier] forIndexPath:indexPath];
     
-    NSString *key = _properties[indexPath.row];
+    NSString *key = _properties.allKeys[indexPath.row];
     cell.name = key;
     
-    id value = [_object valueForKey:key];
-    cell.value = [value isKindOfClass:[NSString class]] ? value : nil;
+    id obj = [_object valueForKey:key];
+    Class class = [_properties valueForKey:key];
+    
+    [cell setValue:obj ofClass:class];
     cell.delegate = self;
 
     return cell;
@@ -78,7 +80,7 @@
 
 #pragma mark - CKDetailsTableViewCellDelegate
 
-- (void)cell:(CKDetailsTableViewCell *)cell didChangeValue:(NSString *)value forKey:(NSString *)key
+- (void)cell:(CKDetailsTableViewCell *)cell didChangeValue:(id)value forKey:(NSString *)key
 {
     [_object setValue:value forKey:key];
 }

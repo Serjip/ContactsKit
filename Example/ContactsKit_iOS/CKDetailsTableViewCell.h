@@ -13,7 +13,7 @@
 @interface CKDetailsTableViewCell : UITableViewCell
 
 @property (nonatomic) NSString *name;
-@property (nonatomic) NSString *value;
+- (void)setValue:(id)value ofClass:(Class)aClass;
 @property (weak) id<CKDetailsTableViewCellDelegate> delegate;
 
 + (UINib *)nib;
@@ -23,6 +23,6 @@
 
 @protocol CKDetailsTableViewCellDelegate <NSObject>
 
-- (void)cell:(CKDetailsTableViewCell *)cell didChangeValue:(NSString *)value forKey:(NSString *)key;
+- (void)cell:(CKDetailsTableViewCell *)cell didChangeValue:(id)value forKey:(NSString *)key;
 
 @end

@@ -1,8 +1,8 @@
 //
-//  CKURL.h
+//  CKDate.h
 //  ContactsKit
 //
-//  Created by Sergey Popov on 1/18/16.
+//  Created by Sergey Popov on 3/12/16.
 //  Copyright (c) 2016 Sergey Popov <serj@ttitt.ru>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,17 +26,17 @@
 
 #import <ContactsKit/CKLabel.h>
 
-@interface CKURL : CKLabel <NSMutableCopying>
+@interface CKDate : CKLabel <NSMutableCopying>
 
-@property (nonatomic, strong, readonly) NSString *URLString;
+@property (nonatomic, strong, readonly) NSDate *value;
 
 @end
 
-@interface CKMutableURL : CKURL
+@interface CKMutableDate : CKDate
 
-@property (nonatomic, strong) NSString *URLString;
+@property (nonatomic, strong) NSDate *value;
 @property (nonatomic, strong) NSString *originalLabel;
 
 @end
 
-extern NSString * const CKURLHomePage;
+extern NSString * const CKDateAnniversary;

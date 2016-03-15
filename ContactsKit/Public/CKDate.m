@@ -1,8 +1,8 @@
 //
-//  CKPhone.m
+//  CKDate.m
 //  ContactsKit
 //
-//  Created by Sergey Popov on 1/18/16.
+//  Created by Sergey Popov on 3/12/16.
 //  Copyright (c) 2016 Sergey Popov <serj@ttitt.ru>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,18 +24,13 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "CKPhone.h"
+#import "CKDate.h"
 #import "CKLabel_Private.h"
 #import "CKMacros.h"
 
-NSString * const CKPhoneiPhone = @"iPhone";
-NSString * const CKPhoneMobile = @"_$!<Mobile>!$_";
-NSString * const CKPhoneMain = @"_$!<Main>!$_";
-NSString * const CKPhoneHomeFax = @"_$!<HomeFAX>!$_";
-NSString * const CKPhoneWorkFax = @"_$!<WorkFAX>!$_";
-NSString * const CKPhonePager = @"_$!<Pager>!$_";
+NSString * const CKDateAnniversary = @"_$!<Anniversary>!$_";
 
-@implementation CKPhone
+@implementation CKDate
 
 #pragma mark - Lifecycle
 
@@ -44,7 +39,7 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
     self = [super initWithMultiValue:multiValue index:index];
     if(self)
     {
-        _number = (__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, index);
+        _value = (__bridge_transfer NSDate *)ABMultiValueCopyValueAtIndex(multiValue, index);
     }
     return self;
 }
@@ -53,10 +48,10 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    CKPhone *copy = [super copyWithZone:zone];
+    CKDate *copy = [super copyWithZone:zone];
     if (copy)
     {
-        copy->_number = [self.number copyWithZone:zone];
+        copy->_value = [self.value copyWithZone:zone];
     }
     return copy;
 }
@@ -65,11 +60,11 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 
 - (id)mutableCopyWithZone:(NSZone *)zone
 {
-    CKMutablePhone *mutableCopy = [[CKMutablePhone allocWithZone:zone] init];
+    CKMutableDate *mutableCopy = [[CKMutableDate allocWithZone:zone] init];
     if (mutableCopy)
     {
         mutableCopy.originalLabel = [self.originalLabel copyWithZone:zone];
-        mutableCopy.number = [self.number copyWithZone:zone];
+        mutableCopy.value = [self.value copyWithZone:zone];
     }
     return mutableCopy;
 }
@@ -81,7 +76,7 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        _number = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(number))];
+        _value = [aDecoder decodeObjectOfClass:[NSDate class] forKey:NSStringFromSelector(@selector(value))];
     }
     return self;
 }
@@ -89,19 +84,19 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:_number forKey:NSStringFromSelector(@selector(number))];
+    [aCoder encodeObject:_value forKey:NSStringFromSelector(@selector(value))];
 }
 
 #pragma mark - Equality
 
-- (BOOL)isEqualToPhone:(CKPhone *)phone
+- (BOOL)isEqualToDate:(CKDate *)date
 {
-    if (! [super isEqual:phone])
+    if (! [super isEqual:date])
     {
         return NO;
     }
     
-    return CK_IS_EQUAL(self.number, phone.number);
+    return CK_IS_EQUAL(self.value, date.value);
 }
 
 - (BOOL)isEqual:(id)object
@@ -111,33 +106,31 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
         return YES;
     }
     
-    if (! [object isKindOfClass:[CKPhone class]])
+    if (! [object isKindOfClass:[CKDate class]])
     {
         return NO;
     }
     
-    return [self isEqualToPhone:object];
+    return [self isEqualToDate:object];
 }
 
 - (NSUInteger)hash
 {
-    return self.number.hash ^ self.originalLabel.hash;
+    return self.value.hash ^ self.originalLabel.hash;
 }
 
 #pragma mark - NSObject
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%p %@ (%@)", self, self.number, self.originalLabel];
+    return [NSString stringWithFormat:@"%@ (%@)", self.value, self.originalLabel];
 }
 
 #pragma mark - Class methods
 
 + (NSArray *)labels
 {
-    NSMutableArray *labels = [[super labels] mutableCopy];
-    [labels addObjectsFromArray:@[CKPhoneiPhone, CKPhoneMobile, CKPhoneMain, CKPhoneHomeFax, CKPhoneWorkFax, CKPhonePager]];
-    return labels;
+    return @[CKDateAnniversary, CKLabelOther];
 }
 
 #pragma mark - Instance
@@ -145,18 +138,18 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 - (BOOL)setLabledValue:(ABMutableMultiValueRef)mutableMultiValue
 {
 #if TARGET_OS_IOS
-    return ABMultiValueAddValueAndLabel(mutableMultiValue, (__bridge CFStringRef)(self.number), (__bridge CFStringRef)(self.originalLabel), NULL);
+    return ABMultiValueAddValueAndLabel(mutableMultiValue, (__bridge CFTypeRef)(self.value), (__bridge CFStringRef)(self.originalLabel), NULL);
 #elif TARGET_OS_MAC
-    return ABMultiValueAdd(mutableMultiValue, (__bridge CFTypeRef)(self.number), (__bridge CFStringRef)(self.originalLabel), NULL);
+    return ABMultiValueAdd(mutableMultiValue, (__bridge CFTypeRef)(self.value), (__bridge CFStringRef)(self.originalLabel), NULL);
 #endif
 }
 
 @end
 
-@implementation CKMutablePhone
+@implementation CKMutableDate
 
 @dynamic originalLabel;
-@synthesize number;
+@synthesize value;
 
 #pragma mark - NSCopying
 
@@ -166,3 +159,4 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
 }
 
 @end
+

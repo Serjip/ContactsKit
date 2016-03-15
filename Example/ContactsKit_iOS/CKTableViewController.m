@@ -185,6 +185,8 @@
             NSLog(@"Updated ids %@", ids);
             break;
     }
+    
+    [addressBook loadContacts];
 }
 
 #pragma mark - Notificaions

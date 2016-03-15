@@ -24,7 +24,7 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "CKLabel.h"
+#import <ContactsKit/CKLabel.h>
 
 @interface CKPhone : CKLabel <NSMutableCopying>
 
@@ -44,5 +44,4 @@ extern NSString * const CKPhoneMobile;
 extern NSString * const CKPhoneMain;
 extern NSString * const CKPhoneHomeFax;
 extern NSString * const CKPhoneWorkFax;
-extern NSString * const CKPhoneOtherFax;
 extern NSString * const CKPhonePager;

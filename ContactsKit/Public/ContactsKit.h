@@ -33,5 +33,6 @@
 #import <ContactsKit/CKMessenger.h>
 #import <ContactsKit/CKSocialProfile.h>
 #import <ContactsKit/CKURL.h>
+#import <ContactsKit/CKDate.h>
 
 #endif

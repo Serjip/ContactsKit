@@ -15,7 +15,18 @@
 
 @end
 
-@implementation CKDetailsTableViewCell
+@implementation CKDetailsTableViewCell {
+    Class _class;
+    NSDateFormatter *_formatter;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    _formatter = [[NSDateFormatter alloc] init];
+    _formatter.dateFormat = @"dd-MM-yyyy";
+}
 
 #pragma mark - Properties
 
@@ -30,14 +41,38 @@
     return self.label.text;
 }
 
-- (void)setValue:(NSString *)value
+- (void)setValue:(id)value ofClass:(Class)aClass
 {
-    self.textField.text = value;
+    _class = aClass;
+    
+    NSString *text = nil;
+    
+    if (_class == [NSString class])
+    {
+        text = value;
+    }
+    else if (_class == [NSDate class])
+    {
+        text = [_formatter stringFromDate:value];
+    }
+    
+    self.textField.text = text;
 }
 
-- (NSString *)value
+- (id)value
 {
-    return self.textField.text;
+    id value = nil;
+    
+    if (_class == [NSString class])
+    {
+        value = self.textField.text;
+    }
+    else if (_class == [NSDate class])
+    {
+        value = [_formatter dateFromString:self.textField.text];
+    }
+    
+    return value;
 }
 
 #pragma mark - Actions
