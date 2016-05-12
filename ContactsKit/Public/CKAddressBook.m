@@ -168,7 +168,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 - (void)loadContacts
 {
     CKContactField fieldMask = self.fieldsMask;
-    CKContactField mergeMask = self.unifyLinkedContacts ? fieldMask : 0;
+    CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
     NSArray *descriptors = [self.sortDescriptors copy];
     
     dispatch_async(_addressBookQueue, ^{
@@ -225,7 +225,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 - (void)contactWithIdentifier:(NSString *)identifier
 {
     CKContactField fieldMask = self.fieldsMask;
-    CKContactField mergeMask = self.unifyLinkedContacts ? fieldMask : 0;
+    CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
     
     dispatch_async(_addressBookQueue, ^{
         
@@ -351,6 +351,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     if (self)
     {
         _contacts = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(contacts))];
+        _unifyResults = [aDecoder decodeBoolForKey:NSStringFromSelector(@selector(unifyResults))];
         _observeContactsDiff = [aDecoder decodeBoolForKey:NSStringFromSelector(@selector(observeContactsDiff))];
     }
     return self;
@@ -359,6 +360,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:_contacts forKey:NSStringFromSelector(@selector(contacts))];
+    [aCoder encodeBool:_unifyResults forKey:NSStringFromSelector(@selector(unifyResults))];
     [aCoder encodeBool:_observeContactsDiff forKey:NSStringFromSelector(@selector(observeContactsDiff))];
 }
 

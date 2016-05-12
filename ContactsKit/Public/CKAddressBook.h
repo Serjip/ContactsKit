@@ -49,7 +49,13 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 
 @property (nonatomic, assign) BOOL observeContactsDiff;
 @property (nonatomic, assign) CKContactField fieldsMask;
-@property (nonatomic, assign) BOOL unifyLinkedContacts NS_AVAILABLE(10_8, 6_0);
+
+/*!
+ * @abstract To return linked contacts as unified contacts.
+ * @discussion If YES returns unified contacts, otherwise returns individual contacts. Default is NO.
+ * @note A unified contact is the aggregation of properties from a set of linked individual contacts. If an individual contact is not linked then the unified contact is simply that individual contact.
+ */
+@property (nonatomic, assign) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 
 - (void)requestAccessWithCompletion:(void (^)(NSError *error))callback;
