@@ -28,10 +28,16 @@
 
 @protocol CKAddressBookDelegate;
 
+/*!
+ * @abstract The authorization the user has given the application to access an entity type.
+ */
 typedef NS_ENUM(NSUInteger, CKAddressBookAccess)
 {
+    /*! The user has not yet made a choice regarding whether the application may access contact data. */
     CKAddressBookAccessUnknown = 0,
+    /*! The application is authorized to access contact data. */
     CKAddressBookAccessGranted = 1,
+    /*! The user explicitly denied access to contact data for the application. */
     CKAddressBookAccessDenied  = 2
 };
 
@@ -44,9 +50,13 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 
 @interface CKAddressBook : NSObject <NSSecureCoding>
 
-@property (nonatomic, assign, readonly) CKAddressBookAccess access;
 @property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
 
+/*!
+ * @abstract Indicates the current authorization status to access contact data.
+ * @discussion Based upon the access, the application could display or hide its UI elements that would access any Contacts API. This method is thread safe.
+ */
+@property (nonatomic, assign, readonly) CKAddressBookAccess access;
 @property (nonatomic, assign) BOOL observeContactsDiff;
 @property (nonatomic, assign) CKContactField fieldsMask;
 
@@ -58,6 +68,11 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 @property (nonatomic, assign) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 
+/*!
+ * @abstract Request access to the user's contacts.
+ * @discussion Users are able to grant or deny access to contact data on a per-application basis. To request access to contact data, call requestAccessWithCompletion:. This will not block the application while the user is being asked to grant or deny access. The user will only be prompted the first time access is requested; any subsequent CKAddressBook calls will use the existing permissions. The completion handler is called on an main queue.
+ * @param callback This block is called upon completion. If the user grants access then error is nil. Otherwise access denied with an error.
+ */
 - (void)requestAccessWithCompletion:(void (^)(NSError *error))callback;
 
 - (void)loadContacts;
@@ -68,8 +83,28 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 - (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
                    completion:(void (^) (CKContact *contact, NSError *error))callback;
 
+/*!
+ * @abstract Add a new contact to the address book.
+ * @discussion The contact is added if error is nil
+ * @param contact The new contact to add.
+ * @param callback This block is called upon completion.
+ */
 - (void)addContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
+
+/*!
+ * @abstract Update an existing contact in the address book.
+ * @discussion The contact is updated if error is nil
+ * @param contact The new contact to add.
+ * @param callback This block is called upon completion.
+ */
 - (void)updateContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
+
+/*!
+ * @abstract Delete a contact from the address book.
+ * @discussion The contact is deleted if error is nil
+ * @param contact The new contact to add.
+ * @param callback This block is called upon completion.
+ */
 - (void)deleteContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
 
 - (void)startObserveChanges;
@@ -91,6 +126,9 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 
 extern NSString *const CKAddressBookErrorDomain;
 
+/*!
+ * @abstract Notification posted when changes occur in another CNContactStore.
+ */
 extern NSString *const CKAddressBookDidChangeNotification;
 extern NSString *const CKAddressBookAddedContactsUserInfoKey;   // Array of added contacts identifiers
 extern NSString *const CKAddressBookUpdatedContactsUserInfoKey; // Array of updated contacts identifiers
