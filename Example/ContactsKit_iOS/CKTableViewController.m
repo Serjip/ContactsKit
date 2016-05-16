@@ -61,7 +61,7 @@
         
         if (! error)
         {
-            [_book loadContacts];
+            [_book fetchContacts];
         }
         else
         {
@@ -153,7 +153,7 @@
 
 #pragma mark - CKAddressBookDelegate
 
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts
+- (void)addressBook:(CKAddressBook *)addressBook didFetchContacts:(NSArray<CKContact *> *)contacts
 {
     _contacts = contacts;
     [self.tableView reloadData];
@@ -166,7 +166,7 @@
 
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook
 {
-    [addressBook loadContacts];
+    [addressBook fetchContacts];
 }
 
 - (void)addressBook:(CKAddressBook *)addressBook didChangeForType:(CKAddressBookChangeType)type contactsIds:(NSArray<NSString *> *)ids
@@ -186,7 +186,7 @@
             break;
     }
     
-    [addressBook loadContacts];
+    [addressBook fetchContacts];
 }
 
 #pragma mark - Notificaions
@@ -200,7 +200,7 @@
 
 - (void)actionRefreshContacts:(UIBarButtonItem *)sender
 {
-    [_book loadContacts];
+    [_book fetchContacts];
 }
 
 - (void)actionAddContact:(UIBarButtonItem *)sender

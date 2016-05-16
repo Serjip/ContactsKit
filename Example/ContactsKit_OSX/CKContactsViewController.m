@@ -34,7 +34,7 @@
         
         if (! error)
         {
-            [_book loadContacts];
+            [_book fetchContacts];
         }
         
     }];
@@ -77,12 +77,12 @@
 
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook
 {
-    [_book loadContacts];
+    [_book fetchContacts];
 }
 
 #pragma mark - CKAddressBookDelegate
 
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts
+- (void)addressBook:(CKAddressBook *)addressBook didFetchContacts:(NSArray<CKContact *> *)contacts
 {
     _contacts = contacts;
     [self.tableView reloadData];
@@ -92,7 +92,7 @@
 
 - (IBAction)actionRefresh:(NSButton *)sender
 {
-    [_book loadContacts];
+    [_book fetchContacts];
 }
 
 @end

@@ -165,7 +165,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 #endif
 }
 
-- (void)loadContacts
+- (void)fetchContacts
 {
     CKContactField fieldMask = self.fieldsMask;
     CKContactField mergeMask = self.unifyResults ? fieldMask : 0;
@@ -186,10 +186,10 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         
         if (! error)
         {
-            if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContacts:)])
+            if ([self.delegate respondsToSelector:@selector(addressBook:didFetchContacts:)])
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate addressBook:self didLoadContacts:contacts];
+                    [self.delegate addressBook:self didFetchContacts:contacts];
                 });
             }
         }

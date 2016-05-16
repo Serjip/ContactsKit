@@ -66,6 +66,11 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
  * @note A unified contact is the aggregation of properties from a set of linked individual contacts. If an individual contact is not linked then the unified contact is simply that individual contact.
  */
 @property (nonatomic, assign) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
+
+/*!
+ * @abstract The order of the fetched contacts
+ * @discussion It's for the delegate methods only. If sort description is nil, contacts returnded in the system order.
+ */
 @property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
 
 /*!
@@ -75,7 +80,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
  */
 - (void)requestAccessWithCompletion:(void (^)(NSError *error))callback;
 
-- (void)loadContacts;
+- (void)fetchContacts;
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
                   filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback;
 
@@ -119,7 +124,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 - (void)addressBook:(CKAddressBook *)addressBook didChangeForType:(CKAddressBookChangeType)type contactsIds:(NSArray<NSString *> *)ids;
 - (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts;
+- (void)addressBook:(CKAddressBook *)addressBook didFetchContacts:(NSArray<CKContact *> *)contacts;
 - (void)addressBook:(CKAddressBook *)addressBook didFailLoad:(NSError *)error;
 
 @end
