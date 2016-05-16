@@ -80,6 +80,10 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
  */
 - (void)requestAccessWithCompletion:(void (^)(NSError *error))callback;
 
+/*!
+ * @abstract Fetching all contacts from the address book.
+ * @discussion Call the delegate method `addressBook:didFetchContacts:` after completion. During the fetching will call the filter delegate method `addressBook:shouldFetchContact:`.
+ */
 - (void)fetchContacts;
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
                   filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback;
@@ -99,7 +103,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 /*!
  * @abstract Update an existing contact in the address book.
  * @discussion The contact is updated if error is nil
- * @param contact The new contact to add.
+ * @param contact The contact to update.
  * @param callback This block is called upon completion.
  */
 - (void)updateContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
@@ -107,7 +111,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 /*!
  * @abstract Delete a contact from the address book.
  * @discussion The contact is deleted if error is nil
- * @param contact The new contact to add.
+ * @param contact The contact to delete.
  * @param callback This block is called upon completion.
  */
 - (void)deleteContact:(CKMutableContact *)contact completion:(void (^)(NSError *error))callback;
@@ -122,7 +126,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 @optional
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook;
 - (void)addressBook:(CKAddressBook *)addressBook didChangeForType:(CKAddressBookChangeType)type contactsIds:(NSArray<NSString *> *)ids;
-- (BOOL)addressBook:(CKAddressBook *)addressBook shouldLoadContact:(CKContact *)contact;
+- (BOOL)addressBook:(CKAddressBook *)addressBook shouldFetchContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didFetchContacts:(NSArray<CKContact *> *)contacts;
 - (void)addressBook:(CKAddressBook *)addressBook didFailLoad:(NSError *)error;

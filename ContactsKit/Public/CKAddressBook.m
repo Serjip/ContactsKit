@@ -174,10 +174,10 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     dispatch_async(_addressBookQueue, ^{
         
         id filter = nil;
-        if ([self.delegate respondsToSelector:@selector(addressBook:shouldLoadContact:)])
+        if ([self.delegate respondsToSelector:@selector(addressBook:shouldFetchContact:)])
         {
             filter = ^BOOL(CKContact *contact) {
-                return [self.delegate addressBook:self shouldLoadContact:contact];
+                return [self.delegate addressBook:self shouldFetchContact:contact];
             };
         }
         
