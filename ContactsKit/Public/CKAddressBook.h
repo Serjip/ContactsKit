@@ -136,9 +136,8 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 - (void)addressBookDidChnage:(CKAddressBook *)addressBook;
 - (void)addressBook:(CKAddressBook *)addressBook didChangeForType:(CKAddressBookChangeType)type contactsIds:(NSArray<NSString *> *)ids;
 - (BOOL)addressBook:(CKAddressBook *)addressBook shouldFetchContact:(CKContact *)contact;
-- (void)addressBook:(CKAddressBook *)addressBook didLoadContact:(CKContact *)contact;
 - (void)addressBook:(CKAddressBook *)addressBook didFetchContacts:(NSArray<CKContact *> *)contacts;
-- (void)addressBook:(CKAddressBook *)addressBook didFailLoad:(NSError *)error;
+- (void)addressBook:(CKAddressBook *)addressBook didFailToFetch:(NSError *)error;
 
 @end
 

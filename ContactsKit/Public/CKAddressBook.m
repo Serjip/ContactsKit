@@ -195,10 +195,10 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         }
         else
         {
-            if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoad:)])
+            if ([self.delegate respondsToSelector:@selector(addressBook:didFailToFetch:)])
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate addressBook:self didFailLoad:error];
+                    [self.delegate addressBook:self didFailToFetch:error];
                 });
             }
         }
@@ -234,19 +234,19 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         
         if (! error)
         {
-            if ([self.delegate respondsToSelector:@selector(addressBook:didLoadContact:)])
+            if ([self.delegate respondsToSelector:@selector(addressBook:didFetchContacts:)])
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate addressBook:self didLoadContact:contact];
+                    [self.delegate addressBook:self didFetchContacts:@[contact]];
                 });
             }
         }
         else
         {
-            if ([self.delegate respondsToSelector:@selector(addressBook:didFailLoad:)])
+            if ([self.delegate respondsToSelector:@selector(addressBook:didFailToFetch:)])
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate addressBook:self didFailLoad:error];
+                    [self.delegate addressBook:self didFailToFetch:error];
                 });
             }
         }
