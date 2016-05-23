@@ -79,6 +79,17 @@
             _nickname = [self stringProperty:kABPersonNicknameProperty fromRecord:recordRef];
         }
         
+        if (fieldMask & CKContactFieldNamePrefix)
+        {
+            _namePrefix = [self stringProperty:kABPersonPrefixProperty fromRecord:recordRef];
+        }
+        
+        if (fieldMask & CKContactFieldNameSuffix)
+        {
+            _nameSuffix = [self stringProperty:kABPersonSuffixProperty fromRecord:recordRef];
+        }
+
+        
         // Corp
         
         if (fieldMask & CKContactFieldCompany)
@@ -226,6 +237,22 @@
         if (! self.nickname)
         {
             _nickname = [self stringProperty:kABPersonNicknameProperty fromRecord:recordRef];
+        }
+    }
+    
+    if (mergeMask & CKContactFieldNamePrefix)
+    {
+        if (! self.namePrefix)
+        {
+            _namePrefix = [self stringProperty:kABPersonPrefixProperty fromRecord:recordRef];
+        }
+    }
+    
+    if (mergeMask & CKContactFieldNameSuffix)
+    {
+        if (! self.nameSuffix)
+        {
+            _nameSuffix = [self stringProperty:kABPersonSuffixProperty fromRecord:recordRef];
         }
     }
     
@@ -433,6 +460,8 @@
         copy->_middleName = [self.middleName copyWithZone:zone];
         copy->_lastName = [self.lastName copyWithZone:zone];
         copy->_nickname = [self.nickname copyWithZone:zone];
+        copy->_namePrefix = [self.namePrefix copyWithZone:zone];
+        copy->_nameSuffix = [self.nameSuffix copyWithZone:zone];
         
         copy->_company = [self.company copyWithZone:zone];
         copy->_jobTitle = [self.jobTitle copyWithZone:zone];
@@ -470,6 +499,8 @@
         mutableCopy.middleName = [self.middleName copyWithZone:zone];
         mutableCopy.lastName = [self.lastName copyWithZone:zone];
         mutableCopy.nickname = [self.nickname copyWithZone:zone];
+        mutableCopy.namePrefix = [self.namePrefix copyWithZone:zone];
+        mutableCopy.nameSuffix = [self.nameSuffix copyWithZone:zone];
         
         mutableCopy.company = [self.company copyWithZone:zone];
         mutableCopy.jobTitle = [self.jobTitle copyWithZone:zone];
@@ -547,6 +578,16 @@
     }
     
     if (! CK_IS_EQUAL(self.nickname, contact.nickname))
+    {
+        return NO;
+    }
+    
+    if (! CK_IS_EQUAL(self.namePrefix, contact.namePrefix))
+    {
+        return NO;
+    }
+    
+    if (! CK_IS_EQUAL(self.nameSuffix, contact.nameSuffix))
     {
         return NO;
     }
@@ -723,7 +764,7 @@
 
 @implementation CKMutableContact
 
-@synthesize identifier, firstName, lastName, middleName, nickname;
+@synthesize identifier, firstName, lastName, middleName, nickname, namePrefix, nameSuffix;
 @synthesize company, jobTitle, department;
 @synthesize note, imageData, thumbnailData;
 @synthesize phones, emails, addresses, instantMessengers, socialProfiles, URLs, dates;
@@ -780,6 +821,16 @@
     if (result && self.nickname)
     {
         result = [self setValue:self.nickname forProperty:kABPersonNicknameProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.namePrefix)
+    {
+        result = [self setValue:self.namePrefix forProperty:kABPersonPrefixProperty toRecord:recordRef error:error];
+    }
+    
+    if (result && self.nameSuffix)
+    {
+        result = [self setValue:self.nameSuffix forProperty:kABPersonSuffixProperty toRecord:recordRef error:error];
     }
     
     // Corp

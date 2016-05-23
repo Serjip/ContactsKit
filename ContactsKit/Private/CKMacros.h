@@ -74,6 +74,8 @@
 #define kABPersonMiddleNameProperty         (__bridge CFStringRef)kABMiddleNameProperty
 #define kABPersonLastNameProperty           (__bridge CFStringRef)kABLastNameProperty
 #define kABPersonNicknameProperty           (__bridge CFStringRef)kABNicknameProperty
+#define kABPersonPrefixProperty             (__bridge CFStringRef)kABTitleProperty
+#define kABPersonSuffixProperty             (__bridge CFStringRef)kABSuffixProperty
 
 #define kABPersonOrganizationProperty       (__bridge CFStringRef)kABOrganizationProperty
 #define kABPersonJobTitleProperty           (__bridge CFStringRef)kABJobTitleProperty
