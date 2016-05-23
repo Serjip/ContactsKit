@@ -85,6 +85,15 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
  * @discussion Call the delegate method `addressBook:didFetchContacts:` after completion. During the fetching will call the filter delegate method `addressBook:shouldFetchContact:`.
  */
 - (void)fetchContacts;
+
+/*!
+ * @abstract Fetching all contacts from the address book.
+ * @param mask is a properties to fetch
+ * @param unify merging linked contact
+ * @param sortDescriptors is sort of the contacts list
+ * @param filter is a filter for the contacts, if block returns NO that contact will not added to the contact list.
+ * @param callback This block is called upon completion fetching all contacts
+ */
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
                   filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback;
 
