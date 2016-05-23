@@ -97,7 +97,16 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 - (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
                   filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback;
 
+/*!
+ * @abstract Fetch contact with identifier
+ * @discussion method will fetch contact after completion will call delegate method `addressBook:didFetchContacts:`. Field mask gettings from the addressbook param `fieldsMask` the same with the `unifyResults` param.
+ * @param identifier is a unique contact identifier
+ */
 - (void)contactWithIdentifier:(NSString *)identifier;
+
+/*!
+ * @abstract Fetch contacts with identifier
+ */
 - (void)contactWithIdentifier:(NSString *)identifier mask:(CKContactField)mask uinify:(BOOL)unify
                    completion:(void (^) (CKContact *contact, NSError *error))callback;
 
