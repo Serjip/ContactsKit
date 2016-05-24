@@ -1,5 +1,10 @@
 #Change Log
 
+## 2.0.0 / 2016-05-24
+* Added a couple of comments
+* Rename methods for fetching contacts
+* Added name suffix and namePrefix
+
 ## 1.2.1 / 2016-03-13
 * Added CKDate class
 * Minore fixex
