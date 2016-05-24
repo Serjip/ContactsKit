@@ -28,14 +28,14 @@
 
 @interface CKPhone : CKLabel <NSMutableCopying>
 
-@property (nonatomic, strong, readonly) NSString *number;
+@property (strong, nonatomic, readonly) NSString *number;
 
 @end
 
 @interface CKMutablePhone : CKPhone
 
-@property (nonatomic, strong) NSString *number;
-@property (nonatomic, strong) NSString *originalLabel;
+@property (strong, nonatomic) NSString *number;
+@property (strong, nonatomic) NSString *originalLabel;
 
 @end
 

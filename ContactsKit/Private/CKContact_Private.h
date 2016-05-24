@@ -36,10 +36,10 @@
 
 @interface CKMutableContact ()
 
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic, strong) NSData *thumbnailData;
-@property (nonatomic, strong) NSDate *creationDate;
-@property (nonatomic, strong) NSDate *modificationDate;
+@property (strong, nonatomic) NSString *identifier;
+@property (strong, nonatomic) NSData *thumbnailData;
+@property (strong, nonatomic) NSDate *creationDate;
+@property (strong, nonatomic) NSDate *modificationDate;
 
 - (BOOL)setRecordRef:(ABRecordRef)recordRef error:(NSError **)error;
 

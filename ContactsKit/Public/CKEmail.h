@@ -28,14 +28,14 @@
 
 @interface CKEmail : CKLabel <NSMutableCopying>
 
-@property (nonatomic, strong, readonly) NSString *address;
+@property (strong, nonatomic, readonly) NSString *address;
 
 @end
 
 @interface CKMutableEmail : CKEmail
 
-@property (nonatomic, strong) NSString *address;
-@property (nonatomic, strong) NSString *originalLabel;
+@property (strong, nonatomic) NSString *address;
+@property (strong, nonatomic) NSString *originalLabel;
 
 @end
 

@@ -50,28 +50,28 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
 
 @interface CKAddressBook : NSObject <NSSecureCoding>
 
-@property (nonatomic, weak) id<CKAddressBookDelegate> delegate;
+@property (weak, nonatomic) id<CKAddressBookDelegate> delegate;
 
 /*!
  * @abstract Indicates the current authorization status to access contact data.
  * @discussion Based upon the access, the application could display or hide its UI elements that would access any Contacts API. This method is thread safe.
  */
-@property (nonatomic, assign, readonly) CKAddressBookAccess access;
-@property (nonatomic, assign) BOOL observeContactsDiff;
-@property (nonatomic, assign) CKContactField fieldsMask;
+@property (assign, nonatomic, readonly) CKAddressBookAccess access;
+@property (assign, nonatomic) BOOL observeContactsDiff;
+@property (assign, nonatomic) CKContactField fieldsMask;
 
 /*!
  * @abstract To return linked contacts as unified contacts.
  * @discussion If YES returns unified contacts, otherwise returns individual contacts. Default is NO.
  * @note A unified contact is the aggregation of properties from a set of linked individual contacts. If an individual contact is not linked then the unified contact is simply that individual contact.
  */
-@property (nonatomic, assign) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
+@property (assign, nonatomic) BOOL unifyResults NS_AVAILABLE(10_8, 6_0);
 
 /*!
  * @abstract The order of the fetched contacts
  * @discussion It's for the delegate methods only. If sort description is nil, contacts returnded in the system order.
  */
-@property (nonatomic, strong) NSArray<NSSortDescriptor *> *sortDescriptors;
+@property (strong, nonatomic) NSArray<NSSortDescriptor *> *sortDescriptors;
 
 /*!
  * @abstract Request access to the user's contacts.

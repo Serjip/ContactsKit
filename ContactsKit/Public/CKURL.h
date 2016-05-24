@@ -28,14 +28,14 @@
 
 @interface CKURL : CKLabel <NSMutableCopying>
 
-@property (nonatomic, strong, readonly) NSString *URLString;
+@property (strong, nonatomic, readonly) NSString *URLString;
 
 @end
 
 @interface CKMutableURL : CKURL
 
-@property (nonatomic, strong) NSString *URLString;
-@property (nonatomic, strong) NSString *originalLabel;
+@property (strong, nonatomic) NSString *URLString;
+@property (strong, nonatomic) NSString *originalLabel;
 
 @end
 

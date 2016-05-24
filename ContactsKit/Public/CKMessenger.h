@@ -43,16 +43,16 @@ typedef NS_ENUM(NSUInteger, CKMessengerService)
 
 @interface CKMessenger : NSObject <NSCopying, NSMutableCopying, NSCoding>
 
-@property (nonatomic, strong, readonly) NSString *username;
-@property (nonatomic, strong, readonly) NSString *service;
-@property (nonatomic, assign, readonly) CKMessengerService serviceType;
+@property (strong, nonatomic, readonly) NSString *username;
+@property (strong, nonatomic, readonly) NSString *service;
+@property (assign, nonatomic, readonly) CKMessengerService serviceType;
 
 @end
 
 @interface CKMutableMessenger : CKMessenger
 
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *service;
-@property (nonatomic, assign) CKMessengerService serviceType;
+@property (strong, nonatomic) NSString *username;
+@property (strong, nonatomic) NSString *service;
+@property (assign, nonatomic) CKMessengerService serviceType;
 
 @end

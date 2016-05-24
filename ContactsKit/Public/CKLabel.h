@@ -28,8 +28,8 @@
 
 @interface CKLabel : NSObject <NSCopying, NSSecureCoding>
 
-@property (nonatomic, strong, readonly) NSString *originalLabel;
-@property (nonatomic, copy, readonly) NSString *localizedLabel;
+@property (strong, nonatomic, readonly) NSString *originalLabel;
+@property (copy, nonatomic, readonly) NSString *localizedLabel;
 
 + (NSString *)localizedStringForLabel:(NSString *)label;
 + (NSArray *)labels;

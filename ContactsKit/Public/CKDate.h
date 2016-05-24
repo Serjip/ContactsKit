@@ -28,14 +28,14 @@
 
 @interface CKDate : CKLabel <NSMutableCopying>
 
-@property (nonatomic, strong, readonly) NSDate *value;
+@property (strong, nonatomic, readonly) NSDate *value;
 
 @end
 
 @interface CKMutableDate : CKDate
 
-@property (nonatomic, strong) NSDate *value;
-@property (nonatomic, strong) NSString *originalLabel;
+@property (strong, nonatomic) NSDate *value;
+@property (strong, nonatomic) NSString *originalLabel;
 
 @end
 

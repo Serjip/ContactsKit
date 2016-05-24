@@ -65,66 +65,66 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 
 @interface CKContact : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 
-@property (nonatomic, strong, readonly) NSString *identifier;
+@property (strong, nonatomic, readonly) NSString *identifier;
 
-@property (nonatomic, strong, readonly) NSString *firstName;
-@property (nonatomic, strong, readonly) NSString *middleName;
-@property (nonatomic, strong, readonly) NSString *lastName;
-@property (nonatomic, strong, readonly) NSString *nickname;
-@property (nonatomic, strong, readonly) NSString *namePrefix;
-@property (nonatomic, strong, readonly) NSString *nameSuffix;
+@property (strong, nonatomic, readonly) NSString *firstName;
+@property (strong, nonatomic, readonly) NSString *middleName;
+@property (strong, nonatomic, readonly) NSString *lastName;
+@property (strong, nonatomic, readonly) NSString *nickname;
+@property (strong, nonatomic, readonly) NSString *namePrefix;
+@property (strong, nonatomic, readonly) NSString *nameSuffix;
 
-@property (nonatomic, strong, readonly) NSString *company;
-@property (nonatomic, strong, readonly) NSString *jobTitle;
-@property (nonatomic, strong, readonly) NSString *department;
+@property (strong, nonatomic, readonly) NSString *company;
+@property (strong, nonatomic, readonly) NSString *jobTitle;
+@property (strong, nonatomic, readonly) NSString *department;
 
-@property (nonatomic, strong, readonly) NSString *note;
+@property (strong, nonatomic, readonly) NSString *note;
 
-@property (nonatomic, strong, readonly) NSData *imageData;
-@property (nonatomic, strong, readonly) NSData *thumbnailData;
+@property (strong, nonatomic, readonly) NSData *imageData;
+@property (strong, nonatomic, readonly) NSData *thumbnailData;
 
-@property (nonatomic, strong, readonly) NSArray<CKPhone *> *phones;
-@property (nonatomic, strong, readonly) NSArray<CKEmail *> *emails;
-@property (nonatomic, strong, readonly) NSArray<CKAddress *> *addresses;
-@property (nonatomic, strong, readonly) NSArray<CKMessenger *> *instantMessengers;
-@property (nonatomic, strong, readonly) NSArray<CKSocialProfile *> *socialProfiles;
-@property (nonatomic, strong, readonly) NSArray<CKURL *> *URLs;
-@property (nonatomic, strong, readonly) NSArray<CKDate *> *dates;
+@property (strong, nonatomic, readonly) NSArray<CKPhone *> *phones;
+@property (strong, nonatomic, readonly) NSArray<CKEmail *> *emails;
+@property (strong, nonatomic, readonly) NSArray<CKAddress *> *addresses;
+@property (strong, nonatomic, readonly) NSArray<CKMessenger *> *instantMessengers;
+@property (strong, nonatomic, readonly) NSArray<CKSocialProfile *> *socialProfiles;
+@property (strong, nonatomic, readonly) NSArray<CKURL *> *URLs;
+@property (strong, nonatomic, readonly) NSArray<CKDate *> *dates;
 
-@property (nonatomic, strong, readonly) NSDate *birthday;
-@property (nonatomic, strong, readonly) NSDate *creationDate;
-@property (nonatomic, strong, readonly) NSDate *modificationDate;
+@property (strong, nonatomic, readonly) NSDate *birthday;
+@property (strong, nonatomic, readonly) NSDate *creationDate;
+@property (strong, nonatomic, readonly) NSDate *modificationDate;
 
-@property (nonatomic, assign, readonly) CKContactField fieldMask;
+@property (assign, nonatomic, readonly) CKContactField fieldMask;
 
 @end
 
 
 @interface CKMutableContact : CKContact
 
-@property (nonatomic, strong) NSString *firstName;
-@property (nonatomic, strong) NSString *middleName;
-@property (nonatomic, strong) NSString *lastName;
-@property (nonatomic, strong) NSString *nickname;
-@property (nonatomic, strong) NSString *namePrefix;
-@property (nonatomic, strong) NSString *nameSuffix;
+@property (strong, nonatomic) NSString *firstName;
+@property (strong, nonatomic) NSString *middleName;
+@property (strong, nonatomic) NSString *lastName;
+@property (strong, nonatomic) NSString *nickname;
+@property (strong, nonatomic) NSString *namePrefix;
+@property (strong, nonatomic) NSString *nameSuffix;
 
-@property (nonatomic, strong) NSString *company;
-@property (nonatomic, strong) NSString *jobTitle;
-@property (nonatomic, strong) NSString *department;
+@property (strong, nonatomic) NSString *company;
+@property (strong, nonatomic) NSString *jobTitle;
+@property (strong, nonatomic) NSString *department;
 
-@property (nonatomic, strong) NSString *note;
+@property (strong, nonatomic) NSString *note;
 
-@property (nonatomic, strong) NSData *imageData;
+@property (strong, nonatomic) NSData *imageData;
 
-@property (nonatomic, strong) NSArray<CKPhone *> *phones;
-@property (nonatomic, strong) NSArray<CKEmail *> *emails;
-@property (nonatomic, strong) NSArray<CKAddress *> *addresses;
-@property (nonatomic, strong) NSArray<CKMessenger *> *instantMessengers;
-@property (nonatomic, strong) NSArray<CKSocialProfile *> *socialProfiles;
-@property (nonatomic, strong) NSArray<CKURL *> *URLs;
-@property (nonatomic, strong) NSArray<CKDate *> *dates;
+@property (strong, nonatomic) NSArray<CKPhone *> *phones;
+@property (strong, nonatomic) NSArray<CKEmail *> *emails;
+@property (strong, nonatomic) NSArray<CKAddress *> *addresses;
+@property (strong, nonatomic) NSArray<CKMessenger *> *instantMessengers;
+@property (strong, nonatomic) NSArray<CKSocialProfile *> *socialProfiles;
+@property (strong, nonatomic) NSArray<CKURL *> *URLs;
+@property (strong, nonatomic) NSArray<CKDate *> *dates;
 
-@property (nonatomic, strong) NSDate *birthday;
+@property (strong, nonatomic) NSDate *birthday;
 
 @end

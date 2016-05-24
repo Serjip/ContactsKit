@@ -29,7 +29,7 @@
 
 @interface CKLabel ()
 
-@property (nonatomic, strong) NSString *originalLabel;
+@property (strong, nonatomic) NSString *originalLabel;
 
 - (instancetype)initWithMultiValue:(ABMultiValueRef)multiValue index:(CFIndex)index;
 - (BOOL)setLabledValue:(ABMutableMultiValueRef)mutableMultiValue;

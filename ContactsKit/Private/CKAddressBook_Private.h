@@ -28,6 +28,6 @@
 
 @interface CKAddressBook ()
 
-@property (nonatomic, strong, readonly) NSArray<CKContact *> *contacts;
+@property (strong, nonatomic, readonly) NSArray<CKContact *> *contacts;
 
 @end

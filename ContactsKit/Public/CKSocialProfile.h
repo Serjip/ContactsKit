@@ -39,20 +39,20 @@ typedef NS_ENUM(NSUInteger, CKSocialProfileService)
 
 @interface CKSocialProfile : NSObject <NSCopying, NSMutableCopying, NSSecureCoding>
 
-@property (nonatomic, strong, readonly) NSURL *URL;
-@property (nonatomic, strong, readonly) NSString *username;
-@property (nonatomic, strong, readonly) NSString *userIdentifier;
-@property (nonatomic, strong, readonly) NSString *service;
-@property (nonatomic, assign, readonly) CKSocialProfileService serviceType;
+@property (strong, nonatomic, readonly) NSURL *URL;
+@property (strong, nonatomic, readonly) NSString *username;
+@property (strong, nonatomic, readonly) NSString *userIdentifier;
+@property (strong, nonatomic, readonly) NSString *service;
+@property (assign, nonatomic, readonly) CKSocialProfileService serviceType;
 
 @end
 
 @interface CKMutableSocialProfile : CKSocialProfile
 
-@property (nonatomic, strong) NSURL *URL;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *userIdentifier;
-@property (nonatomic, strong) NSString *service;
-@property (nonatomic, assign) CKSocialProfileService serviceType;
+@property (strong, nonatomic) NSURL *URL;
+@property (strong, nonatomic) NSString *username;
+@property (strong, nonatomic) NSString *userIdentifier;
+@property (strong, nonatomic) NSString *service;
+@property (assign, nonatomic) CKSocialProfileService serviceType;
 
 @end
