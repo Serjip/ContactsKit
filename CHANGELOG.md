@@ -1,5 +1,8 @@
 #Change Log
 
+## 2.0.1 / 2016-05-24
+* Bugfix access check
+
 ## 2.0.0 / 2016-05-24
 * Added a couple of comments
 * Rename methods for fetching contacts
