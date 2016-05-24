@@ -98,7 +98,7 @@ Or do the same by using the `CKAddressBookDelegate` protocol
     addressBook.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"firstName" ascending:YES] ];
     addressBook.delegate = self;
     
-    [addressBook loadContacts];
+    [addressBook fetchContacts];
 
 ```
 
@@ -108,7 +108,7 @@ Then the protocol method will called
 
 	#pragma mark - CKAddressBookDelegate
 
-	- (void)addressBook:(CKAddressBook *)addressBook didLoadContacts:(NSArray<CKContact *> *)contacts
+	- (void)addressBook:(CKAddressBook *)addressBook didFetchContacts:(NSArray<CKContact *> *)contacts
 	{
     	// Do something with contacts
 	}
