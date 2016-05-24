@@ -743,21 +743,27 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 
 - (BOOL)ck_checkAccess:(NSError **)error
 {
-#if TARGET_OS_IOS
-    if (! _addressBookRef)
-#elif TARGET_OS_MAC
-    if (! _addressBook)
-#endif
+    switch (self.access)
     {
-        if (error)
-        {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
-            *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
-        }
-        return NO;
+        case CKAddressBookAccessGranted:
+            return YES;
+        
+        case CKAddressBookAccessDenied:
+            if (error)
+            {
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil)};
+                *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+            }
+            return NO;
+        
+        case CKAddressBookAccessUnknown:
+            if (error)
+            {
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access unknown", nil)};
+                *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
+            }
+            return NO;
     }
-    
-    return YES;
 }
 
 - (BOOL)ck_saveAddressBook:(NSError **)error
