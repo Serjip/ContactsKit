@@ -1,5 +1,5 @@
 
-target "ContactsKit_iOS", :exclusive => true do
+target "ContactsKit_iOS" do
   
   pod "ContactsKit", :path => "../"
   platform :ios, "7.0"
@@ -7,14 +7,14 @@ target "ContactsKit_iOS", :exclusive => true do
 end
 
 
-target "ContactsKit_OSX", :exclusive => true do
+target "ContactsKit_OSX" do
   
   pod "ContactsKit", :path => "../"
   platform :osx, "10.7"
 
 end
 
-target "ContactsKit_iOS_Logic_Tests", :exclusive => true do
+target "ContactsKit_iOS_Logic_Tests" do
   
   pod "ContactsKit", :path => "../"
   platform :ios, "7.0"
