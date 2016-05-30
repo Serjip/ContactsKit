@@ -351,8 +351,13 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     if (self)
     {
         _contacts = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(contacts))];
+        _sortDescriptors = [aDecoder decodeObjectOfClass:[NSArray class] forKey:NSStringFromSelector(@selector(sortDescriptors))];
+        
         _unifyResults = [aDecoder decodeBoolForKey:NSStringFromSelector(@selector(unifyResults))];
         _observeContactsDiff = [aDecoder decodeBoolForKey:NSStringFromSelector(@selector(observeContactsDiff))];
+        
+        NSNumber *fieldMask = [aDecoder decodeObjectOfClass:[NSNumber class] forKey:NSStringFromSelector(@selector(fieldMask))];
+        _fieldsMask = fieldMask.unsignedIntegerValue;
     }
     return self;
 }
@@ -360,8 +365,13 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:_contacts forKey:NSStringFromSelector(@selector(contacts))];
+    [aCoder encodeObject:_sortDescriptors forKey:NSStringFromSelector(@selector(sortDescriptors))];
+    
     [aCoder encodeBool:_unifyResults forKey:NSStringFromSelector(@selector(unifyResults))];
     [aCoder encodeBool:_observeContactsDiff forKey:NSStringFromSelector(@selector(observeContactsDiff))];
+    
+    NSNumber *fieldMask = [NSNumber numberWithUnsignedInteger:_fieldsMask];
+    [aCoder encodeObject:fieldMask forKey:NSStringFromSelector(@selector(fieldMask))];
 }
 
 + (BOOL)supportsSecureCoding
