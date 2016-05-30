@@ -57,7 +57,17 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
  * @discussion Based upon the access, the application could display or hide its UI elements that would access any Contacts API. This method is thread safe.
  */
 @property (assign, nonatomic, readonly) CKAddressBookAccess access;
+
+/*!
+ * @abstract The address book can observer difference of the changed contacts. To enable this feature set YES.
+ * @discussion Inserted, Updated and Deleted contacts identifiers will be received in the delegate method `addressBook:didChangeForType:contactsIds:` or in `CKAddressBookDidChangeNotification`. To observe contacts differences call `startObserveChanges`.
+ */
 @property (assign, nonatomic) BOOL observeContactsDiff;
+
+/*!
+ * @abstract Field mask is a masl of the properties that will be loded
+ * @discussion Identifier is obligatory property. Propeties not in the field mas will be nil or 0
+ */
 @property (assign, nonatomic) CKContactField fieldsMask;
 
 /*!
