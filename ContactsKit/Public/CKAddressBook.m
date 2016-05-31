@@ -845,7 +845,10 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     [userInfo setValue:updated forKey:CKAddressBookUpdatedContactsUserInfoKey];
     [userInfo setValue:deleted forKey:CKAddressBookDeletedContactsUserInfoKey];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
+    if (inserted.count || updated.count || deleted.count)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CKAddressBookDidChangeNotification object:self userInfo:userInfo];
+    }
     
     if ([self.delegate respondsToSelector:@selector(addressBook:didChangeForType:contactsIds:)])
     {
