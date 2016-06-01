@@ -1,5 +1,8 @@
 #Change Log
 
+## 2.x.x /
+* Do not post the update notificaion, if the contacts do not change
+
 ## 2.0.2 / 2016-05-30
 * Added missed properties NSCoding support
 
