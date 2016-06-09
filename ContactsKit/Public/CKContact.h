@@ -36,6 +36,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
     CKContactFieldNickname          = 1 << 4,
     CKContactFieldNamePrefix        = 1 << 5,
     CKContactFieldNameSuffix        = 1 << 6,
+    CKContactFieldFullName          = 1 << 7,
     
     CKContactFieldCompany           = 1 << 10,
     CKContactFieldJobTitle          = 1 << 11,
@@ -73,6 +74,7 @@ typedef NS_OPTIONS(NSUInteger , CKContactField)
 @property (strong, nonatomic, readonly) NSString *nickname;
 @property (strong, nonatomic, readonly) NSString *namePrefix;
 @property (strong, nonatomic, readonly) NSString *nameSuffix;
+@property (strong, nonatomic, readonly) NSString *fullName;
 
 @property (strong, nonatomic, readonly) NSString *company;
 @property (strong, nonatomic, readonly) NSString *jobTitle;
