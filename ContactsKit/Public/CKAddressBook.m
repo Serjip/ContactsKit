@@ -910,7 +910,9 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
 - (NSArray *)ck_newContactsWithOldConctacts:(NSArray *)oldContacts inserted:(NSArray **)inserted updated:(NSArray **)updated deleted:(NSArray **)deleted
 {
     CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
-    NSArray *newContacts = [self ck_contactsWithFields:fields merge:0 sortDescriptors:nil filter:nil error:nil];
+    CKContactField merge = self.unifyResults ? fields : 0;
+    
+    NSArray *newContacts = [self ck_contactsWithFields:fields merge:merge sortDescriptors:nil filter:nil error:nil];
     
     // If old contacts doesnt exists do not process the diff
     if (oldContacts.count)
