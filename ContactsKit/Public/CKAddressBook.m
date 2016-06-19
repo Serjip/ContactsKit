@@ -395,14 +395,14 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     CFArrayRef peopleArrayRef = ABAddressBookCopyArrayOfAllPeople(_addressBookRef);
     CFIndex contactCount = CFArrayGetCount(peopleArrayRef);
     NSMutableArray *contacts = [[NSMutableArray alloc] initWithCapacity:(NSUInteger)contactCount];
-    NSMutableSet *linkedContactsIDs = [NSMutableSet set];
+    NSMutableIndexSet *linkedContactsIDs = [[NSMutableIndexSet alloc] init];
 
     for (CFIndex i = 0; i < contactCount; i++)
     {
         ABRecordRef recordRef = (ABRecordRef)CFArrayGetValueAtIndex(peopleArrayRef, i);
         
         // Checking already added contacts
-        if ([linkedContactsIDs containsObject:@(ABRecordGetRecordID(recordRef))])
+        if ([linkedContactsIDs containsIndex:ABRecordGetRecordID(recordRef)])
         {
             continue;
         }
@@ -431,7 +431,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
             if (merge)
             {
                 [contact mergeLinkedRecordRef:linkedRecordRef mergeMask:merge];
-                [linkedContactsIDs addObject:@(ABRecordGetRecordID(recordRef))];
+                [linkedContactsIDs addIndex:ABRecordGetRecordID(linkedRecordRef)];
             }
         }
         CFRelease(linkedPeopleArrayRef);

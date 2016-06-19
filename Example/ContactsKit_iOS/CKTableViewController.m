@@ -39,10 +39,11 @@
         if (! _book)
         {
             _book = [[CKAddressBook alloc] init];
+            _book.observeContactsDiff = YES;
+            _book.fieldsMask = CKContactFieldAll;
+            _book.unifyResults = YES;
         }
         
-        _book.observeContactsDiff = YES;
-        _book.fieldsMask = CKContactFieldAll;
         _book.delegate = self;
         [_book startObserveChanges];
         
