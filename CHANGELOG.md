@@ -1,6 +1,6 @@
 #Change Log
 
-## 2.x.x /
+## 2.0.3 /
 * Do not post the update notificaion, if the contacts do not change
 * Fixed unifying contacts for iOS
 
