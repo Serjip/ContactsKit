@@ -8,9 +8,11 @@
 
 #import "CKPropertyTableViewController.h"
 
-@class CKContact;
+@class CKAddressBook, CKContact;
 
 @interface CKDetailsTableViewController : CKPropertyTableViewController <CKPropertyTableViewControllerDelegate>
+
+@property (strong, nonatomic) CKAddressBook *addressBook;
 
 - (instancetype)initWithContact:(CKContact *)contact;
 

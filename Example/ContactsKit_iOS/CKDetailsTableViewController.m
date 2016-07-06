@@ -348,11 +348,11 @@ typedef enum : NSUInteger {
         
         if (_contact.identifier)
         {
-            [[CKAddressBook new] updateContact:_contact completion:completion];
+            [self.addressBook updateContact:_contact completion:completion];
         }
         else
         {
-            [[CKAddressBook new] addContact:_contact completion:completion];
+            [self.addressBook addContact:_contact completion:completion];
         }
     }
     else

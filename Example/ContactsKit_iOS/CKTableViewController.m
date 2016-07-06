@@ -149,6 +149,7 @@
     
     CKContact *contact = [_contacts objectAtIndex:indexPath.row];
     CKDetailsTableViewController *vc = [[CKDetailsTableViewController alloc] initWithContact:contact];
+    vc.addressBook = _book;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -207,6 +208,7 @@
 - (void)actionAddContact:(UIBarButtonItem *)sender
 {
     CKDetailsTableViewController *vc = [[CKDetailsTableViewController alloc] init];
+    vc.addressBook = _book;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
