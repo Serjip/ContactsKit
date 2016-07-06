@@ -592,7 +592,8 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     
     if (result)
     {
-        recordRef = ABPersonCreate();
+        ABRecordRef sourceRef = ABAddressBookGetSourceWithRecordID(_addressBookRef, kABSourceTypeLocal);
+        recordRef = ABPersonCreateInSource(sourceRef);
         result = [contact setRecordRef:recordRef error:error];
     }
     
@@ -618,7 +619,22 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     
     if (result && recordRef)
     {
-        contact.identifier = @(ABRecordGetRecordID(recordRef)).stringValue;
+        // TODO: check the added externaly changed callback for dupplicate calls
+        if (self.observeContactsDiff)
+        {
+            CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
+            CKContact *addedContact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fields];
+            
+            // Add the new contact for cont
+            NSMutableArray *contacts = [_contacts mutableCopy];
+            [contacts addObject:addedContact];
+            _contacts = [[NSArray alloc] initWithArray:contacts];
+            contact.identifier = addedContact.identifier;
+        }
+        else
+        {
+            contact.identifier = @(ABRecordGetRecordID(recordRef)).stringValue;
+        }
     }
     
     if (recordRef)
