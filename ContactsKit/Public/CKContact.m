@@ -697,7 +697,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%p %@ %@", self, self.firstName, self.lastName];
+    return [NSString stringWithFormat:@"%p %@ %@ %@", self, self.identifier, self.firstName, self.lastName];
 }
 
 #pragma mark - Private
