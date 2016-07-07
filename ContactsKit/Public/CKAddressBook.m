@@ -630,6 +630,8 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
             [contacts addObject:addedContact];
             _contacts = [[NSArray alloc] initWithArray:contacts];
             contact.identifier = addedContact.identifier;
+            
+            // TODO: If the field mask is not read only update the contact modification date and creation date
         }
         else
         {
@@ -703,6 +705,38 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         result = [self ck_saveAddressBook:error];
     }
     
+#if TARGET_OS_IOS
+    // TODO: check the updated externaly changed callback for dupplicate calls
+    if (result && self.observeContactsDiff)
+    {
+        CKContactField fields = CKContactFieldModificationDate | CKContactFieldCreationDate;
+        CKContact *updatedContact = [[CKContact alloc] initWithRecordRef:recordRef fieldMask:fields];
+        
+        // Update contact in observed contacts
+        NSInteger index = NSNotFound;
+        for (NSInteger i = 0; i < _contacts.count; i++)
+        {
+            CKContact *contact = [_contacts objectAtIndex:i];
+            if ([contact.identifier isEqualToString:updatedContact.identifier])
+            {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index != NSNotFound)
+        {
+            NSMutableArray *contacts = [_contacts mutableCopy];
+            [contacts replaceObjectAtIndex:index withObject:updatedContact];
+            _contacts = [[NSArray alloc] initWithArray:contacts];
+            if (contact.fieldMask & CKContactFieldModificationDate)
+            {
+                contact.modificationDate = updatedContact.modificationDate;
+            }
+        }
+    }
+#endif
+
     return result;
 }
 
@@ -763,6 +797,31 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     {
         result = [self ck_saveAddressBook:error];
     }
+    
+#if TARGET_OS_IOS
+    // TODO: delete contact from observed contacts
+    if (result && self.observeContactsDiff)
+    {
+        // Update contact in observed contacts
+        NSInteger index = NSNotFound;
+        for (NSInteger i = 0; i < _contacts.count; i++)
+        {
+            CKContact *contact_ = [_contacts objectAtIndex:i];
+            if ([contact_.identifier isEqualToString:contact.identifier])
+            {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index != NSNotFound)
+        {
+            NSMutableArray *contacts = [_contacts mutableCopy];
+            [contacts removeObjectAtIndex:index];
+            _contacts = [[NSArray alloc] initWithArray:contacts];
+        }
+    }
+#endif
     
     return result;
 }
