@@ -1,5 +1,8 @@
 #Change Log
 
+## 2.0.4
+* Bugfix due inserting, updating and deleting contacts (for observeContactsDiff mode only)
+
 ## 2.0.3 /
 * Do not post the update notificaion, if the contacts do not change
 * Fixed unifying contacts for iOS
