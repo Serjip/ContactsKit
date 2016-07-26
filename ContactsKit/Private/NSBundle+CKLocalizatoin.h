@@ -1,9 +1,8 @@
 //
-//  CKMessenger_Private.h
+//  NSBundle+Localizatoin.h
 //  ContactsKit
 //
-//  Created by Sergey Popov on 02/05/16.
-//  Copyright (c) 2016 Sergey Popov <serj@ttitt.ru>
+//  Created by Sergey P on 26.07.16.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to
@@ -24,16 +23,10 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "CKMessenger.h"
-#import <AddressBook/AddressBook.h>
+#import <Foundation/Foundation.h>
 
-@interface CKMessenger ()
+@interface NSBundle (CKLocalizatoin)
 
-- (instancetype)initWithMessengerDictionary:(NSDictionary *)dictionary;
-- (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef;
-
-@end
-
-@interface CKMutableMessenger ()
++ (instancetype)ck_mainBundle;
 
 @end

@@ -1,9 +1,8 @@
 //
-//  CKMessenger_Private.h
+//  NSBundle+Localizatoin.m
 //  ContactsKit
 //
-//  Created by Sergey Popov on 02/05/16.
-//  Copyright (c) 2016 Sergey Popov <serj@ttitt.ru>
+//  Created by Sergey P on 26.07.16.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to
@@ -24,16 +23,22 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "CKMessenger.h"
-#import <AddressBook/AddressBook.h>
+#import "NSBundle+CKLocalizatoin.h"
 
-@interface CKMessenger ()
+@implementation NSBundle (CKLocalizatoin)
 
-- (instancetype)initWithMessengerDictionary:(NSDictionary *)dictionary;
-- (BOOL)addPropertiesToMultiValue:(ABMutableMultiValueRef)mutableMultiValueRef;
-
-@end
-
-@interface CKMutableMessenger ()
++ (instancetype)ck_mainBundle
+{
+    static NSBundle *bundle = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        // Set ContactsKit.bundle
+        NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:@"ContactsKit" withExtension:@"bundle"];
+        NSAssert(bundleURL, @"ContactsKit.bundle not found, add bundle to the project.");
+        bundle = [NSBundle bundleWithURL:bundleURL];
+    });
+    return bundle;
+}
 
 @end
