@@ -1,5 +1,8 @@
 #Change Log
 
+## 2.1.0
+* Added localization
+
 ## 2.0.4
 * Bugfix due inserting, updating and deleting contacts (for observeContactsDiff mode only)
 
