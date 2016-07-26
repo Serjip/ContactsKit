@@ -43,6 +43,8 @@
 /* Begin PBXFileReference section */
 		05EBD226FBB50DDF193F1821 /* Pods-ContactsKit_iOS_Logic_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_iOS_Logic_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_iOS_Logic_Tests/Pods-ContactsKit_iOS_Logic_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		0BE004E210164F46C3735436 /* Pods-ContactsKit_iOS_Logic_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContactsKit_iOS_Logic_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ContactsKit_iOS_Logic_Tests/Pods-ContactsKit_iOS_Logic_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		522300A31D475E0A00D2B041 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		522300A41D475E0A00D2B041 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		523531A61C522EFB00FB1E80 /* ContactsKit_OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsKit_OSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523531A81C522EFB00FB1E80 /* CKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKAppDelegate.h; sourceTree = "<group>"; };
 		523531A91C522EFB00FB1E80 /* CKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CKAppDelegate.m; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				523531B41C522EFB00FB1E80 /* Base */,
+				522300A41D475E0A00D2B041 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				523531CF1C52315100FB1E80 /* Base */,
+				522300A31D475E0A00D2B041 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
