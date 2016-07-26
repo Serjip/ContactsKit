@@ -932,7 +932,7 @@
     
     if (! result && error)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Cannot set property", nil)};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : CKLocalizedString(@"Cannot set property", nil)};
         *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
     }
     return result;
@@ -948,7 +948,7 @@
     
     if (! result && error)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Cannot set property", nil)};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : CKLocalizedString(@"Cannot set property", nil)};
         *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
     }
     return result;
@@ -1001,7 +1001,7 @@
     
     if (! result && error)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Cannot set property", nil)};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : CKLocalizedString(@"Cannot set property", nil)};
         *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
     }
     return result;

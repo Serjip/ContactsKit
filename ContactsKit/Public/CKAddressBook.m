@@ -26,6 +26,7 @@
 
 #import "CKAddressBook_Private.h"
 #import "CKContact_Private.h"
+#import "CKMacros.h"
 #import <AddressBook/AddressBook.h>
 
 NSString *const CKAddressBookErrorDomain = @"CKAddressBookErrorDomain";
@@ -131,7 +132,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         NSError *error = nil;
         if (! granted || errorRef)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Access denied", nil) };
             error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
         
@@ -153,7 +154,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         NSError *error = nil;
         if (! _addressBook)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Access denied", nil) };
             error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
         
@@ -504,7 +505,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     {
         if (error)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Access denied", nil) };
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
         return nil;
@@ -540,7 +541,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     {
         if (error)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil) };
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Access denied", nil) };
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
         return nil;
@@ -688,7 +689,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         {
             if (error)
             {
-                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Contact not found", nil)};
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Contact not found", nil)};
                 *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
             }
             result = NO;
@@ -768,7 +769,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     {
         if (error)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Contact not found", nil)};
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Contact not found", nil)};
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
         result = NO;
@@ -785,7 +786,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     {
         if (error)
         {
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Contact not found", nil)};
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Contact not found", nil)};
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
         }
         result = NO;
@@ -836,7 +837,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         case CKAddressBookAccessDenied:
             if (error)
             {
-                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access denied", nil)};
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Access denied", nil)};
                 *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
             }
             return NO;
@@ -844,7 +845,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         case CKAddressBookAccessUnknown:
             if (error)
             {
-                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : NSLocalizedString(@"Access unknown", nil)};
+                NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : CKLocalizedString(@"Access unknown", nil)};
                 *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:1 userInfo:userInfo];
             }
             return NO;
@@ -862,7 +863,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         result = ABAddressBookHasUnsavedChanges(_addressBookRef);
         if (! result && error)
         {
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Address book hasn't changes", nil)};
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : CKLocalizedString(@"Address book hasn't changes", nil)};
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:2 userInfo:userInfo];
         }
     }
@@ -888,7 +889,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
         result = [_addressBook hasUnsavedChanges];
         if (! result && error)
         {
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : NSLocalizedString(@"Address book hasn't changes", nil)};
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : CKLocalizedString(@"Address book hasn't changes", nil)};
             *error = [NSError errorWithDomain:CKAddressBookErrorDomain code:2 userInfo:userInfo];
         }
     }

@@ -30,6 +30,11 @@
 // Equality
 #define CK_IS_EQUAL(obj1, obj2) (obj1 == obj2 || [obj1 isEqual:obj2])
 
+// Localization
+#import "NSBundle+Localizatoin.h"
+#define CKLocalizedString(key, comment) \
+[[NSBundle ck_mainBundle] localizedStringForKey:(key) value:@"" table:nil]
+
 #if TARGET_OS_IOS
 // Address
 #define kABAddressStreetKey         (__bridge NSString *)kABPersonAddressStreetKey
