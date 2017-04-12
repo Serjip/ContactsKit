@@ -104,7 +104,7 @@ typedef NS_ENUM(NSUInteger, CKAddressBookChangeType)
  * @param filter is a filter for the contacts, if block returns NO that contact will not added to the contact list.
  * @param callback This block is called upon completion fetching all contacts
  */
-- (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
+- (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)sortDescriptors
                   filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback;
 
 /*!
