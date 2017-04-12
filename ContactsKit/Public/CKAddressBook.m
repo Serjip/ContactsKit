@@ -206,7 +206,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
     });
 }
 
-- (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)descriptors
+- (void)contactsWithMask:(CKContactField)mask uinify:(BOOL)unify sortDescriptors:(NSArray *)sortDescriptors
                   filter:(BOOL (^) (CKContact *contact))filter completion:(void (^) (NSArray *contacts, NSError *error))callback
 {
     NSParameterAssert(callback);
@@ -215,7 +215,7 @@ NSString *const CKAddressBookDeletedContactsUserInfoKey = @"CKAddressBookDeleted
        
         CKContactField mergeMask = unify ? mask : 0;
         NSError *error = nil;
-        NSArray *contacts = [self ck_contactsWithFields:mask merge:mergeMask sortDescriptors:descriptors filter:filter error:&error];
+        NSArray *contacts = [self ck_contactsWithFields:mask merge:mergeMask sortDescriptors:sortDescriptors filter:filter error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             callback(contacts, error);
