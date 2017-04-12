@@ -101,7 +101,12 @@ NSString * const CKPhonePager = @"_$!<Pager>!$_";
         return NO;
     }
     
-    return CK_IS_EQUAL(self.number, phone.number);
+    NSCharacterSet *validationSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    
+    NSString *number = [[self.number componentsSeparatedByCharactersInSet:validationSet] componentsJoinedByString:@""];
+    NSString *numberToCompare = [[phone.number componentsSeparatedByCharactersInSet:validationSet] componentsJoinedByString:@""];
+    
+    return [number isEqualToString:numberToCompare];
 }
 
 - (BOOL)isEqual:(id)object
