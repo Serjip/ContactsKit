@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'ContactsKit'
-  s.version      = '2.1.1'
+  s.version      = '2.1.2'
   s.summary      = 'Contacts management without headache'
   s.homepage     = 'https://github.com/Serjip/ContactsKit'
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
