@@ -88,7 +88,11 @@
         {
             _nameSuffix = [self stringProperty:kABPersonSuffixProperty fromRecord:recordRef];
         }
-
+        
+        if (fieldMask & CKContactFieldFullName)
+        {
+            _fullName = [self compositeNameFromRecord:recordRef];
+        }
         
         // Corp
         
@@ -701,6 +705,17 @@
 }
 
 #pragma mark - Private
+
+- (NSString *)compositeNameFromRecord:(ABRecordRef)recordRef
+{
+    CFStringRef compositeNameRef = ABRecordCopyCompositeName(recordRef);
+    
+    NSString *compositeName = [[(__bridge NSString*)compositeNameRef copy] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (compositeNameRef)
+        CFRelease(compositeNameRef);
+    
+    return compositeName;
+}
 
 - (NSString *)stringProperty:(ABPropertyID)property fromRecord:(ABRecordRef)recordRef
 {
